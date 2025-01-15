@@ -61,7 +61,6 @@
 				"Cast select(skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> Select",
 				"StgSla cast(output(",
-				"          fechaAlta as timestamp 'MM/dd/yyyy HH:mm:ss',",
 				"          fechaModificacion as timestamp 'MM/dd/yyyy HH:mm:ss'",
 				"     ),",
 				"     errors: true) ~> Cast",
@@ -111,7 +110,7 @@
 				"          TiempoResolucionPrioridad3 = slaTargerPriority3ResolveWithin,",
 				"          TiempoRespuestaPrioridad4 = slaTargetPriority4RespondWithin,",
 				"          TiempoResolucionPrioridad4 = slaTargerPriority4ResolveWithin,",
-				"          fechaAlta",
+				"          fechaAlta = fecha",
 				"     )) ~> Insert"
 			]
 		}
