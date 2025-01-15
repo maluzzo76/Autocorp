@@ -17,10 +17,6 @@
 			],
 			"sinks": [
 				{
-					"dataset": {
-						"referenceName": "DwDimSla",
-						"type": "DatasetReference"
-					},
 					"name": "Insert"
 				}
 			],
@@ -39,34 +35,10 @@
 				"     skipDuplicateMapOutputs: true) ~> Select",
 				"Select sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     input(",
-				"          id as integer,",
-				"          codigo as string,",
-				"          nombre as string,",
-				"          descipcion as string,",
-				"          activo as integer,",
-				"          prederterminado as integer,",
-				"          posicion as integer,",
-				"          fechaAlta as timestamp,",
-				"          fechaModificacion as timestamp,",
-				"          companiaid as string,",
-				"          TiempoRespuestaPrioridad1 as decimal(18,4),",
-				"          TiempoResolucionPrioridad1 as decimal(18,4),",
-				"          TiempoRespuestaPrioridad2 as decimal(18,4),",
-				"          TiempoResolucionPrioridad2 as decimal(18,4),",
-				"          TiempoRespuestaPrioridad3 as decimal(18,4),",
-				"          TiempoResolucionPrioridad3 as decimal(18,4),",
-				"          TiempoRespuestaPrioridad4 as decimal(18,4),",
-				"          TiempoResolucionPrioridad4 as decimal(18,4)",
-				"     ),",
-				"     deletable:false,",
-				"     insertable:true,",
-				"     updateable:false,",
-				"     upsertable:false,",
-				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     saveOrder: 1) ~> Insert"
+				"     saveOrder: 1,",
+				"     format: 'table') ~> Insert"
 			]
 		}
 	}
