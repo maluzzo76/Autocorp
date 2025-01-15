@@ -21,17 +21,23 @@
 						"referenceName": "DwDimSla",
 						"type": "DatasetReference"
 					},
-					"name": "sink1"
+					"name": "Insert"
 				}
 			],
-			"transformations": [],
+			"transformations": [
+				{
+					"name": "Select"
+				}
+			],
 			"scriptLines": [
 				"source(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
 				"     query: 'select\\n    0 id,\\n    codigo,\\n    nombre,\\n    descipcion,\\n    isactive,     \\n    isdefault,\\n    posicion,\\n    REPLACE(REPLACE(fechaAlta, \\'T\\', \\' \\') ,\\'Z\\',\\'\\')fecha, \\n     REPLACE(REPLACE(fechaModificacion, \\'T\\', \\' \\') ,\\'Z\\',\\'\\')  fechaModificacion,\\n    companyid ,\\n    slaTargetPriority1RespondWithin     ,\\n    slaTargerPriority1ResolveWithin     , \\n    slaTargetPriority2RespondWithin     ,\\n    slaTargerPriority2ResolveWithin     ,   \\n    slaTargetPriority3RespondWithin     ,\\n    slaTargerPriority3ResolveWithin     ,    \\n    slaTargetPriority4RespondWithin     ,\\n    slaTargerPriority4ResolveWithin     \\nfrom Sla',",
 				"     format: 'query') ~> StgSla",
-				"StgSla sink(allowSchemaDrift: true,",
+				"StgSla select(skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> Select",
+				"Select sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
 				"          id as integer,",
@@ -60,7 +66,7 @@
 				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     saveOrder: 1) ~> sink1"
+				"     saveOrder: 1) ~> Insert"
 			]
 		}
 	}
