@@ -1,0 +1,9 @@
+{
+	"name": "Autocorp",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "0e9729c7-0784-4a74-97d6-d08c54d75f27",
+		"tenantId": "26373eb5-1ee6-4a54-a5e3-81dd2b0f46d4"
+	}
+}

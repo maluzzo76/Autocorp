@@ -1,0 +1,75 @@
+{
+	"name": "Inyectar Agentes",
+	"properties": {
+		"folder": {
+			"name": "Inyectar Dimensiones"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "StgAgentes",
+						"type": "DatasetReference"
+					},
+					"name": "StgAgentes"
+				},
+				{
+					"dataset": {
+						"referenceName": "DwDimAgentes",
+						"type": "DatasetReference"
+					},
+					"name": "DimAgentes"
+				}
+			],
+			"sinks": [
+				{
+					"linkedService": {
+						"referenceName": "DataWareouse",
+						"type": "LinkedServiceReference"
+					},
+					"name": "InyectarDW"
+				}
+			],
+			"transformations": [
+				{
+					"name": "Validar"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          codigo as string,",
+				"          nombre as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> StgAgentes",
+				"source(output(",
+				"          id as integer,",
+				"          codigo as string,",
+				"          nombre as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> DimAgentes",
+				"StgAgentes, DimAgentes exists(StgAgentes@codigo == DimAgentes@codigo",
+				"     && StgAgentes@nombre == DimAgentes@nombre,",
+				"     negate:true,",
+				"     broadcast: 'auto')~> Validar",
+				"Validar sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'table',",
+				"     tableName: 'dimagentes',",
+				"     deletable: false,",
+				"     insertable: true,",
+				"     updateable: false,",
+				"     upsertable: false,",
+				"     store: 'mysql',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> InyectarDW"
+			]
+		}
+	}
+}

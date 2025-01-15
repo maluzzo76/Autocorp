@@ -1,0 +1,80 @@
+{
+	"name": "001-Orquestador",
+	"properties": {
+		"activities": [
+			{
+				"name": "Inyectar_Data_Fresh",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "002-Inyectar_Data_Fresh",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "Inyectar_Dimensiones_DW",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "Inyectar_Data_Fresh",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "004-Inyectar_Dimensions",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "Inyectar_FactTickets",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "Inyectar_Dimensiones_DW",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "005-Inyectar_Echos",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			}
+		],
+		"variables": {
+			"ProcessID": {
+				"type": "String"
+			},
+			"nombre": {
+				"type": "String"
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2025-01-14T15:43:21Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

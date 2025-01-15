@@ -1,0 +1,24 @@
+{
+	"name": "Diario 2-00am",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "001-Orquestador",
+					"type": "PipelineReference"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Hour",
+				"interval": 24,
+				"startTime": "2025-01-04T02:08:00",
+				"timeZone": "Argentina Standard Time"
+			}
+		}
+	}
+}

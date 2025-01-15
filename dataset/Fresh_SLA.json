@@ -1,0 +1,16 @@
+{
+	"name": "Fresh_SLA",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "APIFresh",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "APIs"
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

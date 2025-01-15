@@ -1,0 +1,32 @@
+{
+	"name": "FreshOrigenes",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "FreshDB",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Source/Fresh"
+		},
+		"annotations": [],
+		"type": "AzureMySqlTable",
+		"schema": [
+			{
+				"name": "name",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "id",
+				"type": "int",
+				"precision": 0,
+				"scale": 0
+			}
+		],
+		"typeProperties": {
+			"tableName": "source_table"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

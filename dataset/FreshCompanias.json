@@ -1,0 +1,98 @@
+{
+	"name": "FreshCompanias",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "FreshDB",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Source/Fresh"
+		},
+		"annotations": [],
+		"type": "AzureMySqlTable",
+		"schema": [
+			{
+				"name": "id",
+				"type": "double",
+				"precision": 0,
+				"scale": 31
+			},
+			{
+				"name": "name",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "description",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "note",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "domains",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "created_at",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "updated_at",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "health_score",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "account_tier",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "renewal_date",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "industry",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "custom_fields.estado_crediticio",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "custom_fields.cuit",
+				"type": "double",
+				"precision": 0,
+				"scale": 31
+			}
+		],
+		"typeProperties": {
+			"tableName": "freshdesk_companies"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

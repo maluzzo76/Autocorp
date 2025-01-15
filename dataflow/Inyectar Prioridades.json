@@ -1,0 +1,78 @@
+{
+	"name": "Inyectar Prioridades",
+	"properties": {
+		"folder": {
+			"name": "Inyectar Dimensiones"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "StgPrioridad",
+						"type": "DatasetReference"
+					},
+					"name": "StgPrioridades"
+				},
+				{
+					"dataset": {
+						"referenceName": "DwDimPrioridades",
+						"type": "DatasetReference"
+					},
+					"name": "DwPrioridades"
+				}
+			],
+			"sinks": [
+				{
+					"linkedService": {
+						"referenceName": "DataWareouse",
+						"type": "LinkedServiceReference"
+					},
+					"name": "InyectarDW"
+				}
+			],
+			"transformations": [
+				{
+					"name": "Validar"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          codigo as string,",
+				"          nombre as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> StgPrioridades",
+				"source(output(",
+				"          id as integer,",
+				"          codigo as string,",
+				"          nombre as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> DwPrioridades",
+				"StgPrioridades, DwPrioridades exists(StgPrioridades@codigo == DwPrioridades@codigo,",
+				"     negate:true,",
+				"     broadcast: 'auto')~> Validar",
+				"Validar sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'table',",
+				"     tableName: 'dimprioridades',",
+				"     deletable: false,",
+				"     insertable: true,",
+				"     updateable: false,",
+				"     upsertable: false,",
+				"     store: 'mysql',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     mapColumn(",
+				"          codigo,",
+				"          nombre",
+				"     )) ~> InyectarDW"
+			]
+		}
+	}
+}

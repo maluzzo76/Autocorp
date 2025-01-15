@@ -1,0 +1,32 @@
+{
+	"name": "FreshGrupos",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "FreshDB",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Source/Fresh"
+		},
+		"annotations": [],
+		"type": "AzureMySqlTable",
+		"schema": [
+			{
+				"name": "name",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "id",
+				"type": "double",
+				"precision": 0,
+				"scale": 31
+			}
+		],
+		"typeProperties": {
+			"tableName": "group_table"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

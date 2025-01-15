@@ -1,0 +1,254 @@
+{
+	"name": "FreshTickets",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "FreshDB",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Source/Fresh"
+		},
+		"annotations": [],
+		"type": "AzureMySqlTable",
+		"schema": [
+			{
+				"name": "cc_emails",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "fwd_emails",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "reply_cc_emails",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "ticket_cc_emails",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "ticket_bcc_emails",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "fr_escalated",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "spam",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "email_config_id",
+				"type": "double",
+				"precision": 0,
+				"scale": 31
+			},
+			{
+				"name": "group_id",
+				"type": "double",
+				"precision": 0,
+				"scale": 31
+			},
+			{
+				"name": "priority",
+				"type": "int",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "requester_id",
+				"type": "double",
+				"precision": 0,
+				"scale": 31
+			},
+			{
+				"name": "responder_id",
+				"type": "double",
+				"precision": 0,
+				"scale": 31
+			},
+			{
+				"name": "source",
+				"type": "int",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "company_id",
+				"type": "double",
+				"precision": 0,
+				"scale": 31
+			},
+			{
+				"name": "status",
+				"type": "int",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "subject",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "association_type",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "support_email",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "to_emails",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "product_id",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "id",
+				"type": "int",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "type",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "due_by",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "fr_due_by",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "is_escalated",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "custom_fields",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "created_at",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "updated_at",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "associated_tickets_count",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "tags",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "nr_due_by",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "nr_escalated",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "form_id",
+				"type": "double",
+				"precision": 0,
+				"scale": 31
+			},
+			{
+				"name": "cf_patente",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "cf_id_efleet",
+				"type": "double",
+				"precision": 0,
+				"scale": 31
+			},
+			{
+				"name": "cf_generar_ot_efleet",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "cf_kilometraje",
+				"type": "double",
+				"precision": 0,
+				"scale": 31
+			},
+			{
+				"name": "cf_obs_efleet",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "cf_motivo_de_reclamo",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			}
+		],
+		"typeProperties": {
+			"tableName": "freshdesk_tickets"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

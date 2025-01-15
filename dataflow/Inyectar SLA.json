@@ -1,0 +1,117 @@
+{
+	"name": "Inyectar SLA",
+	"properties": {
+		"folder": {
+			"name": "Inyectar Dimensiones"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "StgSLA",
+						"type": "DatasetReference"
+					},
+					"name": "StgSla"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DwDimSla",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "DateFormat"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          codigo as string,",
+				"          nombre as string,",
+				"          descipcion as string,",
+				"          isactive as integer,",
+				"          isdefault as integer,",
+				"          posicion as integer,",
+				"          fechaAlta as string,",
+				"          fechaModificacion as string,",
+				"          companyid as string,",
+				"          slaTargetPriority1RespondWithin as decimal(18,4),",
+				"          slaTargerPriority1ResolveWithin as decimal(18,4),",
+				"          slaTargetPriority2RespondWithin as decimal(18,4),",
+				"          slaTargerPriority2ResolveWithin as decimal(18,4),",
+				"          slaTargetPriority3RespondWithin as decimal(18,4),",
+				"          slaTargerPriority3ResolveWithin as decimal(18,4),",
+				"          slaTargetPriority4RespondWithin as decimal(18,4),",
+				"          slaTargerPriority4ResolveWithin as decimal(18,4),",
+				"          escalationReminderResolutionEscalationTime as decimal(18,4),",
+				"          escalationReminderResolutionAgentids as string,",
+				"          escalationResolutionLevel1EscalationTime as decimal(18,4),",
+				"          escalationResolutionLevel1AgentId as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> StgSla",
+				"StgSla cast(output(",
+				"          fechaAlta as timestamp 'dd/MM/yyyy',",
+				"          fechaModificacion as timestamp 'dd/MM/yyyy'",
+				"     ),",
+				"     errors: true) ~> DateFormat",
+				"DateFormat sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          id as integer,",
+				"          codigo as string,",
+				"          nombre as string,",
+				"          descipcion as string,",
+				"          activo as integer,",
+				"          prederterminado as integer,",
+				"          posicion as integer,",
+				"          fechaAlta as timestamp,",
+				"          fechaModificacion as timestamp,",
+				"          companiaid as string,",
+				"          TiempoRespuestaPrioridad1 as decimal(18,4),",
+				"          TiempoResolucionPrioridad1 as decimal(18,4),",
+				"          TiempoRespuestaPrioridad2 as decimal(18,4),",
+				"          TiempoResolucionPrioridad2 as decimal(18,4),",
+				"          TiempoRespuestaPrioridad3 as decimal(18,4),",
+				"          TiempoResolucionPrioridad3 as decimal(18,4),",
+				"          TiempoRespuestaPrioridad4 as decimal(18,4),",
+				"          TiempoResolucionPrioridad4 as decimal(18,4)",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     saveOrder: 1,",
+				"     mapColumn(",
+				"          codigo,",
+				"          nombre,",
+				"          descipcion,",
+				"          activo = isactive,",
+				"          prederterminado = isdefault,",
+				"          posicion,",
+				"          fechaAlta,",
+				"          fechaModificacion,",
+				"          companiaid = companyid,",
+				"          TiempoRespuestaPrioridad1 = slaTargetPriority1RespondWithin,",
+				"          TiempoResolucionPrioridad1 = slaTargerPriority1ResolveWithin,",
+				"          TiempoRespuestaPrioridad2 = slaTargetPriority2RespondWithin,",
+				"          TiempoResolucionPrioridad2 = slaTargerPriority2ResolveWithin,",
+				"          TiempoRespuestaPrioridad3 = slaTargetPriority3RespondWithin,",
+				"          TiempoResolucionPrioridad3 = slaTargerPriority3ResolveWithin,",
+				"          TiempoRespuestaPrioridad4 = slaTargetPriority4RespondWithin,",
+				"          TiempoResolucionPrioridad4 = slaTargerPriority4ResolveWithin",
+				"     )) ~> sink1"
+			]
+		}
+	}
+}

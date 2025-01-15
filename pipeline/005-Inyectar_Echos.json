@@ -1,0 +1,212 @@
+{
+	"name": "005-Inyectar_Echos",
+	"properties": {
+		"activities": [
+			{
+				"name": "Inyectar_Dw_FactTickets",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureMySqlSource",
+						"query": "select \nt.codigo,\nt.fechaAlta,\nt.fechaModificacion,\nt.horasDiferecia,\nt.minutosDiferencia,\nc.id companiasid,\ne.id estadoid,\ntp.id Tipoid,\np.id productoid,\ng.id grupoid,\no.id origenid,\npri.id prioridadid,\na.id agenteid\nfrom tickets t\nLEFT JOIN Autocorp_DW.dimCompanias c on c.codigo = t.companiaCodigo\nLEFT JOIN Autocorp_DW.dimEstados e on e.codigo = t.estadoCodigo\nLEFT JOIN Autocorp_DW.dimTiposTicket tp on tp.nombre = t.tipoCodigo\nLEFT JOIN Autocorp_DW.dimProductos p on p.codigo = REPLACE(t.productoCodigo,'.0','')\nLEFT JOIN Autocorp_DW.dimGrupos g on g.codigo = REPLACE(t.grupoCodigo,'.0','')\nLEFT JOIN Autocorp_DW.dimOrigenes o on o.codigo = t.origenCodigo\nLEFT JOIN Autocorp_DW.dimPrioridades pri on pri.codigo = t.prioridadCodigo\nLEFT JOIN Autocorp_DW.dimAgentes a on a.codigo = t.agenteCodigo\n",
+						"queryTimeout": "02:00:00"
+					},
+					"sink": {
+						"type": "AzureMySqlSink",
+						"writeBatchSize": 10000,
+						"writeBatchTimeout": "00:00:30",
+						"preCopyScript": "Truncate Table Autocorp_DW.factTickets"
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "codigo",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "codigo",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "fechaAlta",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								},
+								"sink": {
+									"name": "fechaAlta",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								}
+							},
+							{
+								"source": {
+									"name": "fechaModificacion",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								},
+								"sink": {
+									"name": "fechaModificacion",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								}
+							},
+							{
+								"source": {
+									"name": "horasDiferecia",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "horasDiferecia",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "minutosDiferencia",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "minutosDiferencia",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "companiasid",
+									"type": "Int32"
+								},
+								"sink": {
+									"name": "companiaId",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "estadoid",
+									"type": "Int32"
+								},
+								"sink": {
+									"name": "estadoId",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "Tipoid",
+									"type": "Int32"
+								},
+								"sink": {
+									"name": "tipoId",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "productoid",
+									"type": "Int32"
+								},
+								"sink": {
+									"name": "productoId",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "grupoid",
+									"type": "Int32"
+								},
+								"sink": {
+									"name": "grupoId",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "origenid",
+									"type": "Int32"
+								},
+								"sink": {
+									"name": "origenId",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "prioridadid",
+									"type": "Int32"
+								},
+								"sink": {
+									"name": "prioridadId",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "agenteid",
+									"type": "Int32"
+								},
+								"sink": {
+									"name": "agenteId",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "StgTickets",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DwFactTickets",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"variables": {
+			"nombre": {
+				"type": "String"
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2025-01-14T15:43:20Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

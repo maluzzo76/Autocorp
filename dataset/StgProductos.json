@@ -1,0 +1,32 @@
+{
+	"name": "StgProductos",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "StaigingDB",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Staiging"
+		},
+		"annotations": [],
+		"type": "AzureMySqlTable",
+		"schema": [
+			{
+				"name": "codigo",
+				"type": "varchar",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "nombre",
+				"type": "varchar",
+				"precision": 0,
+				"scale": 0
+			}
+		],
+		"typeProperties": {
+			"tableName": "productos"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

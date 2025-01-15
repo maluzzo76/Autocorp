@@ -1,0 +1,38 @@
+{
+	"name": "DwDimProductos",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "DataWareouse",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "DW/Dimensiones"
+		},
+		"annotations": [],
+		"type": "AzureMySqlTable",
+		"schema": [
+			{
+				"name": "id",
+				"type": "int",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "codigo",
+				"type": "varchar",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "nombre",
+				"type": "varchar",
+				"precision": 0,
+				"scale": 0
+			}
+		],
+		"typeProperties": {
+			"tableName": "dimproductos"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
