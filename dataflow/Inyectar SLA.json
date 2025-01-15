@@ -104,8 +104,6 @@
 				"          activo = isactive,",
 				"          prederterminado = isdefault,",
 				"          posicion,",
-				"          fechaAlta,",
-				"          fechaModificacion,",
 				"          companiaid = companyid,",
 				"          TiempoRespuestaPrioridad1 = slaTargetPriority1RespondWithin,",
 				"          TiempoResolucionPrioridad1 = slaTargerPriority1ResolveWithin,",
