@@ -60,26 +60,7 @@
 				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     saveOrder: 1,",
-				"     mapColumn(",
-				"          codigo,",
-				"          nombre,",
-				"          descipcion,",
-				"          activo = isactive,",
-				"          prederterminado = isdefault,",
-				"          posicion,",
-				"          fechaAlta,",
-				"          fechaModificacion,",
-				"          companiaid = companyid,",
-				"          TiempoRespuestaPrioridad1 = slaTargetPriority1RespondWithin,",
-				"          TiempoResolucionPrioridad1 = slaTargerPriority1ResolveWithin,",
-				"          TiempoRespuestaPrioridad2 = slaTargetPriority2RespondWithin,",
-				"          TiempoResolucionPrioridad2 = slaTargerPriority2ResolveWithin,",
-				"          TiempoRespuestaPrioridad3 = slaTargetPriority3RespondWithin,",
-				"          TiempoResolucionPrioridad3 = slaTargerPriority3ResolveWithin,",
-				"          TiempoRespuestaPrioridad4 = slaTargetPriority4RespondWithin,",
-				"          TiempoResolucionPrioridad4 = slaTargerPriority4ResolveWithin",
-				"     )) ~> sink1"
+				"     saveOrder: 1) ~> sink1"
 			]
 		}
 	}
