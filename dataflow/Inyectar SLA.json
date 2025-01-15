@@ -112,7 +112,8 @@
 				"          TiempoRespuestaPrioridad3 = slaTargetPriority3RespondWithin,",
 				"          TiempoResolucionPrioridad3 = slaTargerPriority3ResolveWithin,",
 				"          TiempoRespuestaPrioridad4 = slaTargetPriority4RespondWithin,",
-				"          TiempoResolucionPrioridad4 = slaTargerPriority4ResolveWithin",
+				"          TiempoResolucionPrioridad4 = slaTargerPriority4ResolveWithin,",
+				"          fechaAlta",
 				"     )) ~> Insert"
 			]
 		}
