@@ -1,0 +1,961 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Nombre de instancia de Data Factory",
+			"defaultValue": "Autocorp"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/Inyectar Grupos')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "Inyectar Dimensiones"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "StgGrupos",
+								"type": "DatasetReference"
+							},
+							"name": "StgGrupos"
+						},
+						{
+							"dataset": {
+								"referenceName": "DwDimGrupos",
+								"type": "DatasetReference"
+							},
+							"name": "DwGrupos"
+						}
+					],
+					"sinks": [
+						{
+							"linkedService": {
+								"referenceName": "DataWareouse",
+								"type": "LinkedServiceReference"
+							},
+							"name": "InyectarDW"
+						}
+					],
+					"transformations": [
+						{
+							"name": "Validar"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          codigo as string,",
+						"          nombre as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     format: 'table') ~> StgGrupos",
+						"source(output(",
+						"          id as integer,",
+						"          codigo as string,",
+						"          nombre as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     format: 'table') ~> DwGrupos",
+						"StgGrupos, DwGrupos exists(StgGrupos@codigo == DwGrupos@codigo,",
+						"     negate:true,",
+						"     broadcast: 'auto')~> Validar",
+						"Validar sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     format: 'table',",
+						"     tableName: 'dimgrupos',",
+						"     deletable: false,",
+						"     insertable: true,",
+						"     updateable: false,",
+						"     upsertable: false,",
+						"     store: 'mysql',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     mapColumn(",
+						"          codigo,",
+						"          nombre",
+						"     )) ~> InyectarDW"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Inyectar Origenes')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "Inyectar Dimensiones"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "StgOrigenes",
+								"type": "DatasetReference"
+							},
+							"name": "StgOrigenes"
+						},
+						{
+							"dataset": {
+								"referenceName": "DwDimOrigenes",
+								"type": "DatasetReference"
+							},
+							"name": "DwOrigenes"
+						}
+					],
+					"sinks": [
+						{
+							"linkedService": {
+								"referenceName": "DataWareouse",
+								"type": "LinkedServiceReference"
+							},
+							"name": "InyectarDW"
+						}
+					],
+					"transformations": [
+						{
+							"name": "Validar"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          codigo as string,",
+						"          nombre as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     format: 'table') ~> StgOrigenes",
+						"source(output(",
+						"          id as integer,",
+						"          codigo as string,",
+						"          nombre as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     format: 'table') ~> DwOrigenes",
+						"StgOrigenes, DwOrigenes exists(StgOrigenes@codigo == DwOrigenes@codigo,",
+						"     negate:true,",
+						"     broadcast: 'auto')~> Validar",
+						"Validar sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     format: 'table',",
+						"     tableName: 'dimorigenes',",
+						"     deletable: false,",
+						"     insertable: true,",
+						"     updateable: false,",
+						"     upsertable: false,",
+						"     store: 'mysql',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     mapColumn(",
+						"          codigo,",
+						"          nombre",
+						"     )) ~> InyectarDW"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Inyectar Prioridades')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "Inyectar Dimensiones"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "StgPrioridad",
+								"type": "DatasetReference"
+							},
+							"name": "StgPrioridades"
+						},
+						{
+							"dataset": {
+								"referenceName": "DwDimPrioridades",
+								"type": "DatasetReference"
+							},
+							"name": "DwPrioridades"
+						}
+					],
+					"sinks": [
+						{
+							"linkedService": {
+								"referenceName": "DataWareouse",
+								"type": "LinkedServiceReference"
+							},
+							"name": "InyectarDW"
+						}
+					],
+					"transformations": [
+						{
+							"name": "Validar"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          codigo as string,",
+						"          nombre as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     format: 'table') ~> StgPrioridades",
+						"source(output(",
+						"          id as integer,",
+						"          codigo as string,",
+						"          nombre as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     format: 'table') ~> DwPrioridades",
+						"StgPrioridades, DwPrioridades exists(StgPrioridades@codigo == DwPrioridades@codigo,",
+						"     negate:true,",
+						"     broadcast: 'auto')~> Validar",
+						"Validar sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     format: 'table',",
+						"     tableName: 'dimprioridades',",
+						"     deletable: false,",
+						"     insertable: true,",
+						"     updateable: false,",
+						"     upsertable: false,",
+						"     store: 'mysql',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     mapColumn(",
+						"          codigo,",
+						"          nombre",
+						"     )) ~> InyectarDW"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Inyectar Productos')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "Inyectar Dimensiones"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "StgProductos",
+								"type": "DatasetReference"
+							},
+							"name": "StgProductos"
+						},
+						{
+							"dataset": {
+								"referenceName": "DwDimProductos",
+								"type": "DatasetReference"
+							},
+							"name": "DwProductos"
+						}
+					],
+					"sinks": [
+						{
+							"linkedService": {
+								"referenceName": "DataWareouse",
+								"type": "LinkedServiceReference"
+							},
+							"name": "InyectarDW"
+						}
+					],
+					"transformations": [
+						{
+							"name": "Validar"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          codigo as string,",
+						"          nombre as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     format: 'table') ~> StgProductos",
+						"source(output(",
+						"          id as integer,",
+						"          codigo as string,",
+						"          nombre as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     format: 'table') ~> DwProductos",
+						"StgProductos, DwProductos exists(StgProductos@codigo == DwProductos@codigo,",
+						"     negate:true,",
+						"     broadcast: 'auto')~> Validar",
+						"Validar sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     format: 'table',",
+						"     tableName: 'dimproductos',",
+						"     deletable: false,",
+						"     insertable: true,",
+						"     updateable: false,",
+						"     upsertable: false,",
+						"     store: 'mysql',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     mapColumn(",
+						"          codigo,",
+						"          nombre",
+						"     )) ~> InyectarDW"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Inyectar SLA')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "Inyectar Dimensiones"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "StgSLA",
+								"type": "DatasetReference"
+							},
+							"name": "StgSla"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DwDimSla",
+								"type": "DatasetReference"
+							},
+							"name": "Insert"
+						}
+					],
+					"transformations": [
+						{
+							"name": "Select"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          id as integer,",
+						"          codigo as string,",
+						"          nombre as string,",
+						"          descipcion as string,",
+						"          isactive as boolean,",
+						"          isdefault as boolean,",
+						"          posicion as integer,",
+						"          fecha as string,",
+						"          fechaModificacion as string,",
+						"          companyid as string,",
+						"          slaTargetPriority1RespondWithin as decimal(18,4),",
+						"          slaTargerPriority1ResolveWithin as decimal(18,4),",
+						"          slaTargetPriority2RespondWithin as decimal(18,4),",
+						"          slaTargerPriority2ResolveWithin as decimal(18,4),",
+						"          slaTargetPriority3RespondWithin as decimal(18,4),",
+						"          slaTargerPriority3ResolveWithin as decimal(18,4),",
+						"          slaTargetPriority4RespondWithin as decimal(18,4),",
+						"          slaTargerPriority4ResolveWithin as decimal(18,4)",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     query: 'select\\n    0 id,\\n    codigo,\\n    nombre,\\n    descipcion,\\n    isactive,     \\n    isdefault,\\n    posicion,\\n    REPLACE(REPLACE(fechaAlta, \\'T\\', \\' \\') ,\\'Z\\',\\'\\')fecha, \\n     REPLACE(REPLACE(fechaModificacion, \\'T\\', \\' \\') ,\\'Z\\',\\'\\')  fechaModificacion,\\n    companyid ,\\n    slaTargetPriority1RespondWithin     ,\\n    slaTargerPriority1ResolveWithin     , \\n    slaTargetPriority2RespondWithin     ,\\n    slaTargerPriority2ResolveWithin     ,   \\n    slaTargetPriority3RespondWithin     ,\\n    slaTargerPriority3ResolveWithin     ,    \\n    slaTargetPriority4RespondWithin     ,\\n    slaTargerPriority4ResolveWithin     \\nfrom Sla',",
+						"     format: 'query') ~> StgSla",
+						"StgSla select(skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> Select",
+						"Select sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          id as integer,",
+						"          codigo as string,",
+						"          nombre as string,",
+						"          descipcion as string,",
+						"          activo as integer,",
+						"          prederterminado as integer,",
+						"          posicion as integer,",
+						"          fechaAlta as timestamp,",
+						"          fechaModificacion as timestamp,",
+						"          companiaid as string,",
+						"          TiempoRespuestaPrioridad1 as decimal(18,4),",
+						"          TiempoResolucionPrioridad1 as decimal(18,4),",
+						"          TiempoRespuestaPrioridad2 as decimal(18,4),",
+						"          TiempoResolucionPrioridad2 as decimal(18,4),",
+						"          TiempoRespuestaPrioridad3 as decimal(18,4),",
+						"          TiempoResolucionPrioridad3 as decimal(18,4),",
+						"          TiempoRespuestaPrioridad4 as decimal(18,4),",
+						"          TiempoResolucionPrioridad4 as decimal(18,4)",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     saveOrder: 1,",
+						"     mapColumn(",
+						"          codigo,",
+						"          nombre,",
+						"          descipcion,",
+						"          activo = isactive,",
+						"          prederterminado = isdefault,",
+						"          posicion,",
+						"          companiaid = companyid,",
+						"          TiempoRespuestaPrioridad1 = slaTargetPriority1RespondWithin,",
+						"          TiempoResolucionPrioridad1 = slaTargerPriority1ResolveWithin,",
+						"          TiempoRespuestaPrioridad2 = slaTargetPriority2RespondWithin,",
+						"          TiempoResolucionPrioridad2 = slaTargerPriority2ResolveWithin,",
+						"          TiempoRespuestaPrioridad3 = slaTargetPriority3RespondWithin,",
+						"          TiempoResolucionPrioridad3 = slaTargerPriority3ResolveWithin,",
+						"          TiempoRespuestaPrioridad4 = slaTargetPriority4RespondWithin,",
+						"          TiempoResolucionPrioridad4 = slaTargerPriority4ResolveWithin,",
+						"          fechaAlta = fecha,",
+						"          fechaModificacion",
+						"     )) ~> Insert"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Inyectar Tipos')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "Inyectar Dimensiones"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "StgTipos",
+								"type": "DatasetReference"
+							},
+							"name": "StgTipos"
+						},
+						{
+							"dataset": {
+								"referenceName": "DwDimTiposTicket",
+								"type": "DatasetReference"
+							},
+							"name": "DwTipos"
+						}
+					],
+					"sinks": [
+						{
+							"linkedService": {
+								"referenceName": "DataWareouse",
+								"type": "LinkedServiceReference"
+							},
+							"name": "InyectarDW"
+						}
+					],
+					"transformations": [
+						{
+							"name": "Validar"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          codigo as string,",
+						"          nombre as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     format: 'table') ~> StgTipos",
+						"source(output(",
+						"          id as integer,",
+						"          codigo as string,",
+						"          nombre as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     format: 'table') ~> DwTipos",
+						"StgTipos, DwTipos exists(StgTipos@codigo == DwTipos@codigo,",
+						"     negate:true,",
+						"     broadcast: 'auto')~> Validar",
+						"Validar sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     format: 'table',",
+						"     tableName: 'dimtiposticket',",
+						"     deletable: false,",
+						"     insertable: true,",
+						"     updateable: false,",
+						"     upsertable: false,",
+						"     store: 'mysql',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     mapColumn(",
+						"          codigo,",
+						"          nombre",
+						"     )) ~> InyectarDW"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/004-Inyectar_Dimensions')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Inyectar_Dw_Agentes",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "Inyectar Agentes",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"StgAgentes": {},
+									"DimAgentes": {},
+									"InyectarDW": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					},
+					{
+						"name": "Inyectar_Dw_Companias",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "Inyectar Companias",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"StgCompanias": {},
+									"DwCompanias": {},
+									"InyectarDW": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					},
+					{
+						"name": "Inyectar_Dw_Estados",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "Inyectar Estados",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"StgEstados": {},
+									"DwEstados": {},
+									"InyectarDW": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					},
+					{
+						"name": "Inyectar_Dw_Grupos",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "Inyectar Grupos",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"StgGrupos": {},
+									"DwGrupos": {},
+									"InyectarDW": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					},
+					{
+						"name": "Inyectar_Dw_Origenes",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "Inyectar Origenes",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"StgOrigenes": {},
+									"DwOrigenes": {},
+									"InyectarDW": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					},
+					{
+						"name": "Inyectar_Dw_Prioridades",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "Inyectar Prioridades",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"StgPrioridades": {},
+									"DwPrioridades": {},
+									"InyectarDW": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					},
+					{
+						"name": "Inyectar_Dw_Productos",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "Inyectar Productos",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"StgProductos": {},
+									"DwProductos": {},
+									"InyectarDW": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					},
+					{
+						"name": "Inyectar_Dw_Tipos",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "Inyectar Tipos",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"StgTipos": {},
+									"DwTipos": {},
+									"InyectarDW": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					},
+					{
+						"name": "Inyectar_Dw_SLA",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "Inyectar SLA",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"StgSla": {},
+									"Insert": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"variables": {
+					"nombre": {
+						"type": "String"
+					}
+				},
+				"annotations": [],
+				"lastPublishTime": "2025-01-14T15:43:20Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/Inyectar Grupos')]",
+				"[concat(variables('factoryId'), '/dataflows/Inyectar Origenes')]",
+				"[concat(variables('factoryId'), '/dataflows/Inyectar Prioridades')]",
+				"[concat(variables('factoryId'), '/dataflows/Inyectar Productos')]",
+				"[concat(variables('factoryId'), '/dataflows/Inyectar Tipos')]",
+				"[concat(variables('factoryId'), '/dataflows/Inyectar SLA')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/001-Orquestador')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Inyectar_Data_Fresh",
+						"type": "ExecutePipeline",
+						"dependsOn": [],
+						"policy": {
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "002-Inyectar_Data_Fresh",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "Inyectar_Dimensiones_DW",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "Inyectar_Data_Fresh",
+								"dependencyConditions": [
+									"Completed"
+								]
+							}
+						],
+						"policy": {
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "004-Inyectar_Dimensions",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "Inyectar_FactTickets",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "Inyectar_Dimensiones_DW",
+								"dependencyConditions": [
+									"Completed"
+								]
+							}
+						],
+						"policy": {
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "005-Inyectar_Echos",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"variables": {
+					"ProcessID": {
+						"type": "String"
+					},
+					"nombre": {
+						"type": "String"
+					}
+				},
+				"annotations": [],
+				"lastPublishTime": "2025-01-14T15:43:21Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/004-Inyectar_Dimensions')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Diario 2-00am')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "001-Orquestador",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Hour",
+						"interval": 24,
+						"startTime": "2025-01-04T02:08:00",
+						"timeZone": "Argentina Standard Time"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/001-Orquestador')]"
+			]
+		}
+	]
+}
