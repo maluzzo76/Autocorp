@@ -63,7 +63,8 @@
 				"Cast select(skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> Select",
 				"StgSla cast(output(",
-				"          fechaAlta as string",
+				"          fechaAlta as timestamp 'MM/dd/yyyy HH:mm:ss',",
+				"          fechaModificacion as timestamp 'MM/dd/yyyy HH:mm:ss'",
 				"     ),",
 				"     errors: true) ~> Cast",
 				"Select sink(allowSchemaDrift: true,",
@@ -95,7 +96,11 @@
 				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     saveOrder: 1) ~> Insert"
+				"     saveOrder: 1,",
+				"     mapColumn(",
+				"          codigo,",
+				"          nombre",
+				"     )) ~> Insert"
 			]
 		}
 	}
