@@ -195,7 +195,7 @@
 				}
 			},
 			{
-				"name": "Inyectar",
+				"name": "Inyectar_Dw_SLA",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
@@ -207,6 +207,10 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
+					"dataflow": {
+						"referenceName": "Inyectar SLA",
+						"type": "DataFlowReference"
+					},
 					"compute": {
 						"coreCount": 8,
 						"computeType": "General"
