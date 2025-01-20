@@ -316,6 +316,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureMySqlSource",
+						"query": "SELECT codigo, \nREPLACE(REPLACE(SUBSTRING_INDEX(nombre, ',', 1),'[',''),'''','') AS nombre \nfrom estados",
 						"queryTimeout": "02:00:00"
 					},
 					"sink": {
