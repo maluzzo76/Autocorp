@@ -1203,7 +1203,7 @@
 						"typeProperties": {
 							"source": {
 								"type": "AzureMySqlSource",
-								"query": "SELECT codigo, \nREPLACE(REPLACE(SUBSTRING_INDEX(nombre, ',', 1),'[',''),'''','') AS nombre \nfrom estados",
+								"query": "SELECT id, \nTRIM(REPLACE(REPLACE(SUBSTRING_INDEX(name, ',', 1),'[',''),'''','')) AS  name\nfrom status_table\n",
 								"queryTimeout": "02:00:00"
 							},
 							"sink": {
@@ -1219,29 +1219,25 @@
 									{
 										"source": {
 											"name": "id",
-											"type": "int",
-											"scale": 0,
-											"precision": 0
+											"type": "Int32",
+											"physicalType": "int"
 										},
 										"sink": {
 											"name": "codigo",
-											"type": "varchar",
-											"scale": 0,
-											"precision": 0
+											"type": "String",
+											"physicalType": "varchar"
 										}
 									},
 									{
 										"source": {
 											"name": "name",
-											"type": "text",
-											"scale": 0,
-											"precision": 0
+											"type": "String",
+											"physicalType": "text"
 										},
 										"sink": {
 											"name": "nombre",
-											"type": "varchar",
-											"scale": 0,
-											"precision": 0
+											"type": "String",
+											"physicalType": "varchar"
 										}
 									}
 								],
