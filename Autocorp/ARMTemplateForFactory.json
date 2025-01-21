@@ -970,227 +970,6 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/003-Inyecar_SLA')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Inyectar_SLA_API",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "RestSource",
-								"httpRequestTimeout": "00:01:40",
-								"requestInterval": "00.00:00:00.010",
-								"requestMethod": "GET",
-								"paginationRules": {
-									"supportRFC5988": "true"
-								}
-							},
-							"sink": {
-								"type": "AzureMySqlSink",
-								"writeBatchSize": 10000,
-								"writeBatchTimeout": "00:00:30",
-								"preCopyScript": "truncate table Sla"
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"path": "$['id']"
-										},
-										"sink": {
-											"name": "codigo"
-										}
-									},
-									{
-										"source": {
-											"path": "$['name']"
-										},
-										"sink": {
-											"name": "nombre"
-										}
-									},
-									{
-										"source": {
-											"path": "$['description']"
-										},
-										"sink": {
-											"name": "descipcion"
-										}
-									},
-									{
-										"source": {
-											"path": "$['active']"
-										},
-										"sink": {
-											"name": "isactive"
-										}
-									},
-									{
-										"source": {
-											"path": "$['sla_target']['priority_4']['respond_within']"
-										},
-										"sink": {
-											"name": "slaTargetPriority4RespondWithin"
-										}
-									},
-									{
-										"source": {
-											"path": "$['sla_target']['priority_4']['resolve_within']"
-										},
-										"sink": {
-											"name": "slaTargerPriority4ResolveWithin"
-										}
-									},
-									{
-										"source": {
-											"path": "$['sla_target']['priority_3']['respond_within']"
-										},
-										"sink": {
-											"name": "slaTargetPriority3RespondWithin"
-										}
-									},
-									{
-										"source": {
-											"path": "$['sla_target']['priority_3']['resolve_within']"
-										},
-										"sink": {
-											"name": "slaTargerPriority3ResolveWithin"
-										}
-									},
-									{
-										"source": {
-											"path": "$['sla_target']['priority_2']['respond_within']"
-										},
-										"sink": {
-											"name": "slaTargetPriority2RespondWithin"
-										}
-									},
-									{
-										"source": {
-											"path": "$['sla_target']['priority_2']['resolve_within']"
-										},
-										"sink": {
-											"name": "slaTargerPriority2ResolveWithin"
-										}
-									},
-									{
-										"source": {
-											"path": "$['sla_target']['priority_1']['respond_within']"
-										},
-										"sink": {
-											"name": "slaTargetPriority1RespondWithin"
-										}
-									},
-									{
-										"source": {
-											"path": "$['sla_target']['priority_1']['resolve_within']"
-										},
-										"sink": {
-											"name": "slaTargerPriority1ResolveWithin"
-										}
-									},
-									{
-										"source": {
-											"path": "$['applicable_to']['company_ids'][0]"
-										},
-										"sink": {
-											"name": "companyid"
-										}
-									},
-									{
-										"source": {
-											"path": "$['is_default']"
-										},
-										"sink": {
-											"name": "isdefault"
-										}
-									},
-									{
-										"source": {
-											"path": "$['position']"
-										},
-										"sink": {
-											"name": "posicion"
-										}
-									},
-									{
-										"source": {
-											"path": "$['created_at']"
-										},
-										"sink": {
-											"name": "fechaAlta"
-										}
-									},
-									{
-										"source": {
-											"path": "$['updated_at']"
-										},
-										"sink": {
-											"name": "fechaModificacion"
-										}
-									},
-									{
-										"source": {
-											"path": "$['escalation']['reminder_resolution']['agent_ids'][0]"
-										},
-										"sink": {
-											"name": "escalationReminderResolutionAgentids"
-										}
-									},
-									{
-										"source": {
-											"path": "$['escalation']['resolution']['level_1']['agent_ids'][0]"
-										},
-										"sink": {
-											"name": "escalationResolutionLevel1AgentId"
-										}
-									}
-								],
-								"collectionReference": "$['.company_ids']"
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "Fresh_SLA",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "StgSLA",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"annotations": [],
-				"lastPublishTime": "2025-01-14T18:54:25Z"
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/Fresh_SLA')]",
-				"[concat(variables('factoryId'), '/datasets/StgSLA')]"
-			]
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/004-Inyectar_Dimensions')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -1447,7 +1226,14 @@
 					{
 						"name": "Inyectar_Dw_SLA",
 						"type": "ExecuteDataFlow",
-						"dependsOn": [],
+						"dependsOn": [
+							{
+								"activity": "Inyectar_Dw_Companias",
+								"dependencyConditions": [
+									"Completed"
+								]
+							}
+						],
 						"policy": {
 							"timeout": "0.12:00:00",
 							"retry": 0,
@@ -1496,6 +1282,227 @@
 				"[concat(variables('factoryId'), '/dataflows/Inyectar Productos')]",
 				"[concat(variables('factoryId'), '/dataflows/Inyectar Tipos')]",
 				"[concat(variables('factoryId'), '/dataflows/Inyectar SLA')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/003-Inyecar_SLA')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Inyectar_SLA_API",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "RestSource",
+								"httpRequestTimeout": "00:01:40",
+								"requestInterval": "00.00:00:00.010",
+								"requestMethod": "GET",
+								"paginationRules": {
+									"supportRFC5988": "true"
+								}
+							},
+							"sink": {
+								"type": "AzureMySqlSink",
+								"writeBatchSize": 10000,
+								"writeBatchTimeout": "00:00:30",
+								"preCopyScript": "truncate table Sla"
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"path": "$['id']"
+										},
+										"sink": {
+											"name": "codigo"
+										}
+									},
+									{
+										"source": {
+											"path": "$['name']"
+										},
+										"sink": {
+											"name": "nombre"
+										}
+									},
+									{
+										"source": {
+											"path": "$['description']"
+										},
+										"sink": {
+											"name": "descipcion"
+										}
+									},
+									{
+										"source": {
+											"path": "$['active']"
+										},
+										"sink": {
+											"name": "isactive"
+										}
+									},
+									{
+										"source": {
+											"path": "$['sla_target']['priority_4']['respond_within']"
+										},
+										"sink": {
+											"name": "slaTargetPriority4RespondWithin"
+										}
+									},
+									{
+										"source": {
+											"path": "$['sla_target']['priority_4']['resolve_within']"
+										},
+										"sink": {
+											"name": "slaTargerPriority4ResolveWithin"
+										}
+									},
+									{
+										"source": {
+											"path": "$['sla_target']['priority_3']['respond_within']"
+										},
+										"sink": {
+											"name": "slaTargetPriority3RespondWithin"
+										}
+									},
+									{
+										"source": {
+											"path": "$['sla_target']['priority_3']['resolve_within']"
+										},
+										"sink": {
+											"name": "slaTargerPriority3ResolveWithin"
+										}
+									},
+									{
+										"source": {
+											"path": "$['sla_target']['priority_2']['respond_within']"
+										},
+										"sink": {
+											"name": "slaTargetPriority2RespondWithin"
+										}
+									},
+									{
+										"source": {
+											"path": "$['sla_target']['priority_2']['resolve_within']"
+										},
+										"sink": {
+											"name": "slaTargerPriority2ResolveWithin"
+										}
+									},
+									{
+										"source": {
+											"path": "$['sla_target']['priority_1']['respond_within']"
+										},
+										"sink": {
+											"name": "slaTargetPriority1RespondWithin"
+										}
+									},
+									{
+										"source": {
+											"path": "$['sla_target']['priority_1']['resolve_within']"
+										},
+										"sink": {
+											"name": "slaTargerPriority1ResolveWithin"
+										}
+									},
+									{
+										"source": {
+											"path": "$['applicable_to']['company_ids'][0]"
+										},
+										"sink": {
+											"name": "companyid"
+										}
+									},
+									{
+										"source": {
+											"path": "$['is_default']"
+										},
+										"sink": {
+											"name": "isdefault"
+										}
+									},
+									{
+										"source": {
+											"path": "$['position']"
+										},
+										"sink": {
+											"name": "posicion"
+										}
+									},
+									{
+										"source": {
+											"path": "$['created_at']"
+										},
+										"sink": {
+											"name": "fechaAlta"
+										}
+									},
+									{
+										"source": {
+											"path": "$['updated_at']"
+										},
+										"sink": {
+											"name": "fechaModificacion"
+										}
+									},
+									{
+										"source": {
+											"path": "$['escalation']['reminder_resolution']['agent_ids'][0]"
+										},
+										"sink": {
+											"name": "escalationReminderResolutionAgentids"
+										}
+									},
+									{
+										"source": {
+											"path": "$['escalation']['resolution']['level_1']['agent_ids'][0]"
+										},
+										"sink": {
+											"name": "escalationResolutionLevel1AgentId"
+										}
+									}
+								],
+								"collectionReference": "$['.company_ids']"
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "Fresh_SLA",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "StgSLA",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2025-01-14T18:54:25Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/Fresh_SLA')]",
+				"[concat(variables('factoryId'), '/datasets/StgSLA')]"
 			]
 		},
 		{
@@ -4201,7 +4208,7 @@
 						"     allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     isolationLevel: 'READ_UNCOMMITTED',",
-						"     query: 'select\\n    0 id,\\n    codigo,\\n    nombre,\\n    descipcion,\\n    isactive,     \\n    isdefault,\\n    posicion,\\n    REPLACE(REPLACE(fechaAlta, \\'T\\', \\' \\') ,\\'Z\\',\\'\\')fecha, \\n     REPLACE(REPLACE(fechaModificacion, \\'T\\', \\' \\') ,\\'Z\\',\\'\\')  fechaModificacion,\\n    companyid ,\\n    slaTargetPriority1RespondWithin     ,\\n    slaTargerPriority1ResolveWithin     , \\n    slaTargetPriority2RespondWithin     ,\\n    slaTargerPriority2ResolveWithin     ,   \\n    slaTargetPriority3RespondWithin     ,\\n    slaTargerPriority3ResolveWithin     ,    \\n    slaTargetPriority4RespondWithin     ,\\n    slaTargerPriority4ResolveWithin     \\nfrom Sla',",
+						"     query: 'select\\n    0 id,\\n    sla.codigo,\\n    sla.nombre,\\n    sla.descipcion,\\n    sla.isactive,     \\n    sla.isdefault,\\n    posicion,\\n    REPLACE(REPLACE(fechaAlta, \\'T\\', \\' \\') ,\\'Z\\',\\'\\')fecha, \\n     REPLACE(REPLACE(fechaModificacion, \\'T\\', \\' \\') ,\\'Z\\',\\'\\')  fechaModificacion,\\n    c.id companyid ,\\n    slaTargetPriority1RespondWithin     ,\\n    slaTargerPriority1ResolveWithin     , \\n    slaTargetPriority2RespondWithin     ,\\n    slaTargerPriority2ResolveWithin     ,   \\n    slaTargetPriority3RespondWithin     ,\\n    slaTargerPriority3ResolveWithin     ,    \\n    slaTargetPriority4RespondWithin     ,\\n    slaTargerPriority4ResolveWithin     \\nfrom Sla\\ninner join Autocorp_DW.dimcompanias c on c.codigo = sla.companyid\\n',",
 						"     format: 'query') ~> StgSla",
 						"StgSla select(skipDuplicateMapInputs: true,",
 						"     skipDuplicateMapOutputs: true) ~> Select",
