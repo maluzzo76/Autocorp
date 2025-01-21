@@ -537,7 +537,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureMySqlSource",
-						"query": "select\nt.id,\ncreated_at,\nupdated_at,\ntimestampdiff(HOUR,created_at,updated_at) AS `hours_between`,\ntimestampdiff(MINUTE,created_at,updated_at) AS `minutes_between`,\ncompany_id as companiaCodigo,\n`status` as estadoCodigo, \n`type` as tipoCodigo, \ntt.id as tipoid,\nproduct_id as productoCodigo, \ngroup_id as grupoCodigo, \n`source` as origenCodigo,\n`priority` as prioridadCodigo,\n`responder_id` as agenteCodigo\nfrom freshdesk_tickets t\nleft join ticket_type tt on tt.name = t.type",
+						"query": "select DISTINCT\nt.id,\ncreated_at,\nupdated_at,\ntimestampdiff(HOUR,created_at,updated_at) AS `hours_between`,\ntimestampdiff(MINUTE,created_at,updated_at) AS `minutes_between`,\ncompany_id as companiaCodigo,\n`status` as estadoCodigo, \n`type` as tipoCodigo, \ntt.id as tipoid,\nproduct_id as productoCodigo, \ngroup_id as grupoCodigo, \n`source` as origenCodigo,\n`priority` as prioridadCodigo,\n`responder_id` as agenteCodigo\nfrom freshdesk_tickets t\nleft join ticket_type tt on tt.name = t.type",
 						"queryTimeout": "02:00:00"
 					},
 					"sink": {
