@@ -35,7 +35,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "004-Inyectar_Dimensions",
+						"referenceName": "003-Inyectar_Dimensions",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true
