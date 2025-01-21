@@ -53,7 +53,7 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
-				"     query: 'select\\n    0 id,\\n    codigo,\\n    nombre,\\n    descipcion,\\n    isactive,     \\n    isdefault,\\n    posicion,\\n    REPLACE(REPLACE(fechaAlta, \\'T\\', \\' \\') ,\\'Z\\',\\'\\')fecha, \\n     REPLACE(REPLACE(fechaModificacion, \\'T\\', \\' \\') ,\\'Z\\',\\'\\')  fechaModificacion,\\n    companyid ,\\n    slaTargetPriority1RespondWithin     ,\\n    slaTargerPriority1ResolveWithin     , \\n    slaTargetPriority2RespondWithin     ,\\n    slaTargerPriority2ResolveWithin     ,   \\n    slaTargetPriority3RespondWithin     ,\\n    slaTargerPriority3ResolveWithin     ,    \\n    slaTargetPriority4RespondWithin     ,\\n    slaTargerPriority4ResolveWithin     \\nfrom Sla',",
+				"     query: 'select\\n    0 id,\\n    sla.codigo,\\n    sla.nombre,\\n    sla.descipcion,\\n    sla.isactive,     \\n    sla.isdefault,\\n    posicion,\\n    REPLACE(REPLACE(fechaAlta, \\'T\\', \\' \\') ,\\'Z\\',\\'\\')fecha, \\n     REPLACE(REPLACE(fechaModificacion, \\'T\\', \\' \\') ,\\'Z\\',\\'\\')  fechaModificacion,\\n    c.id companyid ,\\n    slaTargetPriority1RespondWithin     ,\\n    slaTargerPriority1ResolveWithin     , \\n    slaTargetPriority2RespondWithin     ,\\n    slaTargerPriority2ResolveWithin     ,   \\n    slaTargetPriority3RespondWithin     ,\\n    slaTargerPriority3ResolveWithin     ,    \\n    slaTargetPriority4RespondWithin     ,\\n    slaTargerPriority4ResolveWithin     \\nfrom Sla\\ninner join Autocorp_DW.dimcompanias c on c.codigo = sla.companyid\\n',",
 				"     format: 'query') ~> StgSla",
 				"StgSla select(skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> Select",
