@@ -812,16 +812,16 @@
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "Inyectar_Tickets_Fresh",
+						"activity": "Lookup1",
 						"dependencyConditions": [
-							"Completed"
+							"Succeeded"
 						]
 					}
 				],
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('Inyectar_Tickets_Fresh').outputactivity('Get Tickets').output",
+						"value": "@activity('Lookup1').output",
 						"type": "Expression"
 					},
 					"isSequential": false,
@@ -889,6 +889,29 @@
 							]
 						}
 					]
+				}
+			},
+			{
+				"name": "Lookup1",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureMySqlSource",
+						"queryTimeout": "02:00:00"
+					},
+					"dataset": {
+						"referenceName": "StgTickets",
+						"type": "DatasetReference"
+					}
 				}
 			}
 		],
