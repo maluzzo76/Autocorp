@@ -913,7 +913,8 @@
 					"dataset": {
 						"referenceName": "StgTickets",
 						"type": "DatasetReference"
-					}
+					},
+					"firstRowOnly": false
 				}
 			}
 		],
