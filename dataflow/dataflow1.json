@@ -1,0 +1,29 @@
+{
+	"name": "dataflow1",
+	"properties": {
+		"folder": {
+			"name": "Inyectar Dimensiones"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "FreshTickets",
+						"type": "DatasetReference"
+					},
+					"name": "FreshTickets"
+				}
+			],
+			"sinks": [],
+			"transformations": [],
+			"scriptLines": [
+				"source(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     query: 'select id from fresh',",
+				"     format: 'query') ~> FreshTickets"
+			]
+		}
+	}
+}
