@@ -5,6 +5,8 @@
 			{
 				"name": "Inyectar_Agentes_Fresh",
 				"type": "Copy",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -87,6 +89,8 @@
 				"name": "Inyectar_Origenes_Fresh",
 				"description": "",
 				"type": "Copy",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -160,6 +164,8 @@
 			{
 				"name": "Inyectar_Productos_Fresh",
 				"type": "Copy",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -232,6 +238,8 @@
 			{
 				"name": "Inyectar_Companias_Fresh",
 				"type": "Copy",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -304,6 +312,8 @@
 			{
 				"name": "Inyectar_Estados_Fresh",
 				"type": "Copy",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -377,6 +387,8 @@
 			{
 				"name": "Inyectar_Prioridades_Fresh",
 				"type": "Copy",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -453,6 +465,8 @@
 			{
 				"name": "Inyectar_Tipos_Fresh",
 				"type": "Copy",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -721,6 +735,8 @@
 				"name": "Inyectar_Grupos_Fresh",
 				"description": "",
 				"type": "Copy",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -859,7 +875,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"IdTickets": {
-											"value": "@item()",
+											"value": "@item().idTickets",
 											"type": "Expression"
 										}
 									}
