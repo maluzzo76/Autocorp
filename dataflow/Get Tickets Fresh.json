@@ -1,5 +1,5 @@
 {
-	"name": "dataflow1",
+	"name": "Get Tickets Fresh",
 	"properties": {
 		"folder": {
 			"name": "Inyectar Dimensiones"
@@ -16,13 +16,19 @@
 				}
 			],
 			"sinks": [],
-			"transformations": [],
+			"transformations": [
+				{
+					"name": "select1"
+				}
+			],
 			"scriptLines": [
 				"source(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
 				"     query: 'SELECT DISTINCT id FROM freshdesk_tickets',",
-				"     format: 'query') ~> FreshTickets"
+				"     format: 'query') ~> FreshTickets",
+				"FreshTickets select(skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1"
 			]
 		}
 	}
