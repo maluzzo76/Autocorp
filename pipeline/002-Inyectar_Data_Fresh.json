@@ -913,6 +913,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureMySqlSource",
+						"query": "SELECT distinct id FROM freshdesk_tickets WHERE  created_at > DATE_SUB(CURDATE(), INTERVAL 36 DAY) ",
 						"queryTimeout": "02:00:00"
 					},
 					"dataset": {
