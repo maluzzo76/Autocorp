@@ -1,0 +1,23 @@
+{
+	"name": "Fresh_Conversariones",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Conversaciones",
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"IdTickets": "93311"
+			}
+		},
+		"parameters": {
+			"IdTickets": {
+				"type": "string"
+			}
+		},
+		"folder": {
+			"name": "APIs"
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"schema": []
+	}
+}

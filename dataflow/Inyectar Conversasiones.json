@@ -19,6 +19,9 @@
 			"transformations": [
 				{
 					"name": "select1"
+				},
+				{
+					"name": "cast1"
 				}
 			],
 			"scriptLines": [
@@ -67,11 +70,15 @@
 				"     validateSchema: false,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
 				"     format: 'table') ~> source1",
-				"source1 select(mapColumn(",
+				"cast1 select(mapColumn(",
 				"          id",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> select1"
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"source1 cast(output(",
+				"          id as string",
+				"     ),",
+				"     errors: true) ~> cast1"
 			]
 		}
 	}

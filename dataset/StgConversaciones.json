@@ -1,0 +1,25 @@
+{
+	"name": "StgConversaciones",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "StaigingDB",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Staiging"
+		},
+		"annotations": [],
+		"type": "AzureMySqlTable",
+		"schema": [
+			{
+				"name": "id",
+				"type": "varchar",
+				"precision": 0,
+				"scale": 0
+			}
+		],
+		"typeProperties": {
+			"tableName": "conversaciones"
+		}
+	}
+}
