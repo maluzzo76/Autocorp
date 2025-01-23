@@ -16,19 +16,53 @@
 				}
 			],
 			"sinks": [],
-			"transformations": [
-				{
-					"name": "select1"
-				}
-			],
+			"transformations": [],
 			"scriptLines": [
-				"source(allowSchemaDrift: true,",
+				"source(output(",
+				"          cc_emails as string,",
+				"          fwd_emails as string,",
+				"          reply_cc_emails as string,",
+				"          ticket_cc_emails as string,",
+				"          ticket_bcc_emails as string,",
+				"          fr_escalated as string,",
+				"          spam as string,",
+				"          email_config_id as double,",
+				"          group_id as double,",
+				"          priority as integer,",
+				"          requester_id as double,",
+				"          responder_id as double,",
+				"          source as integer,",
+				"          company_id as double,",
+				"          status as integer,",
+				"          subject as string,",
+				"          association_type as string,",
+				"          support_email as string,",
+				"          to_emails as string,",
+				"          product_id as string,",
+				"          id as integer,",
+				"          type as string,",
+				"          due_by as string,",
+				"          fr_due_by as string,",
+				"          is_escalated as string,",
+				"          custom_fields as string,",
+				"          created_at as string,",
+				"          updated_at as string,",
+				"          associated_tickets_count as string,",
+				"          tags as string,",
+				"          nr_due_by as string,",
+				"          nr_escalated as string,",
+				"          form_id as double,",
+				"          cf_patente as string,",
+				"          cf_id_efleet as double,",
+				"          cf_generar_ot_efleet as string,",
+				"          cf_kilometraje as double,",
+				"          cf_obs_efleet as string,",
+				"          cf_motivo_de_reclamo as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
-				"     query: 'SELECT DISTINCT id FROM freshdesk_tickets',",
-				"     format: 'query') ~> FreshTickets",
-				"FreshTickets select(skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> select1"
+				"     format: 'table') ~> FreshTickets"
 			]
 		}
 	}
