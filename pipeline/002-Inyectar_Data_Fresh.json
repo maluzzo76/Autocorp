@@ -884,7 +884,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"IdTickets": {
-											"value": "@item().idTickets",
+											"value": "@variables('Idst')",
 											"type": "Expression"
 										}
 									}
@@ -901,7 +901,14 @@
 							"name": "Append variable1",
 							"type": "AppendVariable",
 							"dependsOn": [],
-							"userProperties": []
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "Idst",
+								"value": {
+									"value": "@item().idTickets",
+									"type": "Expression"
+								}
+							}
 						}
 					]
 				}
