@@ -928,7 +928,7 @@
 						"queryTimeout": "02:00:00"
 					},
 					"dataset": {
-						"referenceName": "StgTickets",
+						"referenceName": "FreshTickets",
 						"type": "DatasetReference"
 					},
 					"firstRowOnly": false
