@@ -12,11 +12,15 @@
 						"referenceName": "FreshTickets",
 						"type": "DatasetReference"
 					},
-					"name": "Tickets"
+					"name": "source1"
 				}
 			],
 			"sinks": [],
-			"transformations": [],
+			"transformations": [
+				{
+					"name": "select1"
+				}
+			],
 			"scriptLines": [
 				"source(output(",
 				"          cc_emails as string,",
@@ -61,9 +65,13 @@
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     batchSize: 0,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
-				"     format: 'table') ~> Tickets"
+				"     format: 'table') ~> source1",
+				"source1 select(mapColumn(",
+				"          id",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1"
 			]
 		}
 	}
