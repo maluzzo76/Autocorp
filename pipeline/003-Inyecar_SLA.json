@@ -208,11 +208,18 @@
 			{
 				"name": "ForEach1",
 				"type": "ForEach",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Get Tickets",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('Copy data2').output",
+						"value": "@activity('Get Tickets').output",
 						"type": "Expression"
 					},
 					"isSequential": true,
@@ -283,7 +290,7 @@
 				}
 			},
 			{
-				"name": "Data flow1",
+				"name": "Get Tickets",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
@@ -295,6 +302,10 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
+					"dataflow": {
+						"referenceName": "Get Tickets Fresh",
+						"type": "DataFlowReference"
+					},
 					"compute": {
 						"coreCount": 8,
 						"computeType": "General"
