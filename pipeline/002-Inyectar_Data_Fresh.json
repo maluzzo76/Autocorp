@@ -831,14 +831,7 @@
 						{
 							"name": "Copy data1",
 							"type": "Copy",
-							"dependsOn": [
-								{
-									"activity": "Append variable1",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
+							"dependsOn": [],
 							"policy": {
 								"timeout": "0.12:00:00",
 								"retry": 0,
@@ -884,7 +877,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"IdTickets": {
-											"value": "@variables('Idst')",
+											"value": "93311",
 											"type": "Expression"
 										}
 									}
@@ -896,19 +889,6 @@
 									"type": "DatasetReference"
 								}
 							]
-						},
-						{
-							"name": "Append variable1",
-							"type": "AppendVariable",
-							"dependsOn": [],
-							"userProperties": [],
-							"typeProperties": {
-								"variableName": "Idst",
-								"value": {
-									"value": "@item().idTickets",
-									"type": "Expression"
-								}
-							}
 						}
 					]
 				}
