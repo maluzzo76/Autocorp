@@ -21,7 +21,7 @@
 				"source(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
-				"     query: 'select id from fresh',",
+				"     query: 'SELECT DISTINCT id FROM freshdesk_tickets',",
 				"     format: 'query') ~> FreshTickets"
 			]
 		}
