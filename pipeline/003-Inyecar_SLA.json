@@ -310,8 +310,8 @@
 				}
 			},
 			{
-				"name": "Script1",
-				"type": "Script",
+				"name": "Copy data2",
+				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -322,9 +322,18 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"scripts": [],
-					"scriptBlockExecutionTimeout": "02:00:00"
-				}
+					"source": {
+						"type": "AzureMySqlSource",
+						"queryTimeout": "02:00:00"
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "StgTickets",
+						"type": "DatasetReference"
+					}
+				]
 			}
 		],
 		"annotations": [],
