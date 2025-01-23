@@ -938,8 +938,7 @@
 			}
 		],
 		"variables": {
-			"IdT": {
-				"type": "String",
+			"Idst": {
 				"defaultValue": "'A'"
 			}
 		},
