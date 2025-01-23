@@ -878,21 +878,9 @@
 										{
 											"source": {
 												"path": "$['ticket_id']"
-											}
-										},
-										{
-											"source": {
-												"path": "$['delivery_details']['failed_emails'][0]"
-											}
-										},
-										{
-											"source": {
-												"path": "$['delivery_details']['pending_emails'][0]"
-											}
-										},
-										{
-											"source": {
-												"path": "$['source_additional_info']"
+											},
+											"sink": {
+												"name": "id"
 											}
 										}
 									],
