@@ -861,46 +861,26 @@
 									"mappings": [
 										{
 											"source": {
-												"path": "$['id']"
+												"path": "$['created_at']"
 											},
 											"sink": {
-												"name": "id",
-												"type": "String"
-											}
-										},
-										{
-											"source": {
-												"path": "$['created_at']"
+												"name": "create_at"
 											}
 										},
 										{
 											"source": {
 												"path": "$['updated_at']"
+											},
+											"sink": {
+												"name": "update_at"
 											}
 										},
 										{
 											"source": {
 												"path": "$['ticket_id']"
-											}
-										},
-										{
-											"source": {
-												"path": "$['threading_type']"
-											}
-										},
-										{
-											"source": {
-												"path": "$['delivery_details']['failed_emails'][0]"
-											}
-										},
-										{
-											"source": {
-												"path": "$['delivery_details']['pending_emails'][0]"
-											}
-										},
-										{
-											"source": {
-												"path": "$['source_additional_info']"
+											},
+											"sink": {
+												"name": "id"
 											}
 										}
 									],
@@ -944,7 +924,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureMySqlSource",
-						"query": "SELECT distinct id FROM freshdesk_tickets WHERE  created_at > DATE_SUB(CURDATE(), INTERVAL 36 DAY) ",
+						"query": "SELECT distinct id FROM freshdesk_tickets \r\nWHERE  created_at > DATE_SUB(CURDATE(), INTERVAL 36 DAY) \r\nlimit 10;",
 						"queryTimeout": "02:00:00"
 					},
 					"dataset": {
