@@ -1,0 +1,17 @@
+{
+	"name": "flowlet1",
+	"properties": {
+		"folder": {
+			"name": "Inyectar Dimensiones"
+		},
+		"type": "Flowlet",
+		"typeProperties": {
+			"sources": [],
+			"sinks": [],
+			"transformations": [],
+			"scriptLines": [
+				""
+			]
+		}
+	}
+}
