@@ -867,6 +867,11 @@
 												"name": "id",
 												"type": "String"
 											}
+										},
+										{
+											"source": {
+												"path": "$['Column_1']"
+											}
 										}
 									]
 								}
