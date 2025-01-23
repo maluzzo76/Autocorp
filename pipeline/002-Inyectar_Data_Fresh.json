@@ -870,62 +870,12 @@
 										},
 										{
 											"source": {
-												"path": "$['email_failure_count']"
-											}
-										},
-										{
-											"source": {
-												"path": "$['outgoing_failures']"
-											}
-										},
-										{
-											"source": {
-												"path": "$['thread_id']"
-											}
-										},
-										{
-											"source": {
-												"path": "$['thread_message_id']"
-											}
-										},
-										{
-											"source": {
 												"path": "$['created_at']"
 											}
 										},
 										{
 											"source": {
 												"path": "$['updated_at']"
-											}
-										},
-										{
-											"source": {
-												"path": "$['last_edited_at']"
-											}
-										},
-										{
-											"source": {
-												"path": "$['last_edited_user_id']"
-											}
-										},
-										{
-											"source": {
-												"path": "$['attachments'][0]"
-											}
-										},
-										{
-											"source": {
-												"path": "$['automation_id']"
-											}
-										},
-										{
-											"source": {
-												"path": "$['automation_type_id']"
-											}
-										},
-										{
-											"source": {
-												"path": "$['auto_response']"
 											}
 										},
 										{
