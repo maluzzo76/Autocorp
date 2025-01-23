@@ -861,26 +861,156 @@
 									"mappings": [
 										{
 											"source": {
-												"path": "$['created_at']"
+												"path": "$['body']"
+											}
+										},
+										{
+											"source": {
+												"path": "$['body_text']"
+											}
+										},
+										{
+											"source": {
+												"path": "$['id']"
 											},
 											"sink": {
-												"name": "create_at"
+												"name": "id",
+												"type": "Int32"
+											}
+										},
+										{
+											"source": {
+												"path": "$['incoming']"
+											}
+										},
+										{
+											"source": {
+												"path": "$['private']"
+											}
+										},
+										{
+											"source": {
+												"path": "$['user_id']"
+											}
+										},
+										{
+											"source": {
+												"path": "$['support_email']"
+											}
+										},
+										{
+											"source": {
+												"path": "$['source']"
+											}
+										},
+										{
+											"source": {
+												"path": "$['category']"
+											}
+										},
+										{
+											"source": {
+												"path": "$['to_emails'][0]"
+											}
+										},
+										{
+											"source": {
+												"path": "$['from_email']"
+											}
+										},
+										{
+											"source": {
+												"path": "$['cc_emails'][0]"
+											}
+										},
+										{
+											"source": {
+												"path": "$['bcc_emails'][0]"
+											}
+										},
+										{
+											"source": {
+												"path": "$['email_failure_count']"
+											}
+										},
+										{
+											"source": {
+												"path": "$['outgoing_failures']"
+											}
+										},
+										{
+											"source": {
+												"path": "$['thread_id']"
+											}
+										},
+										{
+											"source": {
+												"path": "$['thread_message_id']"
+											}
+										},
+										{
+											"source": {
+												"path": "$['created_at']"
 											}
 										},
 										{
 											"source": {
 												"path": "$['updated_at']"
-											},
-											"sink": {
-												"name": "update_at"
+											}
+										},
+										{
+											"source": {
+												"path": "$['last_edited_at']"
+											}
+										},
+										{
+											"source": {
+												"path": "$['last_edited_user_id']"
+											}
+										},
+										{
+											"source": {
+												"path": "$['attachments'][0]"
+											}
+										},
+										{
+											"source": {
+												"path": "$['automation_id']"
+											}
+										},
+										{
+											"source": {
+												"path": "$['automation_type_id']"
+											}
+										},
+										{
+											"source": {
+												"path": "$['auto_response']"
 											}
 										},
 										{
 											"source": {
 												"path": "$['ticket_id']"
-											},
-											"sink": {
-												"name": "id"
+											}
+										},
+										{
+											"source": {
+												"path": "$['threading_type']"
+											}
+										},
+										{
+											"source": {
+												"path": "$['delivery_details']['failed_emails'][0]"
+											}
+										},
+										{
+											"source": {
+												"path": "$['delivery_details']['pending_emails'][0]"
+											}
+										},
+										{
+											"source": {
+												"path": "$['source_additional_info']"
 											}
 										}
 									],
