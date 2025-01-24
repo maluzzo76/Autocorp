@@ -1,98 +1,86 @@
 {
-	"name": "DwFactTickets",
+	"name": "factTickets",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "DataWareouse",
+			"referenceName": "SqlAutocorpDw",
 			"type": "LinkedServiceReference"
 		},
 		"folder": {
-			"name": "MySQL"
+			"name": "DW/Echos"
 		},
 		"annotations": [],
-		"type": "AzureMySqlTable",
+		"type": "AzureSqlTable",
 		"schema": [
 			{
 				"name": "codigo",
-				"type": "varchar",
-				"precision": 0,
-				"scale": 0
+				"type": "varchar"
 			},
 			{
 				"name": "fechaAlta",
 				"type": "datetime",
-				"precision": 0,
-				"scale": 0
+				"precision": 23,
+				"scale": 3
 			},
 			{
 				"name": "fechaModificacion",
 				"type": "datetime",
-				"precision": 0,
-				"scale": 0
+				"precision": 23,
+				"scale": 3
 			},
 			{
 				"name": "horasDiferecia",
 				"type": "int",
-				"precision": 0,
-				"scale": 0
+				"precision": 10
 			},
 			{
 				"name": "minutosDiferencia",
 				"type": "int",
-				"precision": 0,
-				"scale": 0
+				"precision": 10
 			},
 			{
 				"name": "companiaId",
 				"type": "int",
-				"precision": 0,
-				"scale": 0
+				"precision": 10
 			},
 			{
 				"name": "estadoId",
 				"type": "int",
-				"precision": 0,
-				"scale": 0
+				"precision": 10
 			},
 			{
 				"name": "tipoId",
 				"type": "int",
-				"precision": 0,
-				"scale": 0
+				"precision": 10
 			},
 			{
 				"name": "productoId",
 				"type": "int",
-				"precision": 0,
-				"scale": 0
+				"precision": 10
 			},
 			{
 				"name": "grupoId",
 				"type": "int",
-				"precision": 0,
-				"scale": 0
+				"precision": 10
 			},
 			{
 				"name": "origenId",
 				"type": "int",
-				"precision": 0,
-				"scale": 0
+				"precision": 10
 			},
 			{
 				"name": "prioridadId",
 				"type": "int",
-				"precision": 0,
-				"scale": 0
+				"precision": 10
 			},
 			{
 				"name": "agenteId",
 				"type": "int",
-				"precision": 0,
-				"scale": 0
+				"precision": 10
 			}
 		],
 		"typeProperties": {
-			"tableName": "facttickets"
+			"schema": "whs",
+			"table": "factTickets"
 		}
-	},
-	"type": "Microsoft.DataFactory/factories/datasets"
+	}
 }
