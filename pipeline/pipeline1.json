@@ -73,8 +73,8 @@
 							}
 						},
 						{
-							"name": "Data flow1",
-							"type": "ExecuteDataFlow",
+							"name": "Set variable1_copy1",
+							"type": "SetVariable",
 							"dependsOn": [
 								{
 									"activity": "Web1",
@@ -84,19 +84,16 @@
 								}
 							],
 							"policy": {
-								"timeout": "0.12:00:00",
-								"retry": 0,
-								"retryIntervalInSeconds": 30,
 								"secureOutput": false,
 								"secureInput": false
 							},
 							"userProperties": [],
 							"typeProperties": {
-								"compute": {
-									"coreCount": 8,
-									"computeType": "General"
-								},
-								"traceLevel": "Fine"
+								"variableName": "CreateDate",
+								"value": {
+									"value": "@string(item().id)",
+									"type": "Expression"
+								}
 							}
 						}
 					]
@@ -130,6 +127,9 @@
 		],
 		"variables": {
 			"IdParameter": {
+				"type": "String"
+			},
+			"CreateDate": {
 				"type": "String"
 			}
 		},
