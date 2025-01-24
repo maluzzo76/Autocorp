@@ -98,17 +98,6 @@
 							"typeProperties": {
 								"scripts": [
 									{
-										"parameters": [
-											{
-												"name": "jData",
-												"type": "String",
-												"value": {
-													"value": "@activity('Web1').output",
-													"type": "Expression"
-												},
-												"direction": "InputOutput"
-											}
-										],
 										"type": "Query"
 									}
 								],
