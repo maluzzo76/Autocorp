@@ -395,7 +395,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "stgTicketsSQL",
+						"referenceName": "stgTickets",
 						"type": "DatasetReference"
 					}
 				]

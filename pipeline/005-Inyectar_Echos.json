@@ -259,7 +259,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "stgTicketsSQL",
+						"referenceName": "stgTickets",
 						"type": "DatasetReference"
 					}
 				],
