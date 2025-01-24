@@ -25,7 +25,8 @@
 				],
 				"typeProperties": {
 					"source": {
-						"type": "AzureMySqlSource"
+						"type": "AzureMySqlSource",
+						"query": "select id,\ncase when name = 'Abel Banchi' then 'Abel Banchi modi'\nelse NAME\nend name\n from agent_table;\n"
 					},
 					"sink": {
 						"type": "AzureSqlSink",
@@ -45,6 +46,11 @@
 						"type": "TabularTranslator",
 						"mappings": [
 							{
+								"source": {
+									"name": "id",
+									"type": "Double",
+									"physicalType": "double"
+								},
 								"sink": {
 									"name": "codigo",
 									"type": "String",
@@ -52,6 +58,11 @@
 								}
 							},
 							{
+								"source": {
+									"name": "name",
+									"type": "String",
+									"physicalType": "text"
+								},
 								"sink": {
 									"name": "nombre",
 									"type": "String",
