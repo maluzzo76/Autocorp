@@ -5,11 +5,11 @@
 		"annotations": [],
 		"type": "RestService",
 		"typeProperties": {
-			"url": "https://autocorpar.freshdesk.com/api/v2/tickets/93131/conversations",
+			"url": "https://autocorpar.freshdesk.com/api/v2/tickets/93311/conversations",
 			"enableServerCertificateValidation": true,
 			"authenticationType": "Basic",
 			"userName": "yBjVC7W3wuMLeucdH4Hw",
-			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkRBVEFGQUNUT1JZQDY3OURBQjBCLTc4NzMtNDBBQS04QzdFLTY0OEI4NzQ1NEJENF8wMDNjMmY3ZS05NmYxLTQ2MzAtODUyZC05YjdmY2YzNzU4YzMiDQp9"
+			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkRBVEFGQUNUT1JZQDY3OURBQjBCLTc4NzMtNDBBQS04QzdFLTY0OEI4NzQ1NEJENF81NzEzNmYwZi1lY2JiLTRmNzEtYTljNi1jNzIxMWQ5YzRkZGEiDQp9"
 		}
 	}
 }
