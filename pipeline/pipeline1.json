@@ -97,6 +97,12 @@
 							"userProperties": [],
 							"typeProperties": {
 								"method": "GET",
+								"headers": {
+									"undefined": {
+										"value": "@concat('Basic ', 'yBjVC7W3wuMLeucdH4Hw', ':', 'X')",
+										"type": "Expression"
+									}
+								},
 								"disableCertValidation": false,
 								"url": {
 									"value": "@concat('https://autocorpar.freshdesk.com/api/v2/tickets/',variables('IdParameter'),'/conversations')",
