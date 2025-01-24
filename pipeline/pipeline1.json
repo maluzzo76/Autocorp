@@ -148,7 +148,7 @@
 									{
 										"type": "Query",
 										"text": {
-											"value": "@concat('insert into dbo.conversaciones (id, created_at) values (',variables('vTicket_id')[0].ticket_id,\n    pipeline().parameters.DelimitadorComa,\n    pipeline().parameters.DelimitarioCommilaSimple,\n    variables('vTicket_id')[0].created_at,\n    pipeline().parameters.DelimitarioCommilaSimple,')')",
+											"value": "@concat('insert into dbo.conversaciones (id, created_at, updated_at) values (',variables('vTicket_id')[0].ticket_id,\n    pipeline().parameters.DelimitadorComa,\n    pipeline().parameters.DelimitarioCommilaSimple,\n    variables('vTicket_id')[0].created_at,\n    pipeline().parameters.DelimitadorComa,\n    pipeline().parameters.DelimitarioCommilaSimple,\n    variables('vTicket_id')[0].updated_at,\n    pipeline().parameters.DelimitarioCommilaSimple,')')",
 											"type": "Expression"
 										}
 									}
