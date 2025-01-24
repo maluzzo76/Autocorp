@@ -100,7 +100,7 @@
 									{
 										"type": "Query",
 										"text": {
-											"value": "@variables('vTicket_id')",
+											"value": "@concat('insert into dbo.conversaciones (jsonValue) values (''',activity('Web1').output,''')')",
 											"type": "Expression"
 										}
 									}
