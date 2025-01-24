@@ -58,23 +58,8 @@
 							},
 							"userProperties": [],
 							"typeProperties": {
-								"source": {
-									"type": "RestSource",
-									"httpRequestTimeout": "00:01:40",
-									"requestInterval": "00.00:00:00.010",
-									"requestMethod": "GET",
-									"paginationRules": {
-										"supportRFC5988": "true"
-									}
-								},
 								"enableStaging": false
-							},
-							"inputs": [
-								{
-									"referenceName": "APIConversariones",
-									"type": "DatasetReference"
-								}
-							]
+							}
 						},
 						{
 							"name": "Web1",
@@ -108,20 +93,6 @@
 									"value": "@concat('https://autocorpar.freshdesk.com/api/v2/tickets/',variables('IdParameter'),'/conversations')",
 									"type": "Expression"
 								}
-							}
-						},
-						{
-							"name": "WebHook1",
-							"type": "WebHook",
-							"dependsOn": [],
-							"policy": {
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"method": "POST",
-								"timeout": "00:10:00"
 							}
 						}
 					]
