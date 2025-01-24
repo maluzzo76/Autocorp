@@ -77,7 +77,7 @@
 							"type": "Copy",
 							"dependsOn": [
 								{
-									"activity": "Web1",
+									"activity": "Append variable1",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -112,35 +112,8 @@
 								},
 								"enableStaging": false,
 								"translator": {
-									"type": "TabularTranslator",
-									"mappings": [
-										{
-											"source": {
-												"path": "$['created_at']"
-											},
-											"sink": {
-												"name": "create_at"
-											}
-										},
-										{
-											"source": {
-												"path": "$['updated_at']"
-											},
-											"sink": {
-												"name": "update_at"
-											}
-										},
-										{
-											"source": {
-												"path": "$['ticket_id']"
-											},
-											"sink": {
-												"name": "id"
-											}
-										}
-									],
-									"collectionReference": "",
-									"mapComplexValuesToString": false
+									"value": "@variables('vTicket_id')",
+									"type": "Expression"
 								}
 							},
 							"inputs": [
@@ -155,6 +128,26 @@
 									"type": "DatasetReference"
 								}
 							]
+						},
+						{
+							"name": "Append variable1",
+							"type": "AppendVariable",
+							"dependsOn": [
+								{
+									"activity": "Web1",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "vTicket_id",
+								"value": {
+									"value": "@activity('Web1').output.ticket_id",
+									"type": "Expression"
+								}
+							}
 						}
 					]
 				}
@@ -188,6 +181,9 @@
 		"variables": {
 			"IdParameter": {
 				"type": "String"
+			},
+			"vTicket_id": {
+				"type": "Integer"
 			}
 		},
 		"annotations": []
