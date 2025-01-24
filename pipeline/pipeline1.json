@@ -77,7 +77,7 @@
 							"type": "Script",
 							"dependsOn": [
 								{
-									"activity": "Set Var ID",
+									"activity": "Web1",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -106,30 +106,6 @@
 									}
 								],
 								"scriptBlockExecutionTimeout": "02:00:00"
-							}
-						},
-						{
-							"name": "Set Var ID",
-							"type": "SetVariable",
-							"dependsOn": [
-								{
-									"activity": "Web1",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"policy": {
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"variableName": "vTicket_id",
-								"value": {
-									"value": "@activity('Web1').output",
-									"type": "Expression"
-								}
 							}
 						}
 					]
