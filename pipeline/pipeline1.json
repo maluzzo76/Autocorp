@@ -174,7 +174,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureMySqlSource",
-						"query": "SELECT distinct id FROM freshdesk_tickets \r\nWHERE id in(93309,93310,93312,93311)\r\nlimit 10;",
+						"query": "SELECT distinct id FROM freshdesk_tickets \r\nWHERE create_at >  DATE_SUB(CURDATE(), INTERVAL 40 DAY)",
 						"queryTimeout": "02:00:00"
 					},
 					"dataset": {
