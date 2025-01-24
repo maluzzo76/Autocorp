@@ -210,7 +210,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "SELECT codigo FROM [stg].[Tickets] \r\nWHERE fechaAlta >  dateadd(day,-40,getdate())\r\norder by codigo",
+						"sqlReaderQuery": "SELECT codigo as id FROM [stg].[Tickets] \r\nWHERE fechaAlta >  dateadd(day,-40,getdate())\r\norder by codigo",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
