@@ -113,56 +113,25 @@
 										{
 											"source": {
 												"path": "$['created_at']"
+											},
+											"sink": {
+												"name": "create_at"
 											}
 										},
 										{
 											"source": {
 												"path": "$['updated_at']"
-											}
-										},
-										{
-											"source": {
-												"path": "$['attachments'][0]"
-											}
-										},
-										{
-											"source": {
-												"path": "$['automation_id']"
-											}
-										},
-										{
-											"source": {
-												"path": "$['automation_type_id']"
-											}
-										},
-										{
-											"source": {
-												"path": "$['auto_response']"
+											},
+											"sink": {
+												"name": "update_at"
 											}
 										},
 										{
 											"source": {
 												"path": "$['ticket_id']"
-											}
-										},
-										{
-											"source": {
-												"path": "$['threading_type']"
-											}
-										},
-										{
-											"source": {
-												"path": "$['delivery_details']['failed_emails'][0]"
-											}
-										},
-										{
-											"source": {
-												"path": "$['delivery_details']['pending_emails'][0]"
-											}
-										},
-										{
-											"source": {
-												"path": "$['source_additional_info']"
+											},
+											"sink": {
+												"name": "id"
 											}
 										}
 									],
