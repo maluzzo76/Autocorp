@@ -123,6 +123,14 @@
 											"sink": {
 												"name": "id"
 											}
+										},
+										{
+											"source": {
+												"path": "$['create_at']"
+											},
+											"sink": {
+												"name": "create_at"
+											}
 										}
 									],
 									"collectionReference": "",
