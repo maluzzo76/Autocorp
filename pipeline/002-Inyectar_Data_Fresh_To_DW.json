@@ -1,12 +1,10 @@
 {
-	"name": "002-Inyectar_Data_Fresh",
+	"name": "002-Inyectar_Data_Fresh_To_DW",
 	"properties": {
 		"activities": [
 			{
 				"name": "Inyectar_Agentes_Fresh",
 				"type": "Copy",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -30,10 +28,9 @@
 						"type": "AzureMySqlSource"
 					},
 					"sink": {
-						"type": "AzureMySqlSink",
-						"writeBatchSize": 10000,
-						"writeBatchTimeout": "00:00:30",
-						"preCopyScript": "Truncate Table agentes"
+						"type": "AzureSqlSink",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false
 					},
 					"enableStaging": false,
 					"validateDataConsistency": false,
@@ -42,9 +39,7 @@
 						"mappings": [
 							{
 								"source": {
-									"name": "id",
-									"type": "Double",
-									"physicalType": "double"
+									"name": ""
 								},
 								"sink": {
 									"name": "codigo",
@@ -54,9 +49,7 @@
 							},
 							{
 								"source": {
-									"name": "name",
-									"type": "String",
-									"physicalType": "text"
+									"name": ""
 								},
 								"sink": {
 									"name": "nombre",
@@ -80,7 +73,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "StgAgentes",
+						"referenceName": "dimAgentes",
 						"type": "DatasetReference"
 					}
 				]

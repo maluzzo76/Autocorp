@@ -12,7 +12,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "002-Inyectar_Data_Fresh",
+						"referenceName": "002-Inyectar_Data_Fresh_To_DW",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true
