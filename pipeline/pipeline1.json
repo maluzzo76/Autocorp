@@ -98,11 +98,7 @@
 							"typeProperties": {
 								"scripts": [
 									{
-										"type": "Query",
-										"text": {
-											"value": "@concat('insert into dbo.conversaciones (id) values (',activity('Web1').output.ticket_id,')')",
-											"type": "Expression"
-										}
+										"type": "Query"
 									}
 								],
 								"scriptBlockExecutionTimeout": "02:00:00"
