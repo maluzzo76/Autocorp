@@ -61,7 +61,7 @@
 								"method": "GET",
 								"headers": {
 									"Authorization": {
-										"value": "@concat('Basic ',base64(concat('yBjVC7W3wuMLeucdH4Hw', ':', 'X')))",
+										"value": "@concat('Basic eUJqVkM3VzN3dU1MZXVjZEg0SHc6WA==')",
 										"type": "Expression"
 									}
 								},
