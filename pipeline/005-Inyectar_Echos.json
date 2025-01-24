@@ -5,6 +5,8 @@
 			{
 				"name": "Inyectar_Dw_FactTickets",
 				"type": "Copy",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -19,12 +21,6 @@
 						"type": "AzureMySqlSource",
 						"query": "select \nt.codigo,\nt.fechaAlta,\nt.fechaModificacion,\nt.horasDiferecia,\nt.minutosDiferencia,\nc.id companiasid,\ne.id estadoid,\ntp.id Tipoid,\np.id productoid,\ng.id grupoid,\no.id origenid,\npri.id prioridadid,\na.id agenteid\nfrom tickets t\nLEFT JOIN Autocorp_DW.dimCompanias c on c.codigo = t.companiaCodigo\nLEFT JOIN Autocorp_DW.dimEstados e on e.codigo = t.estadoCodigo\nLEFT JOIN Autocorp_DW.dimTiposTicket tp on tp.nombre = t.tipoCodigo\nLEFT JOIN Autocorp_DW.dimProductos p on p.codigo = REPLACE(t.productoCodigo,'.0','')\nLEFT JOIN Autocorp_DW.dimGrupos g on g.codigo = REPLACE(t.grupoCodigo,'.0','')\nLEFT JOIN Autocorp_DW.dimOrigenes o on o.codigo = t.origenCodigo\nLEFT JOIN Autocorp_DW.dimPrioridades pri on pri.codigo = t.prioridadCodigo\nLEFT JOIN Autocorp_DW.dimAgentes a on a.codigo = t.agenteCodigo\n",
 						"queryTimeout": "02:00:00"
-					},
-					"sink": {
-						"type": "AzureMySqlSink",
-						"writeBatchSize": 10000,
-						"writeBatchTimeout": "00:00:30",
-						"preCopyScript": "Truncate Table Autocorp_DW.factTickets"
 					},
 					"enableStaging": false
 				}
