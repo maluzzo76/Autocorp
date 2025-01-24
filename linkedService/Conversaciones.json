@@ -3,18 +3,19 @@
 	"type": "Microsoft.DataFactory/factories/linkedservices",
 	"properties": {
 		"parameters": {
-			"IdTickets": {
-				"type": "string"
+			"Uri": {
+				"type": "string",
+				"defaultValue": "https://autocorpar.freshdesk.com/api/v2/tickets/1/conversations"
 			}
 		},
 		"annotations": [],
 		"type": "RestService",
 		"typeProperties": {
-			"url": "@{replace('https://autocorpar.freshdesk.com/api/v2/tickets/idTickets/conversations', 'idTickets', linkedService().IdTickets)}",
+			"url": "@{linkedService().Uri}",
 			"enableServerCertificateValidation": true,
 			"authenticationType": "Basic",
 			"userName": "yBjVC7W3wuMLeucdH4Hw",
-			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkRBVEFGQUNUT1JZQDY3OURBQjBCLTc4NzMtNDBBQS04QzdFLTY0OEI4NzQ1NEJENF9iMWJjMzRjNS1jZDE2LTRjZjYtOTJiYy02ZmJkMmViMjUwMWMiDQp9"
+			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkRBVEFGQUNUT1JZQDY3OURBQjBCLTc4NzMtNDBBQS04QzdFLTY0OEI4NzQ1NEJENF83ZDlkZWM0MC1iNzFkLTQzYWQtYjQ2OC03MjVlMzZiNWI5OGMiDQp9"
 		}
 	}
 }
