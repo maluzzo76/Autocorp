@@ -44,7 +44,20 @@
 			{
 				"name": "Inyectar_FactTickets",
 				"type": "ExecutePipeline",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Inyectar_Hechos_stg",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Inyecta_Conversaciones_DW",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"secureInput": false
 				},
@@ -58,7 +71,7 @@
 				}
 			},
 			{
-				"name": "002-Inyectar_Dimensiones_Fresh_To_DW",
+				"name": "Inyecta_Conversaciones_DW",
 				"type": "ExecutePipeline",
 				"dependsOn": [
 					{
@@ -74,7 +87,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "002-Inyectar_Dimensiones_Fresh_To_DW",
+						"referenceName": "004-Inyectar_Fresh_Conversaciones_To_Dw",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true
