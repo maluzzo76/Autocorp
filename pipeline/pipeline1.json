@@ -98,7 +98,7 @@
 							"typeProperties": {
 								"method": "GET",
 								"headers": {
-									"undefined": {
+									"Authorization": {
 										"value": "@concat('Basic ', 'yBjVC7W3wuMLeucdH4Hw', ':', 'X')",
 										"type": "Expression"
 									}
