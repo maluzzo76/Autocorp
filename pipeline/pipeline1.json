@@ -131,6 +131,11 @@
 											"sink": {
 												"name": "create_at"
 											}
+										},
+										{
+											"sink": {
+												"name": "update_at"
+											}
 										}
 									],
 									"collectionReference": "",
