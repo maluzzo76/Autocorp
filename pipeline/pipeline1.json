@@ -54,7 +54,7 @@
 								"method": "GET",
 								"headers": {
 									"Authorization": {
-										"value": "@concat('Basic ', 'yBjVC7W3wuMLeucdH4Hw', ':', 'X')",
+										"value": "@concat('Basic ',base64(concat('yBjVC7W3wuMLeucdH4Hw', ':', 'X')))",
 										"type": "Expression"
 									}
 								},
