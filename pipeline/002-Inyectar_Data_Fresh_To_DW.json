@@ -174,8 +174,6 @@
 			{
 				"name": "Inyectar_Productos_Fresh",
 				"type": "Copy",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -195,7 +193,10 @@
 						"type": "AzureSqlSink",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
-							"useTempDB": true
+							"useTempDB": true,
+							"keys": [
+								"codigo"
+							]
 						},
 						"sqlWriterUseTableLock": false,
 						"disableMetricsCollection": false
@@ -211,17 +212,12 @@
 									"physicalType": "double"
 								},
 								"sink": {
-									"name": "codigo",
-									"type": "String",
-									"physicalType": "varchar"
+									"name": "id",
+									"type": "Int32",
+									"physicalType": "int"
 								}
 							},
 							{
-								"source": {
-									"name": "name",
-									"type": "String",
-									"physicalType": "text"
-								},
 								"sink": {
 									"name": "nombre",
 									"type": "String",
