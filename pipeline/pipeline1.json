@@ -209,6 +209,16 @@
 				}
 			}
 		],
+		"parameters": {
+			"DelimitarioCommilaSimple": {
+				"type": "string",
+				"defaultValue": "'"
+			},
+			"DelimitadorComa": {
+				"type": "string",
+				"defaultValue": ","
+			}
+		},
 		"variables": {
 			"IdParameter": {
 				"type": "String"
