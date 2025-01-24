@@ -77,7 +77,7 @@
 							"type": "Script",
 							"dependsOn": [
 								{
-									"activity": "Web1",
+									"activity": "Set Var ID",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -111,12 +111,23 @@
 						{
 							"name": "Set Var ID",
 							"type": "SetVariable",
-							"dependsOn": [],
+							"dependsOn": [
+								{
+									"activity": "Web1",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
 							"policy": {
 								"secureOutput": false,
 								"secureInput": false
 							},
-							"userProperties": []
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "vTicket_id",
+								"value": ""
+							}
 						}
 					]
 				}
