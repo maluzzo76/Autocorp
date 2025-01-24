@@ -5,12 +5,6 @@
 			"referenceName": "ApiConversariones",
 			"type": "LinkedServiceReference"
 		},
-		"parameters": {
-			"IdFilter": {
-				"type": "string",
-				"defaultValue": "A"
-			}
-		},
 		"folder": {
 			"name": "APIs"
 		},
