@@ -73,40 +73,9 @@
 							}
 						},
 						{
-							"name": "Set variable3",
-							"type": "SetVariable",
-							"dependsOn": [
-								{
-									"activity": "Web1",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"policy": {
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"variableName": "vTicket_id",
-								"value": {
-									"value": "@json(activity('Web1').output.Response)",
-									"type": "Expression"
-								}
-							}
-						},
-						{
 							"name": "ForEach2",
 							"type": "ForEach",
-							"dependsOn": [
-								{
-									"activity": "Set variable3",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
+							"dependsOn": [],
 							"userProperties": [],
 							"typeProperties": {
 								"items": {
@@ -126,7 +95,7 @@
 										"typeProperties": {
 											"variableName": "Key",
 											"value": {
-												"value": "@json(item().reponde).ticket_id",
+												"value": "'a'",
 												"type": "Expression"
 											}
 										}
