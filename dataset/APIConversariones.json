@@ -6,8 +6,9 @@
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
-			"IdParame": {
-				"type": "string"
+			"IdFilter": {
+				"type": "string",
+				"defaultValue": "A"
 			}
 		},
 		"folder": {
@@ -15,6 +16,9 @@
 		},
 		"annotations": [],
 		"type": "RestResource",
+		"typeProperties": {
+			"relativeUrl": "autocorp"
+		},
 		"schema": []
 	}
 }
