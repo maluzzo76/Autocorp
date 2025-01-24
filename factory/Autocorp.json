@@ -1,5 +1,13 @@
 {
 	"name": "Autocorp",
+	"properties": {
+		"globalParameters": {
+			"IdTichet": {
+				"type": "string",
+				"value": "0"
+			}
+		}
+	},
 	"location": "eastus",
 	"identity": {
 		"type": "SystemAssigned",
