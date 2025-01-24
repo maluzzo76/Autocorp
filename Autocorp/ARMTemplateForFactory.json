@@ -1278,7 +1278,7 @@
 						],
 						"outputs": [
 							{
-								"referenceName": "stgTicketsSQL",
+								"referenceName": "stgTickets",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -1303,7 +1303,7 @@
 				"[concat(variables('factoryId'), '/datasets/Fresh_SLA')]",
 				"[concat(variables('factoryId'), '/datasets/dimSla')]",
 				"[concat(variables('factoryId'), '/datasets/FreshTickets')]",
-				"[concat(variables('factoryId'), '/datasets/stgTicketsSQL')]"
+				"[concat(variables('factoryId'), '/datasets/stgTickets')]"
 			]
 		},
 		{
@@ -1525,7 +1525,7 @@
 								"partitionOption": "None"
 							},
 							"dataset": {
-								"referenceName": "stgTicketsSQL",
+								"referenceName": "stgTickets",
 								"type": "DatasetReference",
 								"parameters": {}
 							},
@@ -1566,7 +1566,7 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/stgTicketsSQL')]",
+				"[concat(variables('factoryId'), '/datasets/stgTickets')]",
 				"[concat(variables('factoryId'), '/linkedServices/SqlAutocorpDw')]"
 			]
 		},
@@ -1833,7 +1833,7 @@
 						},
 						"inputs": [
 							{
-								"referenceName": "stgTicketsSQL",
+								"referenceName": "stgTickets",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -1859,7 +1859,7 @@
 				"lastPublishTime": "2025-01-14T15:43:20Z"
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/stgTicketsSQL')]",
+				"[concat(variables('factoryId'), '/datasets/stgTickets')]",
 				"[concat(variables('factoryId'), '/datasets/factTickets')]"
 			]
 		},
@@ -3011,7 +3011,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/stgTicketsSQL')]",
+			"name": "[concat(parameters('factoryName'), '/stgTickets')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
