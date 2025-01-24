@@ -33,7 +33,7 @@
 							"typeProperties": {
 								"variableName": "IdParameter",
 								"value": {
-									"value": "@item().id",
+									"value": "@string(item())",
 									"type": "Expression"
 								}
 							}
