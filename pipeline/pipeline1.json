@@ -159,8 +159,25 @@
 						{
 							"name": "Append variable1",
 							"type": "AppendVariable",
-							"dependsOn": [],
-							"userProperties": []
+							"dependsOn": [
+								{
+									"activity": "Script1",
+									"dependencyConditions": [
+										"Failed"
+									]
+								},
+								{
+									"activity": "Set variable3",
+									"dependencyConditions": [
+										"Failed"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "vError",
+								"value": "Error"
+							}
 						}
 					]
 				}
@@ -200,6 +217,10 @@
 			},
 			"Key": {
 				"type": "Integer"
+			},
+			"vError": {
+				"type": "String",
+				"defaultValue": "Error"
 			}
 		},
 		"annotations": []
