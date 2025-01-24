@@ -100,7 +100,7 @@
 									{
 										"type": "Query",
 										"text": {
-											"value": "@activity('Web1').output.ticket_id",
+											"value": "@variables('vTicket_id')",
 											"type": "Expression"
 										}
 									}
@@ -126,7 +126,10 @@
 							"userProperties": [],
 							"typeProperties": {
 								"variableName": "vTicket_id",
-								"value": ""
+								"value": {
+									"value": "@activity('Web1').output.body.data[0]",
+									"type": "Expression"
+								}
 							}
 						}
 					]
