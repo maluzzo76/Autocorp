@@ -5,8 +5,6 @@
 			{
 				"name": "ForEach1",
 				"type": "ForEach",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Lookup1",
@@ -75,7 +73,7 @@
 							}
 						},
 						{
-							"name": "Set variable2",
+							"name": "Set variable3",
 							"type": "SetVariable",
 							"dependsOn": [
 								{
@@ -93,9 +91,47 @@
 							"typeProperties": {
 								"variableName": "vTicket_id",
 								"value": {
-									"value": "@activity('Web1').output.id",
+									"value": "@json(activity('Web1').output.Response)",
 									"type": "Expression"
 								}
+							}
+						},
+						{
+							"name": "ForEach2",
+							"type": "ForEach",
+							"dependsOn": [
+								{
+									"activity": "Set variable3",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"items": {
+									"value": "@variables('vTicket_id')",
+									"type": "Expression"
+								},
+								"activities": [
+									{
+										"name": "Set variable4",
+										"type": "SetVariable",
+										"dependsOn": [],
+										"policy": {
+											"secureOutput": false,
+											"secureInput": false
+										},
+										"userProperties": [],
+										"typeProperties": {
+											"variableName": "Key",
+											"value": {
+												"value": "@item().ticket_id",
+												"type": "Expression"
+											}
+										}
+									}
+								]
 							}
 						}
 					]
@@ -104,8 +140,6 @@
 			{
 				"name": "Lookup1",
 				"type": "Lookup",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -126,92 +160,6 @@
 						"type": "DatasetReference"
 					},
 					"firstRowOnly": false
-				}
-			},
-			{
-				"name": "Web1_copy1",
-				"type": "WebActivity",
-				"dependsOn": [],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"method": "GET",
-					"headers": {
-						"Authorization": {
-							"value": "@concat('Basic ', base64('yBjVC7W3wuMLeucdH4Hw:X'))",
-							"type": "Expression"
-						}
-					},
-					"disableCertValidation": false,
-					"url": "https://autocorpar.freshdesk.com/api/v2/tickets/93311/conversations"
-				}
-			},
-			{
-				"name": "Set variable3",
-				"type": "SetVariable",
-				"dependsOn": [
-					{
-						"activity": "Web1_copy1",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "vTicket_id",
-					"value": {
-						"value": "@json(activity('Web1_copy1').output.Response)",
-						"type": "Expression"
-					}
-				}
-			},
-			{
-				"name": "ForEach2",
-				"type": "ForEach",
-				"dependsOn": [
-					{
-						"activity": "Set variable3",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"items": {
-						"value": "@variables('vTicket_id')",
-						"type": "Expression"
-					},
-					"activities": [
-						{
-							"name": "Set variable4",
-							"type": "SetVariable",
-							"dependsOn": [],
-							"policy": {
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"variableName": "Key",
-								"value": {
-									"value": "@item().ticket_id",
-									"type": "Expression"
-								}
-							}
-						}
-					]
 				}
 			}
 		],
