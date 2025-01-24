@@ -106,6 +106,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureMySqlSource",
+						"query": "select id,\r\nupper(name) name\r\nfrom source_table;\r\n\r\n",
 						"queryTimeout": "02:00:00"
 					},
 					"sink": {
@@ -187,13 +188,17 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureMySqlSource",
+						"query": "select id,\nupper(name) name\nfrom product_table;\n",
 						"queryTimeout": "02:00:00"
 					},
 					"sink": {
-						"type": "AzureMySqlSink",
-						"writeBatchSize": 10000,
-						"writeBatchTimeout": "00:00:30",
-						"preCopyScript": "Truncate Table Productos"
+						"type": "AzureSqlSink",
+						"writeBehavior": "upsert",
+						"upsertSettings": {
+							"useTempDB": true
+						},
+						"sqlWriterUseTableLock": false,
+						"disableMetricsCollection": false
 					},
 					"enableStaging": false,
 					"translator": {
@@ -239,7 +244,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "StgProductos",
+						"referenceName": "dimProductos",
 						"type": "DatasetReference"
 					}
 				]
