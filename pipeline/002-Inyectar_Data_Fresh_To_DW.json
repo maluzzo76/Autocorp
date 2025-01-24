@@ -109,10 +109,16 @@
 						"queryTimeout": "02:00:00"
 					},
 					"sink": {
-						"type": "AzureMySqlSink",
-						"writeBatchSize": 10000,
-						"writeBatchTimeout": "00:00:30",
-						"preCopyScript": "Truncate Table Origenes"
+						"type": "AzureSqlSink",
+						"writeBehavior": "upsert",
+						"upsertSettings": {
+							"useTempDB": true,
+							"keys": [
+								"codigo"
+							]
+						},
+						"sqlWriterUseTableLock": false,
+						"disableMetricsCollection": false
 					},
 					"enableStaging": false,
 					"validateDataConsistency": false,
@@ -159,7 +165,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "StgOrigenes",
+						"referenceName": "dimOrigenes",
 						"type": "DatasetReference"
 					}
 				]
