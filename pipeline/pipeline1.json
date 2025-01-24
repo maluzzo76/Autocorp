@@ -31,7 +31,7 @@
 							},
 							"userProperties": [],
 							"typeProperties": {
-								"variableName": "",
+								"variableName": "IdParameter",
 								"value": {
 									"value": "@item().id",
 									"type": "Expression"
@@ -96,7 +96,11 @@
 							},
 							"userProperties": [],
 							"typeProperties": {
-								"method": "GET"
+								"method": "GET",
+								"url": {
+									"value": "@concat('https://autocorpar.freshdesk.com/api/v2/tickets/',item(),'/conversations')",
+									"type": "Expression"
+								}
 							}
 						}
 					]
@@ -128,6 +132,11 @@
 				}
 			}
 		],
+		"variables": {
+			"IdParameter": {
+				"type": "String"
+			}
+		},
 		"annotations": []
 	}
 }
