@@ -3,10 +3,7 @@
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "Conversaciones",
-			"type": "LinkedServiceReference",
-			"parameters": {
-				"Uri": "https://autocorpar.freshdesk.com/api/v2/tickets/1/conversations"
-			}
+			"type": "LinkedServiceReference"
 		},
 		"folder": {
 			"name": "APIs"
