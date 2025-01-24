@@ -1,0 +1,12 @@
+{
+	"name": "APIConversariones",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ApiConversariones",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"schema": []
+	}
+}
