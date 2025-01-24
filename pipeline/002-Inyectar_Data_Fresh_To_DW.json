@@ -411,8 +411,6 @@
 			{
 				"name": "Inyectar_Prioridades_Fresh",
 				"type": "Copy",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -425,13 +423,20 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureMySqlSource",
+						"query": "select id,\nupper(name) name\nfrom priority_table;",
 						"queryTimeout": "02:00:00"
 					},
 					"sink": {
-						"type": "AzureMySqlSink",
-						"writeBatchSize": 10000,
-						"writeBatchTimeout": "00:00:30",
-						"preCopyScript": "Truncate Table Prioridad"
+						"type": "AzureSqlSink",
+						"writeBehavior": "upsert",
+						"upsertSettings": {
+							"useTempDB": true,
+							"keys": [
+								"codigo"
+							]
+						},
+						"sqlWriterUseTableLock": false,
+						"disableMetricsCollection": false
 					},
 					"enableStaging": false,
 					"translator": {
@@ -440,29 +445,25 @@
 							{
 								"source": {
 									"name": "id",
-									"type": "int",
-									"scale": 0,
-									"precision": 0
+									"type": "Int32",
+									"physicalType": "int"
 								},
 								"sink": {
 									"name": "codigo",
-									"type": "varchar",
-									"scale": 0,
-									"precision": 0
+									"type": "String",
+									"physicalType": "varchar"
 								}
 							},
 							{
 								"source": {
 									"name": "name",
-									"type": "text",
-									"scale": 0,
-									"precision": 0
+									"type": "String",
+									"physicalType": "text"
 								},
 								"sink": {
 									"name": "nombre",
-									"type": "varchar",
-									"scale": 0,
-									"precision": 0
+									"type": "String",
+									"physicalType": "varchar"
 								}
 							}
 						],
@@ -481,7 +482,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "StgPrioridad",
+						"referenceName": "dimPrioridades",
 						"type": "DatasetReference"
 					}
 				]
@@ -489,8 +490,6 @@
 			{
 				"name": "Inyectar_Tipos_Fresh",
 				"type": "Copy",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
