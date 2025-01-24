@@ -107,7 +107,32 @@
 									]
 								}
 							],
-							"userProperties": []
+							"userProperties": [],
+							"typeProperties": {
+								"items": {
+									"value": "@variables('vTicket_id')",
+									"type": "Expression"
+								},
+								"activities": [
+									{
+										"name": "Set variable4",
+										"type": "SetVariable",
+										"dependsOn": [],
+										"policy": {
+											"secureOutput": false,
+											"secureInput": false
+										},
+										"userProperties": [],
+										"typeProperties": {
+											"variableName": "Key",
+											"value": {
+												"value": "@item()",
+												"type": "Expression"
+											}
+										}
+									}
+								]
+							}
 						}
 					]
 				}
@@ -146,7 +171,7 @@
 				"type": "Array"
 			},
 			"Key": {
-				"type": "Integer"
+				"type": "String"
 			}
 		},
 		"annotations": []
