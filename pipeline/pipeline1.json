@@ -178,6 +178,23 @@
 								"variableName": "vError",
 								"value": "Error"
 							}
+						},
+						{
+							"name": "Set variable3_copy1",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "Key",
+								"value": {
+									"value": "@variables('vTicket_id')[0].ticket_id",
+									"type": "Expression"
+								}
+							}
 						}
 					]
 				}
