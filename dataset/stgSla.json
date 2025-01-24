@@ -118,7 +118,7 @@
 			}
 		],
 		"typeProperties": {
-			"schema": "stg",
+			"schema": "whs",
 			"table": "Sla"
 		}
 	}
