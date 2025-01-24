@@ -95,44 +95,6 @@
 									"type": "Expression"
 								}
 							}
-						},
-						{
-							"name": "ForEach2",
-							"type": "ForEach",
-							"dependsOn": [
-								{
-									"activity": "Set variable3",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"userProperties": [],
-							"typeProperties": {
-								"items": {
-									"value": "@variables('vTicket_id')",
-									"type": "Expression"
-								},
-								"activities": [
-									{
-										"name": "Set variable4",
-										"type": "SetVariable",
-										"dependsOn": [],
-										"policy": {
-											"secureOutput": false,
-											"secureInput": false
-										},
-										"userProperties": [],
-										"typeProperties": {
-											"variableName": "Key",
-											"value": {
-												"value": "@string(item().ticket_id)",
-												"type": "Expression"
-											}
-										}
-									}
-								]
-							}
 						}
 					]
 				}
