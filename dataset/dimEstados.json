@@ -1,5 +1,5 @@
 {
-	"name": "dimCompanias",
+	"name": "dimEstados",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "SqlAutocorpDw",
@@ -10,10 +10,6 @@
 		},
 		"annotations": [],
 		"type": "AzureSqlTable",
-		"schema": [],
-		"typeProperties": {
-			"schema": "whs",
-			"table": "dimCompanias"
-		}
+		"schema": []
 	}
 }
