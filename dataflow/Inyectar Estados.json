@@ -15,10 +15,6 @@
 					"name": "StgEstados"
 				},
 				{
-					"dataset": {
-						"referenceName": "DwDimEstados",
-						"type": "DatasetReference"
-					},
 					"name": "DwEstados"
 				}
 			],
@@ -51,9 +47,7 @@
 				"          nombre as string",
 				"     ),",
 				"     allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     isolationLevel: 'READ_UNCOMMITTED',",
-				"     format: 'table') ~> DwEstados",
+				"     validateSchema: false) ~> DwEstados",
 				"StgEstados, DwEstados exists(StgEstados@codigo == DwEstados@codigo,",
 				"     negate:true,",
 				"     broadcast: 'auto')~> Validar",

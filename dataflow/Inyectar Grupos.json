@@ -15,10 +15,6 @@
 					"name": "StgGrupos"
 				},
 				{
-					"dataset": {
-						"referenceName": "DwDimGrupos",
-						"type": "DatasetReference"
-					},
 					"name": "DwGrupos"
 				}
 			],
@@ -51,9 +47,7 @@
 				"          nombre as string",
 				"     ),",
 				"     allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     isolationLevel: 'READ_UNCOMMITTED',",
-				"     format: 'table') ~> DwGrupos",
+				"     validateSchema: false) ~> DwGrupos",
 				"StgGrupos, DwGrupos exists(StgGrupos@codigo == DwGrupos@codigo,",
 				"     negate:true,",
 				"     broadcast: 'auto')~> Validar",

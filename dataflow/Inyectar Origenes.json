@@ -15,10 +15,6 @@
 					"name": "StgOrigenes"
 				},
 				{
-					"dataset": {
-						"referenceName": "DwDimOrigenes",
-						"type": "DatasetReference"
-					},
 					"name": "DwOrigenes"
 				}
 			],
@@ -51,9 +47,7 @@
 				"          nombre as string",
 				"     ),",
 				"     allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     isolationLevel: 'READ_UNCOMMITTED',",
-				"     format: 'table') ~> DwOrigenes",
+				"     validateSchema: false) ~> DwOrigenes",
 				"StgOrigenes, DwOrigenes exists(StgOrigenes@codigo == DwOrigenes@codigo,",
 				"     negate:true,",
 				"     broadcast: 'auto')~> Validar",

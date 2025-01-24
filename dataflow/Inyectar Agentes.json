@@ -15,10 +15,6 @@
 					"name": "StgAgentes"
 				},
 				{
-					"dataset": {
-						"referenceName": "DwDimAgentes",
-						"type": "DatasetReference"
-					},
 					"name": "DimAgentes"
 				}
 			],
@@ -51,9 +47,7 @@
 				"          nombre as string",
 				"     ),",
 				"     allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     isolationLevel: 'READ_UNCOMMITTED',",
-				"     format: 'table') ~> DimAgentes",
+				"     validateSchema: false) ~> DimAgentes",
 				"StgAgentes, DimAgentes exists(StgAgentes@codigo == DimAgentes@codigo",
 				"     && StgAgentes@nombre == DimAgentes@nombre,",
 				"     negate:true,",

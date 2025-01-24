@@ -15,10 +15,6 @@
 					"name": "StgCompanias"
 				},
 				{
-					"dataset": {
-						"referenceName": "DwDimCompanias",
-						"type": "DatasetReference"
-					},
 					"name": "DwCompanias"
 				}
 			],
@@ -51,9 +47,7 @@
 				"          nombre as string",
 				"     ),",
 				"     allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     isolationLevel: 'READ_UNCOMMITTED',",
-				"     format: 'table') ~> DwCompanias",
+				"     validateSchema: false) ~> DwCompanias",
 				"StgCompanias, DwCompanias exists(StgCompanias@codigo == DwCompanias@codigo,",
 				"     negate:true,",
 				"     broadcast: 'auto')~> Validar",
