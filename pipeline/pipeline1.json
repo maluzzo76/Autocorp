@@ -126,7 +126,7 @@
 										"typeProperties": {
 											"variableName": "Key",
 											"value": {
-												"value": "@string(item().ticket_id)",
+												"value": "@item().ticket_id",
 												"type": "Expression"
 											}
 										}
