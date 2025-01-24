@@ -897,13 +897,7 @@
 							"inputs": [
 								{
 									"referenceName": "Fresh_Conversariones",
-									"type": "DatasetReference",
-									"parameters": {
-										"IdTickets": {
-											"value": "@variables('IdForEach')",
-											"type": "Expression"
-										}
-									}
+									"type": "DatasetReference"
 								}
 							],
 							"outputs": [
@@ -959,6 +953,12 @@
 				}
 			}
 		],
+		"parameters": {
+			"idTicket": {
+				"type": "string",
+				"defaultValue": "1"
+			}
+		},
 		"variables": {
 			"IdForEach": {
 				"type": "Integer"
