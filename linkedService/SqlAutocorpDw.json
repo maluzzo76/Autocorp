@@ -1,0 +1,17 @@
+{
+	"name": "SqlAutocorpDw",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureSqlDatabase",
+		"typeProperties": {
+			"server": "autocorpdw.database.windows.net",
+			"database": "Autocorp_dw",
+			"encrypt": "mandatory",
+			"trustServerCertificate": false,
+			"authenticationType": "SQL",
+			"userName": "autocorp",
+			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkRBVEFGQUNUT1JZQDY3OURBQjBCLTc4NzMtNDBBQS04QzdFLTY0OEI4NzQ1NEJENF83MTMxZDIxMC0wYWQ3LTRhNGQtYjFiOC00NjNiNzIyYWEzNzciDQp9"
+		}
+	}
+}
