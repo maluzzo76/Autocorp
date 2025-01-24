@@ -344,14 +344,20 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureMySqlSource",
-						"query": "SELECT id, \nTRIM(REPLACE(REPLACE(SUBSTRING_INDEX(name, ',', 1),'[',''),'''','')) AS  name\nfrom status_table\n",
+						"query": "SELECT id, \nUPPER(TRIM(REPLACE(REPLACE(SUBSTRING_INDEX(name, ',', 1),'[',''),'''',''))) AS  name\nfrom status_table\n",
 						"queryTimeout": "02:00:00"
 					},
 					"sink": {
-						"type": "AzureMySqlSink",
-						"writeBatchSize": 10000,
-						"writeBatchTimeout": "00:00:30",
-						"preCopyScript": "Truncate Table Estados"
+						"type": "AzureSqlSink",
+						"writeBehavior": "upsert",
+						"upsertSettings": {
+							"useTempDB": true,
+							"keys": [
+								"codigo"
+							]
+						},
+						"sqlWriterUseTableLock": false,
+						"disableMetricsCollection": false
 					},
 					"enableStaging": false,
 					"translator": {
@@ -397,7 +403,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "StgEstados",
+						"referenceName": "dimEstados",
 						"type": "DatasetReference"
 					}
 				]
