@@ -95,6 +95,19 @@
 									"type": "Expression"
 								}
 							}
+						},
+						{
+							"name": "ForEach2",
+							"type": "ForEach",
+							"dependsOn": [
+								{
+									"activity": "Set variable3",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": []
 						}
 					]
 				}
