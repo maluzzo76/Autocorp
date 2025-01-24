@@ -97,6 +97,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"method": "GET",
+								"disableCertValidation": false,
 								"url": {
 									"value": "@concat('https://autocorpar.freshdesk.com/api/v2/tickets/',variables('IdParameter'),'/conversations')",
 									"type": "Expression"
