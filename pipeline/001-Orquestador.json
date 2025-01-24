@@ -25,7 +25,7 @@
 					{
 						"activity": "Inyectar_Data_Fresh",
 						"dependencyConditions": [
-							"Completed"
+							"Succeeded"
 						]
 					}
 				],
@@ -34,10 +34,6 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"pipeline": {
-						"referenceName": "004-Inyectar_Dimensions",
-						"type": "PipelineReference"
-					},
 					"waitOnCompletion": true
 				}
 			},
