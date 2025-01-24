@@ -40,14 +40,7 @@
 			{
 				"name": "Inyectar_FactTickets",
 				"type": "ExecutePipeline",
-				"dependsOn": [
-					{
-						"activity": "Inyectar_Dimensiones_DW",
-						"dependencyConditions": [
-							"Completed"
-						]
-					}
-				],
+				"dependsOn": [],
 				"policy": {
 					"secureInput": false
 				},
@@ -55,6 +48,22 @@
 				"typeProperties": {
 					"pipeline": {
 						"referenceName": "005-Inyectar_Echos",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "002-Inyectar_Dimensiones_Fresh_To_DW",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "002-Inyectar_Dimensiones_Fresh_To_DW",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true
