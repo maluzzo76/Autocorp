@@ -145,7 +145,7 @@
 		],
 		"variables": {
 			"IdParameter": {
-				"type": "Integer"
+				"type": "String"
 			}
 		},
 		"annotations": []
