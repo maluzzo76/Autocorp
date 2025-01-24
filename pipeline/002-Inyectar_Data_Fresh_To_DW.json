@@ -33,7 +33,7 @@
 						"upsertSettings": {
 							"useTempDB": true,
 							"keys": [
-								""
+								"codigo"
 							]
 						},
 						"sqlWriterUseTableLock": false,
@@ -45,23 +45,13 @@
 						"type": "TabularTranslator",
 						"mappings": [
 							{
-								"source": {
-									"name": "id",
-									"type": "Double",
-									"physicalType": "double"
-								},
 								"sink": {
-									"name": "id",
-									"type": "int",
-									"precision": 10
+									"name": "codigo",
+									"type": "String",
+									"physicalType": "varchar"
 								}
 							},
 							{
-								"source": {
-									"name": "name",
-									"type": "String",
-									"physicalType": "text"
-								},
 								"sink": {
 									"name": "nombre",
 									"type": "String",
