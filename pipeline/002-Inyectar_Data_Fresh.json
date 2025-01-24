@@ -893,7 +893,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"IdTickets": {
-											"value": "@item().item.idTickets",
+											"value": "@item().id",
 											"type": "Expression"
 										}
 									}
