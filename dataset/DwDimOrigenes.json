@@ -6,7 +6,7 @@
 			"type": "LinkedServiceReference"
 		},
 		"folder": {
-			"name": "DW/Dimensiones"
+			"name": "MySQL"
 		},
 		"annotations": [],
 		"type": "AzureMySqlTable",
