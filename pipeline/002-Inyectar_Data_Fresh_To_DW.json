@@ -29,8 +29,15 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"writeBehavior": "insert",
-						"sqlWriterUseTableLock": false
+						"writeBehavior": "upsert",
+						"upsertSettings": {
+							"useTempDB": true,
+							"keys": [
+								""
+							]
+						},
+						"sqlWriterUseTableLock": false,
+						"disableMetricsCollection": false
 					},
 					"enableStaging": false,
 					"validateDataConsistency": false,
@@ -39,17 +46,21 @@
 						"mappings": [
 							{
 								"source": {
-									"name": ""
+									"name": "id",
+									"type": "Double",
+									"physicalType": "double"
 								},
 								"sink": {
-									"name": "codigo",
-									"type": "String",
-									"physicalType": "varchar"
+									"name": "id",
+									"type": "int",
+									"precision": 10
 								}
 							},
 							{
 								"source": {
-									"name": ""
+									"name": "name",
+									"type": "String",
+									"physicalType": "text"
 								},
 								"sink": {
 									"name": "nombre",
