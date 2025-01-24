@@ -98,7 +98,11 @@
 							"typeProperties": {
 								"scripts": [
 									{
-										"type": "Query"
+										"type": "Query",
+										"text": {
+											"value": "@activity('Web1').output",
+											"type": "Expression"
+										}
 									}
 								],
 								"scriptBlockExecutionTimeout": "02:00:00"
@@ -122,7 +126,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureMySqlSource",
-						"query": "SELECT distinct id FROM freshdesk_tickets \r\nWHERE  created_at > DATE_SUB(CURDATE(), INTERVAL 36 DAY) \r\nlimit 10;",
+						"query": "SELECT distinct id FROM freshdesk_tickets \r\nWHERE id in(93309,93310,93312,93311)\r\nlimit 10;",
 						"queryTimeout": "02:00:00"
 					},
 					"dataset": {
