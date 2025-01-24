@@ -73,35 +73,11 @@
 							}
 						},
 						{
-							"name": "Set variable1_copy1",
-							"type": "SetVariable",
-							"dependsOn": [
-								{
-									"activity": "Web1",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"policy": {
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"variableName": "CreateDate",
-								"value": {
-									"value": "@string(activity('Web1').output.created_at)",
-									"type": "Expression"
-								}
-							}
-						},
-						{
 							"name": "Copy data1",
 							"type": "Copy",
 							"dependsOn": [
 								{
-									"activity": "Set variable1_copy1",
+									"activity": "Web1",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -125,11 +101,22 @@
 										"supportRFC5988": "true"
 									}
 								},
+								"sink": {
+									"type": "AzureMySqlSink",
+									"writeBatchSize": 10000,
+									"writeBatchTimeout": "00:00:30"
+								},
 								"enableStaging": false
 							},
 							"inputs": [
 								{
 									"referenceName": "APIConversariones",
+									"type": "DatasetReference"
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "StgConversaciones",
 									"type": "DatasetReference"
 								}
 							]
