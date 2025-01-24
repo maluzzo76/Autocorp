@@ -118,45 +118,6 @@
 									"mappings": [
 										{
 											"source": {
-												"path": "$['body']"
-											}
-										},
-										{
-											"source": {
-												"path": "$['body_text']"
-											}
-										},
-										{
-											"source": {
-												"path": "$['id']"
-											},
-											"sink": {
-												"name": "id",
-												"type": "Int32"
-											}
-										},
-										{
-											"source": {
-												"path": "$['incoming']"
-											}
-										},
-										{
-											"source": {
-												"path": "$['private']"
-											}
-										},
-										{
-											"source": {
-												"path": "$['user_id']"
-											}
-										},
-										{
-											"source": {
-												"path": "$['support_email']"
-											}
-										},
-										{
-											"source": {
 												"path": "$['source']"
 											}
 										},
