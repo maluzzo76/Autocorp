@@ -146,9 +146,6 @@
 		"variables": {
 			"IdParameter": {
 				"type": "String"
-			},
-			"CreateDate": {
-				"type": "String"
 			}
 		},
 		"annotations": []
