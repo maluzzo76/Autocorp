@@ -151,6 +151,30 @@
 					"disableCertValidation": false,
 					"url": "https://autocorpar.freshdesk.com/api/v2/tickets/93311/conversations"
 				}
+			},
+			{
+				"name": "Set variable3",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Web1_copy1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "vTicket_id",
+					"value": {
+						"value": "@startswith(string(activity('Web1_copy1').output),'ticket_id' )",
+						"type": "Expression"
+					}
+				}
 			}
 		],
 		"variables": {
