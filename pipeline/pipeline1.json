@@ -33,7 +33,7 @@
 							"typeProperties": {
 								"variableName": "IdParameter",
 								"value": {
-									"value": "@string(item())",
+									"value": "@string(item().id)",
 									"type": "Expression"
 								}
 							}
@@ -97,7 +97,7 @@
 									"additionalColumns": [
 										{
 											"name": "MyId",
-											"value": "[]"
+											"value": "{item().id}"
 										}
 									],
 									"httpRequestTimeout": "00:01:40",
