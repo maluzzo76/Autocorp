@@ -73,7 +73,7 @@
 							}
 						},
 						{
-							"name": "Set variable2",
+							"name": "Set variable vTicketsId",
 							"type": "SetVariable",
 							"dependsOn": [
 								{
@@ -101,7 +101,7 @@
 							"type": "SetVariable",
 							"dependsOn": [
 								{
-									"activity": "Set variable2",
+									"activity": "Set variable vTicketsId",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -125,7 +125,7 @@
 							"type": "Script",
 							"dependsOn": [
 								{
-									"activity": "Set variable2",
+									"activity": "Set variable vTicketsId",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -157,43 +157,11 @@
 							}
 						},
 						{
-							"name": "Mapping Error",
-							"type": "AppendVariable",
-							"dependsOn": [
-								{
-									"activity": "Script Insert Conversaciones DW",
-									"dependencyConditions": [
-										"Failed"
-									]
-								},
-								{
-									"activity": "Set Variable Key",
-									"dependencyConditions": [
-										"Failed"
-									]
-								},
-								{
-									"activity": "set Variable Created_at",
-									"dependencyConditions": [
-										"Failed"
-									]
-								}
-							],
-							"userProperties": [],
-							"typeProperties": {
-								"variableName": "VError",
-								"value": {
-									"value": "'Error'",
-									"type": "Expression"
-								}
-							}
-						},
-						{
 							"name": "set Variable Created_at",
 							"type": "SetVariable",
 							"dependsOn": [
 								{
-									"activity": "Set variable2",
+									"activity": "Set variable vTicketsId",
 									"dependencyConditions": [
 										"Succeeded"
 									]
