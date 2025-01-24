@@ -77,7 +77,7 @@
 							"type": "Copy",
 							"dependsOn": [
 								{
-									"activity": "Append variable1",
+									"activity": "Web1",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -154,26 +154,6 @@
 									"type": "DatasetReference"
 								}
 							]
-						},
-						{
-							"name": "Append variable1",
-							"type": "AppendVariable",
-							"dependsOn": [
-								{
-									"activity": "Web1",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"userProperties": [],
-							"typeProperties": {
-								"variableName": "vTicket_id",
-								"value": {
-									"value": "@activity('Web1').output.ticket_id",
-									"type": "Expression"
-								}
-							}
 						}
 					]
 				}
