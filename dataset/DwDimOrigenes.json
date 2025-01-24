@@ -6,7 +6,7 @@
 			"type": "LinkedServiceReference"
 		},
 		"folder": {
-			"name": "MySQL"
+			"name": "MySQL (borrar)"
 		},
 		"annotations": [],
 		"type": "AzureMySqlTable",
