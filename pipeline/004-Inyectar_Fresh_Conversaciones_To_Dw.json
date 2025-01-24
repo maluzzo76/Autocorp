@@ -215,7 +215,7 @@
 						"partitionOption": "None"
 					},
 					"dataset": {
-						"referenceName": "stgTickets",
+						"referenceName": "stgTicketsSQL",
 						"type": "DatasetReference"
 					},
 					"firstRowOnly": false
