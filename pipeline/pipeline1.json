@@ -75,11 +75,18 @@
 						{
 							"name": "ForEach2",
 							"type": "ForEach",
-							"dependsOn": [],
+							"dependsOn": [
+								{
+									"activity": "Web1",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
 							"userProperties": [],
 							"typeProperties": {
 								"items": {
-									"value": "@variables('vTicket_id')",
+									"value": "@json(activity('Web1').output.Response)",
 									"type": "Expression"
 								},
 								"activities": [
