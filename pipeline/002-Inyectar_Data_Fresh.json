@@ -848,15 +848,6 @@
 							},
 							"userProperties": [],
 							"typeProperties": {
-								"source": {
-									"type": "RestSource",
-									"httpRequestTimeout": "00:01:40",
-									"requestInterval": "00.00:00:00.010",
-									"requestMethod": "GET",
-									"paginationRules": {
-										"supportRFC5988": "true"
-									}
-								},
 								"sink": {
 									"type": "AzureMySqlSink",
 									"writeBatchSize": 10000,
@@ -890,16 +881,9 @@
 												"name": "id"
 											}
 										}
-									],
-									"collectionReference": ""
+									]
 								}
 							},
-							"inputs": [
-								{
-									"referenceName": "Fresh_Conversariones",
-									"type": "DatasetReference"
-								}
-							],
 							"outputs": [
 								{
 									"referenceName": "StgConversaciones",
