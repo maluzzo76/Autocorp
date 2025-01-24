@@ -127,7 +127,7 @@
 							"typeProperties": {
 								"variableName": "vTicket_id",
 								"value": {
-									"value": "@activity('Web1').output.body.data[0]",
+									"value": "@activity('Web1').output.body.ticket_id",
 									"type": "Expression"
 								}
 							}
