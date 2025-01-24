@@ -5,7 +5,7 @@
 		"annotations": [],
 		"type": "RestService",
 		"typeProperties": {
-			"url": "@{concat('https://autocorpar.freshdesk.com/api/v2/tickets/',  pipeline().parameters.apiEndpoint, '/conversations')}",
+			"url": "@{concat('https://autocorpar.freshdesk.com/api/v2/tickets/', pipeline().parameters.idTicket, '/conversations')}",
 			"enableServerCertificateValidation": true,
 			"authenticationType": "Basic",
 			"userName": "yBjVC7W3wuMLeucdH4Hw",
