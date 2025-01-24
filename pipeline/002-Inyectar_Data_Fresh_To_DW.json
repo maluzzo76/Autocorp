@@ -26,7 +26,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureMySqlSource",
-						"query": "select id,\ncase when name = 'Abel Banchi' then 'Abel Banchi modi'\nelse NAME\nend name\n from agent_table;\n"
+						"query": "select id,\nupper(name) name\nfrom agent_table;"
 					},
 					"sink": {
 						"type": "AzureSqlSink",
