@@ -99,6 +99,12 @@
 					},
 					"firstRowOnly": false
 				}
+			},
+			{
+				"name": "ForEach2",
+				"type": "ForEach",
+				"dependsOn": [],
+				"userProperties": []
 			}
 		],
 		"variables": {
