@@ -114,7 +114,10 @@
 							"userProperties": [],
 							"typeProperties": {
 								"variableName": "Key",
-								"value": ""
+								"value": {
+									"value": "@json(variables('vTicket_id'))[0].ticket_id",
+									"type": "Expression"
+								}
 							}
 						}
 					]
