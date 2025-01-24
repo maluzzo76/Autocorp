@@ -33,7 +33,7 @@
 							"typeProperties": {
 								"variableName": "IdParameter",
 								"value": {
-									"value": "@string(item().id)",
+									"value": "@item().id",
 									"type": "Expression"
 								}
 							}
@@ -67,7 +67,7 @@
 								},
 								"disableCertValidation": false,
 								"url": {
-									"value": "@concat('https://autocorpar.freshdesk.com/api/v2/tickets/','93311','/conversations')",
+									"value": "@concat('https://autocorpar.freshdesk.com/api/v2/tickets/',variables('IdParameter'),'/conversations')",
 									"type": "Expression"
 								}
 							}
@@ -145,7 +145,7 @@
 		],
 		"variables": {
 			"IdParameter": {
-				"type": "String"
+				"type": "Integer"
 			}
 		},
 		"annotations": []
