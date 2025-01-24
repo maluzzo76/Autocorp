@@ -11,6 +11,10 @@
 			"type": "secureString",
 			"metadata": "Cadena protegida para \"password\"de \"APIFresh\""
 		},
+		"ApiConversariones_password": {
+			"type": "secureString",
+			"metadata": "Cadena protegida para \"password\"de \"ApiConversariones\""
+		},
 		"DataWareouse_connectionString": {
 			"type": "secureString",
 			"metadata": "Cadena protegida para \"connectionString\"de \"DataWareouse\""
@@ -18,6 +22,10 @@
 		"FreshDB_connectionString": {
 			"type": "secureString",
 			"metadata": "Cadena protegida para \"connectionString\"de \"FreshDB\""
+		},
+		"SqlAutocorpDw_password": {
+			"type": "secureString",
+			"metadata": "Cadena protegida para \"password\"de \"SqlAutocorpDw\""
 		},
 		"StaigingDB_connectionString": {
 			"type": "secureString",
@@ -30,6 +38,26 @@
 		"APIFresh_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "yBjVC7W3wuMLeucdH4Hw"
+		},
+		"ApiConversariones_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://autocorpar.freshdesk.com/api/v2/tickets/93311/conversations"
+		},
+		"ApiConversariones_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "yBjVC7W3wuMLeucdH4Hw"
+		},
+		"SqlAutocorpDw_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "autocorpdw.database.windows.net"
+		},
+		"SqlAutocorpDw_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "Autocorp_dw"
+		},
+		"SqlAutocorpDw_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "autocorp"
 		}
 	},
 	"variables": {
@@ -52,7 +80,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"pipeline": {
-								"referenceName": "002-Inyectar_Data_Fresh",
+								"referenceName": "002-Inyectar_Dimensiones_Fresh_To_DW",
 								"type": "PipelineReference"
 							},
 							"waitOnCompletion": true,
@@ -60,13 +88,13 @@
 						}
 					},
 					{
-						"name": "Inyectar_Dimensiones_DW",
+						"name": "Inyectar_Hechos_stg",
 						"type": "ExecutePipeline",
 						"dependsOn": [
 							{
 								"activity": "Inyectar_Data_Fresh",
 								"dependencyConditions": [
-									"Completed"
+									"Succeeded"
 								]
 							}
 						],
@@ -76,7 +104,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"pipeline": {
-								"referenceName": "004-Inyectar_Dimensions",
+								"referenceName": "003-Inyecar_Hechos_Fresh_To_Staiging",
 								"type": "PipelineReference"
 							},
 							"waitOnCompletion": true,
@@ -88,9 +116,15 @@
 						"type": "ExecutePipeline",
 						"dependsOn": [
 							{
-								"activity": "Inyectar_Dimensiones_DW",
+								"activity": "Inyectar_Hechos_stg",
 								"dependencyConditions": [
-									"Completed"
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "Inyecta_Conversaciones_DW",
+								"dependencyConditions": [
+									"Succeeded"
 								]
 							}
 						],
@@ -101,6 +135,30 @@
 						"typeProperties": {
 							"pipeline": {
 								"referenceName": "005-Inyectar_Echos",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "Inyecta_Conversaciones_DW",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "Inyectar_Data_Fresh",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "004-Inyectar_Fresh_Conversaciones_To_Dw",
 								"type": "PipelineReference"
 							},
 							"waitOnCompletion": true,
@@ -123,13 +181,14 @@
 				"lastPublishTime": "2025-01-14T15:43:21Z"
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/002-Inyectar_Data_Fresh')]",
-				"[concat(variables('factoryId'), '/pipelines/004-Inyectar_Dimensions')]",
-				"[concat(variables('factoryId'), '/pipelines/005-Inyectar_Echos')]"
+				"[concat(variables('factoryId'), '/pipelines/002-Inyectar_Dimensiones_Fresh_To_DW')]",
+				"[concat(variables('factoryId'), '/pipelines/003-Inyecar_Hechos_Fresh_To_Staiging')]",
+				"[concat(variables('factoryId'), '/pipelines/005-Inyectar_Echos')]",
+				"[concat(variables('factoryId'), '/pipelines/004-Inyectar_Fresh_Conversaciones_To_Dw')]"
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/002-Inyectar_Data_Fresh')]",
+			"name": "[concat(parameters('factoryName'), '/002-Inyectar_Dimensiones_Fresh_To_DW')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -145,25 +204,23 @@
 							"secureOutput": false,
 							"secureInput": false
 						},
-						"userProperties": [
-							{
-								"name": "Source",
-								"value": "agent_table"
-							},
-							{
-								"name": "Destination",
-								"value": "agentes"
-							}
-						],
+						"userProperties": [],
 						"typeProperties": {
 							"source": {
-								"type": "AzureMySqlSource"
+								"type": "AzureMySqlSource",
+								"query": "select id,\nupper(name) name\nfrom agent_table;"
 							},
 							"sink": {
-								"type": "AzureMySqlSink",
-								"writeBatchSize": 10000,
-								"writeBatchTimeout": "00:00:30",
-								"preCopyScript": "Truncate Table agentes"
+								"type": "AzureSqlSink",
+								"writeBehavior": "upsert",
+								"upsertSettings": {
+									"useTempDB": true,
+									"keys": [
+										"codigo"
+									]
+								},
+								"sqlWriterUseTableLock": false,
+								"disableMetricsCollection": false
 							},
 							"enableStaging": false,
 							"validateDataConsistency": false,
@@ -211,7 +268,7 @@
 						],
 						"outputs": [
 							{
-								"referenceName": "StgAgentes",
+								"referenceName": "dimAgentes",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -233,13 +290,20 @@
 						"typeProperties": {
 							"source": {
 								"type": "AzureMySqlSource",
+								"query": "select id,\r\nupper(name) name\r\nfrom source_table;\r\n\r\n",
 								"queryTimeout": "02:00:00"
 							},
 							"sink": {
-								"type": "AzureMySqlSink",
-								"writeBatchSize": 10000,
-								"writeBatchTimeout": "00:00:30",
-								"preCopyScript": "Truncate Table Origenes"
+								"type": "AzureSqlSink",
+								"writeBehavior": "upsert",
+								"upsertSettings": {
+									"useTempDB": true,
+									"keys": [
+										"codigo"
+									]
+								},
+								"sqlWriterUseTableLock": false,
+								"disableMetricsCollection": false
 							},
 							"enableStaging": false,
 							"validateDataConsistency": false,
@@ -287,7 +351,7 @@
 						],
 						"outputs": [
 							{
-								"referenceName": "StgOrigenes",
+								"referenceName": "dimOrigenes",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -308,13 +372,20 @@
 						"typeProperties": {
 							"source": {
 								"type": "AzureMySqlSource",
+								"query": "select id,\nupper(name) name\nfrom product_table;\n",
 								"queryTimeout": "02:00:00"
 							},
 							"sink": {
-								"type": "AzureMySqlSink",
-								"writeBatchSize": 10000,
-								"writeBatchTimeout": "00:00:30",
-								"preCopyScript": "Truncate Table Productos"
+								"type": "AzureSqlSink",
+								"writeBehavior": "upsert",
+								"upsertSettings": {
+									"useTempDB": true,
+									"keys": [
+										"codigo"
+									]
+								},
+								"sqlWriterUseTableLock": false,
+								"disableMetricsCollection": false
 							},
 							"enableStaging": false,
 							"translator": {
@@ -361,7 +432,7 @@
 						],
 						"outputs": [
 							{
-								"referenceName": "StgProductos",
+								"referenceName": "dimProductos",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -382,13 +453,20 @@
 						"typeProperties": {
 							"source": {
 								"type": "AzureMySqlSource",
+								"query": "select id,\nupper(name) name\nfrom freshdesk_companies;\n\n",
 								"queryTimeout": "02:00:00"
 							},
 							"sink": {
-								"type": "AzureMySqlSink",
-								"writeBatchSize": 10000,
-								"writeBatchTimeout": "00:00:30",
-								"preCopyScript": "Truncate Table Companias"
+								"type": "AzureSqlSink",
+								"writeBehavior": "upsert",
+								"upsertSettings": {
+									"useTempDB": true,
+									"keys": [
+										"codigo"
+									]
+								},
+								"sqlWriterUseTableLock": false,
+								"disableMetricsCollection": false
 							},
 							"enableStaging": false,
 							"translator": {
@@ -435,7 +513,7 @@
 						],
 						"outputs": [
 							{
-								"referenceName": "StgCompanias",
+								"referenceName": "dimCompanias",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -456,14 +534,20 @@
 						"typeProperties": {
 							"source": {
 								"type": "AzureMySqlSource",
-								"query": "SELECT id, \nTRIM(REPLACE(REPLACE(SUBSTRING_INDEX(name, ',', 1),'[',''),'''','')) AS  name\nfrom status_table\n",
+								"query": "SELECT id, \nUPPER(TRIM(REPLACE(REPLACE(SUBSTRING_INDEX(name, ',', 1),'[',''),'''',''))) AS  name\nfrom status_table\n",
 								"queryTimeout": "02:00:00"
 							},
 							"sink": {
-								"type": "AzureMySqlSink",
-								"writeBatchSize": 10000,
-								"writeBatchTimeout": "00:00:30",
-								"preCopyScript": "Truncate Table Estados"
+								"type": "AzureSqlSink",
+								"writeBehavior": "upsert",
+								"upsertSettings": {
+									"useTempDB": true,
+									"keys": [
+										"codigo"
+									]
+								},
+								"sqlWriterUseTableLock": false,
+								"disableMetricsCollection": false
 							},
 							"enableStaging": false,
 							"translator": {
@@ -510,7 +594,7 @@
 						],
 						"outputs": [
 							{
-								"referenceName": "StgEstados",
+								"referenceName": "dimEstados",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -531,13 +615,20 @@
 						"typeProperties": {
 							"source": {
 								"type": "AzureMySqlSource",
+								"query": "select id,\nupper(name) name\nfrom priority_table;",
 								"queryTimeout": "02:00:00"
 							},
 							"sink": {
-								"type": "AzureMySqlSink",
-								"writeBatchSize": 10000,
-								"writeBatchTimeout": "00:00:30",
-								"preCopyScript": "Truncate Table Prioridad"
+								"type": "AzureSqlSink",
+								"writeBehavior": "upsert",
+								"upsertSettings": {
+									"useTempDB": true,
+									"keys": [
+										"codigo"
+									]
+								},
+								"sqlWriterUseTableLock": false,
+								"disableMetricsCollection": false
 							},
 							"enableStaging": false,
 							"translator": {
@@ -546,29 +637,25 @@
 									{
 										"source": {
 											"name": "id",
-											"type": "int",
-											"scale": 0,
-											"precision": 0
+											"type": "Int32",
+											"physicalType": "int"
 										},
 										"sink": {
 											"name": "codigo",
-											"type": "varchar",
-											"scale": 0,
-											"precision": 0
+											"type": "String",
+											"physicalType": "varchar"
 										}
 									},
 									{
 										"source": {
 											"name": "name",
-											"type": "text",
-											"scale": 0,
-											"precision": 0
+											"type": "String",
+											"physicalType": "text"
 										},
 										"sink": {
 											"name": "nombre",
-											"type": "varchar",
-											"scale": 0,
-											"precision": 0
+											"type": "String",
+											"physicalType": "varchar"
 										}
 									}
 								],
@@ -588,7 +675,7 @@
 						],
 						"outputs": [
 							{
-								"referenceName": "StgPrioridad",
+								"referenceName": "dimPrioridades",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -609,13 +696,20 @@
 						"typeProperties": {
 							"source": {
 								"type": "AzureMySqlSource",
+								"query": "select id,\nupper(name) name\nfrom ticket_type;",
 								"queryTimeout": "02:00:00"
 							},
 							"sink": {
-								"type": "AzureMySqlSink",
-								"writeBatchSize": 10000,
-								"writeBatchTimeout": "00:00:30",
-								"preCopyScript": "Truncate Table TipoTicket"
+								"type": "AzureSqlSink",
+								"writeBehavior": "upsert",
+								"upsertSettings": {
+									"useTempDB": true,
+									"keys": [
+										"codigo"
+									]
+								},
+								"sqlWriterUseTableLock": false,
+								"disableMetricsCollection": false
 							},
 							"enableStaging": false,
 							"translator": {
@@ -662,14 +756,15 @@
 						],
 						"outputs": [
 							{
-								"referenceName": "StgTipos",
+								"referenceName": "dimTiposTickets",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
 						]
 					},
 					{
-						"name": "Inyectar_Tickets_Fresh",
+						"name": "Inyectar_Grupos_Fresh",
+						"description": "",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
@@ -683,14 +778,338 @@
 						"typeProperties": {
 							"source": {
 								"type": "AzureMySqlSource",
-								"query": "select DISTINCT\nt.id,\ncreated_at,\nupdated_at,\ntimestampdiff(HOUR,created_at,updated_at) AS `hours_between`,\ntimestampdiff(MINUTE,created_at,updated_at) AS `minutes_between`,\ncompany_id as companiaCodigo,\n`status` as estadoCodigo, \n`type` as tipoCodigo, \ntt.id as tipoid,\nproduct_id as productoCodigo, \ngroup_id as grupoCodigo, \n`source` as origenCodigo,\n`priority` as prioridadCodigo,\n`responder_id` as agenteCodigo\nfrom freshdesk_tickets t\nleft join ticket_type tt on tt.name = t.type",
+								"query": "select id,\nupper(name) name\nfrom group_table;",
 								"queryTimeout": "02:00:00"
 							},
 							"sink": {
-								"type": "AzureMySqlSink",
-								"writeBatchSize": 10000,
-								"writeBatchTimeout": "00:00:30",
-								"preCopyScript": "Truncate Table Tickets"
+								"type": "AzureSqlSink",
+								"writeBehavior": "upsert",
+								"upsertSettings": {
+									"useTempDB": true,
+									"keys": [
+										"codigo"
+									]
+								},
+								"sqlWriterUseTableLock": false,
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"validateDataConsistency": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "id",
+											"type": "Double",
+											"physicalType": "double"
+										},
+										"sink": {
+											"name": "codigo",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "name",
+											"type": "String",
+											"physicalType": "text"
+										},
+										"sink": {
+											"name": "nombre",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "FreshGrupos",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "dimGrupos",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"variables": {
+					"IdForEach": {
+						"type": "Integer"
+					}
+				},
+				"annotations": [],
+				"lastPublishTime": "2025-01-13T18:22:27Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/FreshAgentes')]",
+				"[concat(variables('factoryId'), '/datasets/dimAgentes')]",
+				"[concat(variables('factoryId'), '/datasets/FreshOrigenes')]",
+				"[concat(variables('factoryId'), '/datasets/dimOrigenes')]",
+				"[concat(variables('factoryId'), '/datasets/FreshProductos')]",
+				"[concat(variables('factoryId'), '/datasets/dimProductos')]",
+				"[concat(variables('factoryId'), '/datasets/FreshCompanias')]",
+				"[concat(variables('factoryId'), '/datasets/dimCompanias')]",
+				"[concat(variables('factoryId'), '/datasets/FreshEstados')]",
+				"[concat(variables('factoryId'), '/datasets/dimEstados')]",
+				"[concat(variables('factoryId'), '/datasets/FreshPrioridades')]",
+				"[concat(variables('factoryId'), '/datasets/dimPrioridades')]",
+				"[concat(variables('factoryId'), '/datasets/FreshTipos')]",
+				"[concat(variables('factoryId'), '/datasets/dimTiposTickets')]",
+				"[concat(variables('factoryId'), '/datasets/FreshGrupos')]",
+				"[concat(variables('factoryId'), '/datasets/dimGrupos')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/003-Inyecar_Hechos_Fresh_To_Staiging')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Inyectar_SLA_API",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "RestSource",
+								"httpRequestTimeout": "00:01:40",
+								"requestInterval": "00.00:00:00.010",
+								"requestMethod": "GET",
+								"paginationRules": {
+									"supportRFC5988": "true"
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"writeBehavior": "upsert",
+								"upsertSettings": {
+									"useTempDB": true,
+									"keys": [
+										"codigo"
+									]
+								},
+								"sqlWriterUseTableLock": false,
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"path": "$['id']"
+										},
+										"sink": {
+											"name": "codigo",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['name']"
+										},
+										"sink": {
+											"name": "nombre",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['description']"
+										},
+										"sink": {
+											"name": "descipcion",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['active']"
+										},
+										"sink": {
+											"name": "isactive",
+											"type": "Boolean"
+										}
+									},
+									{
+										"source": {
+											"path": "$['sla_target']['priority_4']['respond_within']"
+										},
+										"sink": {
+											"name": "slaTargetPriority4RespondWithin",
+											"type": "Decimal"
+										}
+									},
+									{
+										"source": {
+											"path": "$['sla_target']['priority_4']['resolve_within']"
+										},
+										"sink": {
+											"name": "slaTargerPriority4ResolveWithin",
+											"type": "Decimal"
+										}
+									},
+									{
+										"source": {
+											"path": "$['sla_target']['priority_3']['respond_within']"
+										},
+										"sink": {
+											"name": "slaTargetPriority3RespondWithin",
+											"type": "Decimal"
+										}
+									},
+									{
+										"source": {
+											"path": "$['sla_target']['priority_3']['resolve_within']"
+										},
+										"sink": {
+											"name": "slaTargerPriority3ResolveWithin",
+											"type": "Decimal"
+										}
+									},
+									{
+										"source": {
+											"path": "$['sla_target']['priority_2']['respond_within']"
+										},
+										"sink": {
+											"name": "slaTargetPriority2RespondWithin",
+											"type": "Decimal"
+										}
+									},
+									{
+										"source": {
+											"path": "$['sla_target']['priority_2']['resolve_within']"
+										},
+										"sink": {
+											"name": "slaTargerPriority2ResolveWithin",
+											"type": "Decimal"
+										}
+									},
+									{
+										"source": {
+											"path": "$['sla_target']['priority_1']['respond_within']"
+										},
+										"sink": {
+											"name": "slaTargetPriority1RespondWithin",
+											"type": "Decimal"
+										}
+									},
+									{
+										"source": {
+											"path": "$['sla_target']['priority_1']['resolve_within']"
+										},
+										"sink": {
+											"name": "slaTargerPriority1ResolveWithin",
+											"type": "Decimal"
+										}
+									},
+									{
+										"source": {
+											"path": "$['escalation']['reminder_resolution']['agent_ids'][0]"
+										},
+										"sink": {
+											"name": "escalationReminderResolutionAgentids",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['escalation']['resolution']['level_1']['agent_ids'][0]"
+										},
+										"sink": {
+											"name": "escalationResolutionLevel1AgentId",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['applicable_to']['company_ids'][0]"
+										},
+										"sink": {
+											"name": "companyid",
+											"type": "String"
+										}
+									}
+								],
+								"collectionReference": ""
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "Fresh_SLA",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "dimSla",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Inyectar_Tickets_Fresh",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "Inyectar_SLA_API",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureMySqlSource",
+								"query": "select DISTINCT\nt.id,\ncreated_at,\nupdated_at,\ntimestampdiff(HOUR,created_at,updated_at) AS `hours_between`,\ntimestampdiff(MINUTE,created_at,updated_at) AS `minutes_between`,\nCAST(company_id AS SIGNED)  as companiaCodigo,\ncast(`status` as SIGNED) as estadoCodigo, \ncast(`type` as SIGNED) as tipoCodigo, \ncast(tt.id as SIGNED) as tipoid,\ncast(product_id as SIGNED) as productoCodigo, \ncast(group_id as SIGNED)as grupoCodigo, \ncast(`source` as SIGNED) as origenCodigo,\ncast(`priority` as SIGNED) as prioridadCodigo,\ncast(`responder_id` as SIGNED) as agenteCodigo\nfrom freshdesk_tickets t\nleft join ticket_type tt on tt.name = t.type",
+								"queryTimeout": "02:00:00"
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"writeBehavior": "upsert",
+								"upsertSettings": {
+									"useTempDB": true,
+									"keys": [
+										"codigo"
+									]
+								},
+								"sqlWriterUseTableLock": false,
+								"disableMetricsCollection": false
 							},
 							"enableStaging": false,
 							"translator": {
@@ -761,8 +1180,8 @@
 										},
 										"sink": {
 											"name": "companiaCodigo",
-											"type": "String",
-											"physicalType": "varchar"
+											"type": "Int32",
+											"physicalType": "int"
 										}
 									},
 									{
@@ -772,8 +1191,8 @@
 										},
 										"sink": {
 											"name": "estadoCodigo",
-											"type": "String",
-											"physicalType": "varchar"
+											"type": "Int32",
+											"physicalType": "int"
 										}
 									},
 									{
@@ -783,8 +1202,8 @@
 										},
 										"sink": {
 											"name": "tipoCodigo",
-											"type": "String",
-											"physicalType": "varchar"
+											"type": "Int32",
+											"physicalType": "int"
 										}
 									},
 									{
@@ -794,8 +1213,8 @@
 										},
 										"sink": {
 											"name": "productoCodigo",
-											"type": "String",
-											"physicalType": "varchar"
+											"type": "Int32",
+											"physicalType": "int"
 										}
 									},
 									{
@@ -805,8 +1224,8 @@
 										},
 										"sink": {
 											"name": "grupoCodigo",
-											"type": "String",
-											"physicalType": "varchar"
+											"type": "Int32",
+											"physicalType": "int"
 										}
 									},
 									{
@@ -816,8 +1235,8 @@
 										},
 										"sink": {
 											"name": "origenCodigo",
-											"type": "String",
-											"physicalType": "varchar"
+											"type": "Int32",
+											"physicalType": "int"
 										}
 									},
 									{
@@ -827,8 +1246,8 @@
 										},
 										"sink": {
 											"name": "prioridadCodigo",
-											"type": "String",
-											"physicalType": "varchar"
+											"type": "Int32",
+											"physicalType": "int"
 										}
 									},
 									{
@@ -838,8 +1257,8 @@
 										},
 										"sink": {
 											"name": "agenteCodigo",
-											"type": "String",
-											"physicalType": "varchar"
+											"type": "Int32",
+											"physicalType": "int"
 										}
 									}
 								],
@@ -859,650 +1278,296 @@
 						],
 						"outputs": [
 							{
-								"referenceName": "StgTickets",
+								"referenceName": "stgTicketsSQL",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
 						]
-					},
-					{
-						"name": "Inyectar_Grupos_Fresh",
-						"description": "",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "AzureMySqlSource",
-								"queryTimeout": "02:00:00"
-							},
-							"sink": {
-								"type": "AzureMySqlSink",
-								"writeBatchSize": 10000,
-								"writeBatchTimeout": "00:00:30",
-								"preCopyScript": "Truncate Table Grupo"
-							},
-							"enableStaging": false,
-							"validateDataConsistency": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"name": "id",
-											"type": "Int32",
-											"physicalType": "int"
-										},
-										"sink": {
-											"name": "codigo",
-											"type": "String",
-											"physicalType": "varchar"
-										}
-									},
-									{
-										"source": {
-											"name": "name",
-											"type": "String",
-											"physicalType": "text"
-										},
-										"sink": {
-											"name": "nombre",
-											"type": "String",
-											"physicalType": "varchar"
-										}
-									}
-								],
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "FreshGrupos",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "StgGrupos",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"annotations": [],
-				"lastPublishTime": "2025-01-13T18:22:27Z"
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/FreshAgentes')]",
-				"[concat(variables('factoryId'), '/datasets/StgAgentes')]",
-				"[concat(variables('factoryId'), '/datasets/FreshOrigenes')]",
-				"[concat(variables('factoryId'), '/datasets/StgOrigenes')]",
-				"[concat(variables('factoryId'), '/datasets/FreshProductos')]",
-				"[concat(variables('factoryId'), '/datasets/StgProductos')]",
-				"[concat(variables('factoryId'), '/datasets/FreshCompanias')]",
-				"[concat(variables('factoryId'), '/datasets/StgCompanias')]",
-				"[concat(variables('factoryId'), '/datasets/FreshEstados')]",
-				"[concat(variables('factoryId'), '/datasets/StgEstados')]",
-				"[concat(variables('factoryId'), '/datasets/FreshPrioridades')]",
-				"[concat(variables('factoryId'), '/datasets/StgPrioridad')]",
-				"[concat(variables('factoryId'), '/datasets/FreshTipos')]",
-				"[concat(variables('factoryId'), '/datasets/StgTipos')]",
-				"[concat(variables('factoryId'), '/datasets/FreshTickets')]",
-				"[concat(variables('factoryId'), '/datasets/StgTickets')]",
-				"[concat(variables('factoryId'), '/datasets/FreshGrupos')]",
-				"[concat(variables('factoryId'), '/datasets/StgGrupos')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/003-Inyecar_SLA')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Inyectar_SLA_API",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "RestSource",
-								"httpRequestTimeout": "00:01:40",
-								"requestInterval": "00.00:00:00.010",
-								"requestMethod": "GET",
-								"paginationRules": {
-									"supportRFC5988": "true"
-								}
-							},
-							"sink": {
-								"type": "AzureMySqlSink",
-								"writeBatchSize": 10000,
-								"writeBatchTimeout": "00:00:30",
-								"preCopyScript": "truncate table Sla"
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"path": "$['id']"
-										},
-										"sink": {
-											"name": "codigo"
-										}
-									},
-									{
-										"source": {
-											"path": "$['name']"
-										},
-										"sink": {
-											"name": "nombre"
-										}
-									},
-									{
-										"source": {
-											"path": "$['description']"
-										},
-										"sink": {
-											"name": "descipcion"
-										}
-									},
-									{
-										"source": {
-											"path": "$['active']"
-										},
-										"sink": {
-											"name": "isactive"
-										}
-									},
-									{
-										"source": {
-											"path": "$['sla_target']['priority_4']['respond_within']"
-										},
-										"sink": {
-											"name": "slaTargetPriority4RespondWithin"
-										}
-									},
-									{
-										"source": {
-											"path": "$['sla_target']['priority_4']['resolve_within']"
-										},
-										"sink": {
-											"name": "slaTargerPriority4ResolveWithin"
-										}
-									},
-									{
-										"source": {
-											"path": "$['sla_target']['priority_3']['respond_within']"
-										},
-										"sink": {
-											"name": "slaTargetPriority3RespondWithin"
-										}
-									},
-									{
-										"source": {
-											"path": "$['sla_target']['priority_3']['resolve_within']"
-										},
-										"sink": {
-											"name": "slaTargerPriority3ResolveWithin"
-										}
-									},
-									{
-										"source": {
-											"path": "$['sla_target']['priority_2']['respond_within']"
-										},
-										"sink": {
-											"name": "slaTargetPriority2RespondWithin"
-										}
-									},
-									{
-										"source": {
-											"path": "$['sla_target']['priority_2']['resolve_within']"
-										},
-										"sink": {
-											"name": "slaTargerPriority2ResolveWithin"
-										}
-									},
-									{
-										"source": {
-											"path": "$['sla_target']['priority_1']['respond_within']"
-										},
-										"sink": {
-											"name": "slaTargetPriority1RespondWithin"
-										}
-									},
-									{
-										"source": {
-											"path": "$['sla_target']['priority_1']['resolve_within']"
-										},
-										"sink": {
-											"name": "slaTargerPriority1ResolveWithin"
-										}
-									},
-									{
-										"source": {
-											"path": "$['applicable_to']['company_ids'][0]"
-										},
-										"sink": {
-											"name": "companyid"
-										}
-									},
-									{
-										"source": {
-											"path": "$['is_default']"
-										},
-										"sink": {
-											"name": "isdefault"
-										}
-									},
-									{
-										"source": {
-											"path": "$['position']"
-										},
-										"sink": {
-											"name": "posicion"
-										}
-									},
-									{
-										"source": {
-											"path": "$['created_at']"
-										},
-										"sink": {
-											"name": "fechaAlta"
-										}
-									},
-									{
-										"source": {
-											"path": "$['updated_at']"
-										},
-										"sink": {
-											"name": "fechaModificacion"
-										}
-									},
-									{
-										"source": {
-											"path": "$['escalation']['reminder_resolution']['agent_ids'][0]"
-										},
-										"sink": {
-											"name": "escalationReminderResolutionAgentids"
-										}
-									},
-									{
-										"source": {
-											"path": "$['escalation']['resolution']['level_1']['agent_ids'][0]"
-										},
-										"sink": {
-											"name": "escalationResolutionLevel1AgentId"
-										}
-									}
-								],
-								"collectionReference": "$['.company_ids']"
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "Fresh_SLA",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "StgSLA",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"annotations": [],
-				"lastPublishTime": "2025-01-14T18:54:25Z"
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/Fresh_SLA')]",
-				"[concat(variables('factoryId'), '/datasets/StgSLA')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/004-Inyectar_Dimensions')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Inyectar_Dw_Agentes",
-						"type": "ExecuteDataFlow",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataflow": {
-								"referenceName": "Inyectar Agentes",
-								"type": "DataFlowReference",
-								"parameters": {},
-								"datasetParameters": {
-									"StgAgentes": {},
-									"DimAgentes": {},
-									"InyectarDW": {}
-								}
-							},
-							"staging": {},
-							"compute": {
-								"coreCount": 8,
-								"computeType": "General"
-							},
-							"traceLevel": "Fine"
-						}
-					},
-					{
-						"name": "Inyectar_Dw_Companias",
-						"type": "ExecuteDataFlow",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataflow": {
-								"referenceName": "Inyectar Companias",
-								"type": "DataFlowReference",
-								"parameters": {},
-								"datasetParameters": {
-									"StgCompanias": {},
-									"DwCompanias": {},
-									"InyectarDW": {}
-								}
-							},
-							"staging": {},
-							"compute": {
-								"coreCount": 8,
-								"computeType": "General"
-							},
-							"traceLevel": "Fine"
-						}
-					},
-					{
-						"name": "Inyectar_Dw_Estados",
-						"type": "ExecuteDataFlow",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataflow": {
-								"referenceName": "Inyectar Estados",
-								"type": "DataFlowReference",
-								"parameters": {},
-								"datasetParameters": {
-									"StgEstados": {},
-									"DwEstados": {},
-									"InyectarDW": {}
-								}
-							},
-							"staging": {},
-							"compute": {
-								"coreCount": 8,
-								"computeType": "General"
-							},
-							"traceLevel": "Fine"
-						}
-					},
-					{
-						"name": "Inyectar_Dw_Grupos",
-						"type": "ExecuteDataFlow",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataflow": {
-								"referenceName": "Inyectar Grupos",
-								"type": "DataFlowReference",
-								"parameters": {},
-								"datasetParameters": {
-									"StgGrupos": {},
-									"DwGrupos": {},
-									"InyectarDW": {}
-								}
-							},
-							"staging": {},
-							"compute": {
-								"coreCount": 8,
-								"computeType": "General"
-							},
-							"traceLevel": "Fine"
-						}
-					},
-					{
-						"name": "Inyectar_Dw_Origenes",
-						"type": "ExecuteDataFlow",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataflow": {
-								"referenceName": "Inyectar Origenes",
-								"type": "DataFlowReference",
-								"parameters": {},
-								"datasetParameters": {
-									"StgOrigenes": {},
-									"DwOrigenes": {},
-									"InyectarDW": {}
-								}
-							},
-							"staging": {},
-							"compute": {
-								"coreCount": 8,
-								"computeType": "General"
-							},
-							"traceLevel": "Fine"
-						}
-					},
-					{
-						"name": "Inyectar_Dw_Prioridades",
-						"type": "ExecuteDataFlow",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataflow": {
-								"referenceName": "Inyectar Prioridades",
-								"type": "DataFlowReference",
-								"parameters": {},
-								"datasetParameters": {
-									"StgPrioridades": {},
-									"DwPrioridades": {},
-									"InyectarDW": {}
-								}
-							},
-							"staging": {},
-							"compute": {
-								"coreCount": 8,
-								"computeType": "General"
-							},
-							"traceLevel": "Fine"
-						}
-					},
-					{
-						"name": "Inyectar_Dw_Productos",
-						"type": "ExecuteDataFlow",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataflow": {
-								"referenceName": "Inyectar Productos",
-								"type": "DataFlowReference",
-								"parameters": {},
-								"datasetParameters": {
-									"StgProductos": {},
-									"DwProductos": {},
-									"InyectarDW": {}
-								}
-							},
-							"staging": {},
-							"compute": {
-								"coreCount": 8,
-								"computeType": "General"
-							},
-							"traceLevel": "Fine"
-						}
-					},
-					{
-						"name": "Inyectar_Dw_Tipos",
-						"type": "ExecuteDataFlow",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataflow": {
-								"referenceName": "Inyectar Tipos",
-								"type": "DataFlowReference",
-								"parameters": {},
-								"datasetParameters": {
-									"StgTipos": {},
-									"DwTipos": {},
-									"InyectarDW": {}
-								}
-							},
-							"staging": {},
-							"compute": {
-								"coreCount": 8,
-								"computeType": "General"
-							},
-							"traceLevel": "Fine"
-						}
-					},
-					{
-						"name": "Inyectar_Dw_SLA",
-						"type": "ExecuteDataFlow",
-						"dependsOn": [
-							{
-								"activity": "Inyectar_Dw_Companias",
-								"dependencyConditions": [
-									"Completed"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataflow": {
-								"referenceName": "Inyectar SLA",
-								"type": "DataFlowReference",
-								"parameters": {},
-								"datasetParameters": {
-									"StgSla": {},
-									"Insert": {}
-								}
-							},
-							"staging": {},
-							"compute": {
-								"coreCount": 8,
-								"computeType": "General"
-							},
-							"traceLevel": "Fine"
-						}
 					}
 				],
 				"policy": {
 					"elapsedTimeMetric": {}
 				},
 				"variables": {
-					"nombre": {
-						"type": "String"
+					"Ids": {
+						"type": "Array",
+						"defaultValue": [
+							"[['a','b','c']"
+						]
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2025-01-14T15:43:20Z"
+				"lastPublishTime": "2025-01-14T18:54:25Z"
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/dataflows/Inyectar Agentes')]",
-				"[concat(variables('factoryId'), '/dataflows/Inyectar Companias')]",
-				"[concat(variables('factoryId'), '/dataflows/Inyectar Estados')]",
-				"[concat(variables('factoryId'), '/dataflows/Inyectar Grupos')]",
-				"[concat(variables('factoryId'), '/dataflows/Inyectar Origenes')]",
-				"[concat(variables('factoryId'), '/dataflows/Inyectar Prioridades')]",
-				"[concat(variables('factoryId'), '/dataflows/Inyectar Productos')]",
-				"[concat(variables('factoryId'), '/dataflows/Inyectar Tipos')]",
-				"[concat(variables('factoryId'), '/dataflows/Inyectar SLA')]"
+				"[concat(variables('factoryId'), '/datasets/Fresh_SLA')]",
+				"[concat(variables('factoryId'), '/datasets/dimSla')]",
+				"[concat(variables('factoryId'), '/datasets/FreshTickets')]",
+				"[concat(variables('factoryId'), '/datasets/stgTicketsSQL')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/004-Inyectar_Fresh_Conversaciones_To_Dw')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Get Conversaciones by Ticket",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "Get Ticktes",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Get Ticktes').output.value",
+								"type": "Expression"
+							},
+							"isSequential": false,
+							"activities": [
+								{
+									"name": "Set variable IdParameter",
+									"type": "SetVariable",
+									"dependsOn": [],
+									"policy": {
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "IdParameter",
+										"value": {
+											"value": "@string(item().id)",
+											"type": "Expression"
+										}
+									}
+								},
+								{
+									"name": "API - Conversaciones",
+									"type": "WebActivity",
+									"dependsOn": [
+										{
+											"activity": "Set variable IdParameter",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"method": "GET",
+										"headers": {
+											"Authorization": {
+												"value": "@concat('Basic ', base64('yBjVC7W3wuMLeucdH4Hw:X'))",
+												"type": "Expression"
+											}
+										},
+										"disableCertValidation": false,
+										"url": {
+											"value": "@concat('https://autocorpar.freshdesk.com/api/v2/tickets/',item().id,'/conversations')",
+											"type": "Expression"
+										}
+									}
+								},
+								{
+									"name": "Set variable vTicketsId",
+									"type": "SetVariable",
+									"dependsOn": [
+										{
+											"activity": "API - Conversaciones",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "vTicket_id",
+										"value": {
+											"value": "@json(activity('API - Conversaciones').output.Response)\n\n",
+											"type": "Expression"
+										}
+									}
+								},
+								{
+									"name": "Set Variable Key",
+									"type": "SetVariable",
+									"dependsOn": [
+										{
+											"activity": "Set variable vTicketsId",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "Key",
+										"value": {
+											"value": "@variables('vTicket_id')[0].ticket_id",
+											"type": "Expression"
+										}
+									}
+								},
+								{
+									"name": "Script Insert Conversaciones DW",
+									"type": "Script",
+									"dependsOn": [
+										{
+											"activity": "Script Detete Conversaciones",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"linkedServiceName": {
+										"referenceName": "SqlAutocorpDw",
+										"type": "LinkedServiceReference"
+									},
+									"typeProperties": {
+										"scripts": [
+											{
+												"type": "Query",
+												"text": {
+													"value": "@concat('insert into stg.conversaciones (id, created_at, updated_at) values (',variables('vTicket_id')[0].ticket_id,\n    pipeline().parameters.DelimitadorComa,\n    pipeline().parameters.DelimitarioCommilaSimple,\n    variables('vTicket_id')[0].created_at,\n    pipeline().parameters.DelimitarioCommilaSimple,\n    pipeline().parameters.DelimitadorComa,\n    pipeline().parameters.DelimitarioCommilaSimple,\n    variables('vTicket_id')[0].updated_at,\n    pipeline().parameters.DelimitarioCommilaSimple,')')",
+													"type": "Expression"
+												}
+											}
+										],
+										"scriptBlockExecutionTimeout": "02:00:00"
+									}
+								},
+								{
+									"name": "Script Detete Conversaciones",
+									"type": "Script",
+									"dependsOn": [
+										{
+											"activity": "Set variable vTicketsId",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"linkedServiceName": {
+										"referenceName": "SqlAutocorpDw",
+										"type": "LinkedServiceReference"
+									},
+									"typeProperties": {
+										"scripts": [
+											{
+												"type": "Query",
+												"text": {
+													"value": "@concat('delete stg.conversaciones where id = ',\npipeline().parameters.DelimitarioCommilaSimple,\nvariables('vTicket_id')[0].ticket_id,\npipeline().parameters.DelimitarioCommilaSimple)",
+													"type": "Expression"
+												}
+											}
+										],
+										"scriptBlockExecutionTimeout": "02:00:00"
+									}
+								}
+							]
+						}
+					},
+					{
+						"name": "Get Ticktes",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": "SELECT codigo as id FROM [stg].[Tickets] \r\nWHERE fechaAlta >  dateadd(day,-40,getdate())\r\norder by codigo",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "stgTicketsSQL",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"parameters": {
+					"DelimitarioCommilaSimple": {
+						"type": "string",
+						"defaultValue": "'"
+					},
+					"DelimitadorComa": {
+						"type": "string",
+						"defaultValue": ","
+					}
+				},
+				"variables": {
+					"IdParameter": {
+						"type": "String"
+					},
+					"vTicket_id": {
+						"type": "Array"
+					},
+					"Key": {
+						"type": "Integer"
+					},
+					"createDate": {
+						"type": "Array"
+					},
+					"VError": {
+						"type": "String"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/stgTicketsSQL')]",
+				"[concat(variables('factoryId'), '/linkedServices/SqlAutocorpDw')]"
 			]
 		},
 		{
@@ -1525,15 +1590,22 @@
 						"userProperties": [],
 						"typeProperties": {
 							"source": {
-								"type": "AzureMySqlSource",
-								"query": "select \nt.codigo,\nt.fechaAlta,\nt.fechaModificacion,\nt.horasDiferecia,\nt.minutosDiferencia,\nc.id companiasid,\ne.id estadoid,\ntp.id Tipoid,\np.id productoid,\ng.id grupoid,\no.id origenid,\npri.id prioridadid,\na.id agenteid\nfrom tickets t\nLEFT JOIN Autocorp_DW.dimCompanias c on c.codigo = t.companiaCodigo\nLEFT JOIN Autocorp_DW.dimEstados e on e.codigo = t.estadoCodigo\nLEFT JOIN Autocorp_DW.dimTiposTicket tp on tp.nombre = t.tipoCodigo\nLEFT JOIN Autocorp_DW.dimProductos p on p.codigo = REPLACE(t.productoCodigo,'.0','')\nLEFT JOIN Autocorp_DW.dimGrupos g on g.codigo = REPLACE(t.grupoCodigo,'.0','')\nLEFT JOIN Autocorp_DW.dimOrigenes o on o.codigo = t.origenCodigo\nLEFT JOIN Autocorp_DW.dimPrioridades pri on pri.codigo = t.prioridadCodigo\nLEFT JOIN Autocorp_DW.dimAgentes a on a.codigo = t.agenteCodigo\n",
-								"queryTimeout": "02:00:00"
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": "select\r\nt.codigo,\r\nt.fechaAlta,\r\nt.fechaModificacion,\r\nc.id companiaId,\r\ne.id estadoId,\r\ntt.id  tipoId,\r\np.id productoId,\r\ng.id grupoId,\r\no.id origenId,\r\npr.id prioridadId,\r\na.id agenteId,\r\nsla.id slaId,\r\ncase \r\n    when pr.codigo = 1 then sla.slaTargerPriority1ResolveWithin /60\r\n    when pr.codigo = 2 then sla.slaTargerPriority2ResolveWithin /60\r\n    when pr.codigo = 3 then sla.slaTargerPriority3ResolveWithin /60\r\n    when pr.codigo = 4 then sla.slaTargerPriority4ResolveWithin /60\r\nend SlaResolucion,\r\ncase \r\n    when pr.codigo = 1 then sla.slaTargetPriority1RespondWithin /60\r\n    when pr.codigo = 2 then sla.slaTargetPriority2RespondWithin /60\r\n    when pr.codigo = 3 then sla.slaTargetPriority3RespondWithin /60\r\n    when pr.codigo = 4 then sla.slaTargetPriority4RespondWithin /60\r\nend SlaRespuesta,\r\npresp.FechaPrimerRespuesta,\r\nhorasDiferecia,\r\nminutosDiferencia\r\n\r\nfrom stg.tickets t \r\nleft join whs.dimCompanias c on c.codigo = t.companiaCodigo\r\nleft join whs.dimEstados e on e.codigo = t.estadoCodigo\r\nleft join whs.dimTiposTicket tt on tt.codigo = t.tipoCodigo\r\nleft join whs.dimProductos p on p.codigo = t.productoCodigo\r\nleft join whs.dimGrupos g on g.codigo = t.grupoCodigo\r\nleft join whs.dimOrigenes o on o.codigo = t.origenCodigo\r\nleft join whs.dimPrioridades pr on pr.codigo = t.prioridadCodigo\r\nleft join whs.dimAgentes a on a.codigo = t.agenteCodigo\r\nleft join whs.dimSla sla on sla.companyid = t.companiaCodigo or sla.nombre = 'Default SLA Policy' and sla.isactive = 1\r\nleft join (\r\n                select id codigo,\r\n            min(created_at) FechaPrimerRespuesta\r\n            from stg.Conversaciones where id = 92984\r\n            group by id\r\n            ) presp on presp.codigo = t.codigo\r\n",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
 							},
 							"sink": {
-								"type": "AzureMySqlSink",
-								"writeBatchSize": 10000,
-								"writeBatchTimeout": "00:00:30",
-								"preCopyScript": "Truncate Table Autocorp_DW.factTickets"
+								"type": "AzureSqlSink",
+								"writeBehavior": "upsert",
+								"upsertSettings": {
+									"useTempDB": true,
+									"keys": [
+										"codigo"
+									]
+								},
+								"sqlWriterUseTableLock": false,
+								"disableMetricsCollection": false
 							},
 							"enableStaging": false,
 							"translator": {
@@ -1601,8 +1673,9 @@
 									},
 									{
 										"source": {
-											"name": "companiasid",
-											"type": "Int32"
+											"name": "companiaId",
+											"type": "Int32",
+											"physicalType": "int"
 										},
 										"sink": {
 											"name": "companiaId",
@@ -1612,8 +1685,9 @@
 									},
 									{
 										"source": {
-											"name": "estadoid",
-											"type": "Int32"
+											"name": "estadoId",
+											"type": "Int32",
+											"physicalType": "int"
 										},
 										"sink": {
 											"name": "estadoId",
@@ -1623,8 +1697,9 @@
 									},
 									{
 										"source": {
-											"name": "Tipoid",
-											"type": "Int32"
+											"name": "tipoId",
+											"type": "Int32",
+											"physicalType": "int"
 										},
 										"sink": {
 											"name": "tipoId",
@@ -1634,8 +1709,9 @@
 									},
 									{
 										"source": {
-											"name": "productoid",
-											"type": "Int32"
+											"name": "productoId",
+											"type": "Int32",
+											"physicalType": "int"
 										},
 										"sink": {
 											"name": "productoId",
@@ -1645,8 +1721,9 @@
 									},
 									{
 										"source": {
-											"name": "grupoid",
-											"type": "Int32"
+											"name": "grupoId",
+											"type": "Int32",
+											"physicalType": "int"
 										},
 										"sink": {
 											"name": "grupoId",
@@ -1656,8 +1733,9 @@
 									},
 									{
 										"source": {
-											"name": "origenid",
-											"type": "Int32"
+											"name": "origenId",
+											"type": "Int32",
+											"physicalType": "int"
 										},
 										"sink": {
 											"name": "origenId",
@@ -1667,8 +1745,9 @@
 									},
 									{
 										"source": {
-											"name": "prioridadid",
-											"type": "Int32"
+											"name": "prioridadId",
+											"type": "Int32",
+											"physicalType": "int"
 										},
 										"sink": {
 											"name": "prioridadId",
@@ -1678,13 +1757,70 @@
 									},
 									{
 										"source": {
-											"name": "agenteid",
-											"type": "Int32"
+											"name": "agenteId",
+											"type": "Int32",
+											"physicalType": "int"
 										},
 										"sink": {
 											"name": "agenteId",
 											"type": "Int32",
 											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "slaId",
+											"type": "Int32",
+											"physicalType": "int"
+										},
+										"sink": {
+											"name": "slaId",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "SlaResolucion",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 7,
+											"precision": 21
+										},
+										"sink": {
+											"name": "SlaResolucion",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 4,
+											"precision": 18
+										}
+									},
+									{
+										"source": {
+											"name": "SlaRespuesta",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 7,
+											"precision": 21
+										},
+										"sink": {
+											"name": "SlaRespuesta",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 4,
+											"precision": 18
+										}
+									},
+									{
+										"source": {
+											"name": "FechaPrimerRespuesta",
+											"type": "DateTime",
+											"physicalType": "datetime"
+										},
+										"sink": {
+											"name": "FechaPrimerRespuesta",
+											"type": "DateTime",
+											"physicalType": "datetime"
 										}
 									}
 								],
@@ -1697,14 +1833,14 @@
 						},
 						"inputs": [
 							{
-								"referenceName": "StgTickets",
+								"referenceName": "stgTicketsSQL",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
 						],
 						"outputs": [
 							{
-								"referenceName": "DwFactTickets",
+								"referenceName": "factTickets",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -1723,578 +1859,8 @@
 				"lastPublishTime": "2025-01-14T15:43:20Z"
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/StgTickets')]",
-				"[concat(variables('factoryId'), '/datasets/DwFactTickets')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DwDimAgentes')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "DataWareouse",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "DW/Dimensiones"
-				},
-				"annotations": [],
-				"type": "AzureMySqlTable",
-				"schema": [
-					{
-						"name": "id",
-						"type": "int",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "codigo",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "nombre",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					}
-				],
-				"typeProperties": {
-					"tableName": "dimagentes"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/DataWareouse')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DwDimCompanias')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "DataWareouse",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "DW/Dimensiones"
-				},
-				"annotations": [],
-				"type": "AzureMySqlTable",
-				"schema": [
-					{
-						"name": "id",
-						"type": "int",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "codigo",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "nombre",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					}
-				],
-				"typeProperties": {
-					"tableName": "dimcompanias"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/DataWareouse')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DwDimEstados')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "DataWareouse",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "DW/Dimensiones"
-				},
-				"annotations": [],
-				"type": "AzureMySqlTable",
-				"schema": [
-					{
-						"name": "id",
-						"type": "int",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "codigo",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "nombre",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					}
-				],
-				"typeProperties": {
-					"tableName": "dimestados"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/DataWareouse')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DwDimGrupos')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "DataWareouse",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "DW/Dimensiones"
-				},
-				"annotations": [],
-				"type": "AzureMySqlTable",
-				"schema": [
-					{
-						"name": "id",
-						"type": "int",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "codigo",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "nombre",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					}
-				],
-				"typeProperties": {
-					"tableName": "dimgrupos"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/DataWareouse')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DwDimOrigenes')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "DataWareouse",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "DW/Dimensiones"
-				},
-				"annotations": [],
-				"type": "AzureMySqlTable",
-				"schema": [
-					{
-						"name": "id",
-						"type": "int",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "codigo",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "nombre",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					}
-				],
-				"typeProperties": {
-					"tableName": "dimorigenes"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/DataWareouse')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DwDimPrioridades')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "DataWareouse",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "DW/Dimensiones"
-				},
-				"annotations": [],
-				"type": "AzureMySqlTable",
-				"schema": [
-					{
-						"name": "id",
-						"type": "int",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "codigo",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "nombre",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					}
-				],
-				"typeProperties": {
-					"tableName": "dimprioridades"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/DataWareouse')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DwDimProductos')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "DataWareouse",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "DW/Dimensiones"
-				},
-				"annotations": [],
-				"type": "AzureMySqlTable",
-				"schema": [
-					{
-						"name": "id",
-						"type": "int",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "codigo",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "nombre",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					}
-				],
-				"typeProperties": {
-					"tableName": "dimproductos"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/DataWareouse')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DwDimSla')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "DataWareouse",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "DW/Dimensiones"
-				},
-				"annotations": [],
-				"type": "AzureMySqlTable",
-				"schema": [
-					{
-						"name": "id",
-						"type": "int",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "codigo",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "nombre",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "descipcion",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "activo",
-						"type": "tinyint",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "prederterminado",
-						"type": "tinyint",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "posicion",
-						"type": "int",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "fechaAlta",
-						"type": "timestamp",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "fechaModificacion",
-						"type": "timestamp",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "companiaid",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "TiempoRespuestaPrioridad1",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 4
-					},
-					{
-						"name": "TiempoResolucionPrioridad1",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 4
-					},
-					{
-						"name": "TiempoRespuestaPrioridad2",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 4
-					},
-					{
-						"name": "TiempoResolucionPrioridad2",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 4
-					},
-					{
-						"name": "TiempoRespuestaPrioridad3",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 4
-					},
-					{
-						"name": "TiempoResolucionPrioridad3",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 4
-					},
-					{
-						"name": "TiempoRespuestaPrioridad4",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 4
-					},
-					{
-						"name": "TiempoResolucionPrioridad4",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 4
-					}
-				],
-				"typeProperties": {
-					"tableName": "dimsla"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/DataWareouse')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DwDimTiposTicket')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "DataWareouse",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "DW/Dimensiones"
-				},
-				"annotations": [],
-				"type": "AzureMySqlTable",
-				"schema": [
-					{
-						"name": "id",
-						"type": "int",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "codigo",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "nombre",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					}
-				],
-				"typeProperties": {
-					"tableName": "dimtiposticket"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/DataWareouse')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DwFactTickets')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "DataWareouse",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "DW/Echos"
-				},
-				"annotations": [],
-				"type": "AzureMySqlTable",
-				"schema": [
-					{
-						"name": "codigo",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "fechaAlta",
-						"type": "datetime",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "fechaModificacion",
-						"type": "datetime",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "horasDiferecia",
-						"type": "int",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "minutosDiferencia",
-						"type": "int",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "companiaId",
-						"type": "int",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "estadoId",
-						"type": "int",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "tipoId",
-						"type": "int",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "productoId",
-						"type": "int",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "grupoId",
-						"type": "int",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "origenId",
-						"type": "int",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "prioridadId",
-						"type": "int",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "agenteId",
-						"type": "int",
-						"precision": 0,
-						"scale": 0
-					}
-				],
-				"typeProperties": {
-					"tableName": "facttickets"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/DataWareouse')]"
+				"[concat(variables('factoryId'), '/datasets/stgTicketsSQL')]",
+				"[concat(variables('factoryId'), '/datasets/factTickets')]"
 			]
 		},
 		{
@@ -2910,6 +2476,27 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/Fresh_Conversasiones')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ApiConversariones",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "APIs"
+				},
+				"annotations": [],
+				"type": "RestResource",
+				"typeProperties": {},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ApiConversariones')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/Fresh_SLA')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -2931,325 +2518,290 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/StgAgentes')]",
+			"name": "[concat(parameters('factoryName'), '/dimAgentes')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "StaigingDB",
+					"referenceName": "SqlAutocorpDw",
 					"type": "LinkedServiceReference"
 				},
 				"folder": {
-					"name": "Staiging"
+					"name": "DW/Dimensiones"
 				},
 				"annotations": [],
-				"type": "AzureMySqlTable",
+				"type": "AzureSqlTable",
 				"schema": [
 					{
+						"name": "id",
+						"type": "int",
+						"precision": 10
+					},
+					{
 						"name": "codigo",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
+						"type": "varchar"
 					},
 					{
 						"name": "nombre",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
+						"type": "varchar"
 					}
 				],
 				"typeProperties": {
-					"tableName": "agentes"
+					"schema": "whs",
+					"table": "dimAgentes"
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/StaigingDB')]"
+				"[concat(variables('factoryId'), '/linkedServices/SqlAutocorpDw')]"
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/StgCompanias')]",
+			"name": "[concat(parameters('factoryName'), '/dimCompanias')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "StaigingDB",
+					"referenceName": "SqlAutocorpDw",
 					"type": "LinkedServiceReference"
 				},
 				"folder": {
-					"name": "Staiging"
+					"name": "DW/Dimensiones"
 				},
 				"annotations": [],
-				"type": "AzureMySqlTable",
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "whs",
+					"table": "dimCompanias"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SqlAutocorpDw')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dimEstados')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SqlAutocorpDw",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DW/Dimensiones"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "whs",
+					"table": "dimEstados"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SqlAutocorpDw')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dimGrupos')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SqlAutocorpDw",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DW/Dimensiones"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
 				"schema": [
 					{
+						"name": "id",
+						"type": "int",
+						"precision": 10
+					},
+					{
 						"name": "codigo",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
+						"type": "varchar"
 					},
 					{
 						"name": "nombre",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
+						"type": "varchar"
 					}
 				],
 				"typeProperties": {
-					"tableName": "companias"
+					"schema": "whs",
+					"table": "dimGrupos"
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/StaigingDB')]"
+				"[concat(variables('factoryId'), '/linkedServices/SqlAutocorpDw')]"
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/StgEstados')]",
+			"name": "[concat(parameters('factoryName'), '/dimOrigenes')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "StaigingDB",
+					"referenceName": "SqlAutocorpDw",
 					"type": "LinkedServiceReference"
 				},
 				"folder": {
-					"name": "Staiging"
+					"name": "DW/Dimensiones"
 				},
 				"annotations": [],
-				"type": "AzureMySqlTable",
+				"type": "AzureSqlTable",
 				"schema": [
 					{
+						"name": "id",
+						"type": "int",
+						"precision": 10
+					},
+					{
 						"name": "codigo",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
+						"type": "varchar"
 					},
 					{
 						"name": "nombre",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
+						"type": "varchar"
 					}
 				],
 				"typeProperties": {
-					"tableName": "estados"
+					"schema": "whs",
+					"table": "dimOrigenes"
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/StaigingDB')]"
+				"[concat(variables('factoryId'), '/linkedServices/SqlAutocorpDw')]"
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/StgGrupos')]",
+			"name": "[concat(parameters('factoryName'), '/dimPrioridades')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "StaigingDB",
+					"referenceName": "SqlAutocorpDw",
 					"type": "LinkedServiceReference"
 				},
 				"folder": {
-					"name": "Staiging"
+					"name": "DW/Dimensiones"
 				},
 				"annotations": [],
-				"type": "AzureMySqlTable",
+				"type": "AzureSqlTable",
 				"schema": [
 					{
+						"name": "id",
+						"type": "int",
+						"precision": 10
+					},
+					{
 						"name": "codigo",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
+						"type": "varchar"
 					},
 					{
 						"name": "nombre",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
+						"type": "varchar"
 					}
 				],
 				"typeProperties": {
-					"tableName": "grupo"
+					"schema": "whs",
+					"table": "dimPrioridades"
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/StaigingDB')]"
+				"[concat(variables('factoryId'), '/linkedServices/SqlAutocorpDw')]"
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/StgOrigenes')]",
+			"name": "[concat(parameters('factoryName'), '/dimProductos')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "StaigingDB",
+					"referenceName": "SqlAutocorpDw",
 					"type": "LinkedServiceReference"
 				},
 				"folder": {
-					"name": "Staiging"
+					"name": "DW/Dimensiones"
 				},
 				"annotations": [],
-				"type": "AzureMySqlTable",
+				"type": "AzureSqlTable",
 				"schema": [
 					{
-						"name": "codigo",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
+						"name": "id",
+						"type": "int",
+						"precision": 10
 					},
 					{
 						"name": "nombre",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
+						"type": "varchar"
 					}
 				],
 				"typeProperties": {
-					"tableName": "origenes"
+					"schema": "whs",
+					"table": "dimProductos"
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/StaigingDB')]"
+				"[concat(variables('factoryId'), '/linkedServices/SqlAutocorpDw')]"
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/StgPrioridad')]",
+			"name": "[concat(parameters('factoryName'), '/dimSla')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "StaigingDB",
+					"referenceName": "SqlAutocorpDw",
 					"type": "LinkedServiceReference"
 				},
 				"folder": {
-					"name": "Staiging"
+					"name": "DW/Dimensiones"
 				},
 				"annotations": [],
-				"type": "AzureMySqlTable",
+				"type": "AzureSqlTable",
 				"schema": [
 					{
 						"name": "codigo",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
+						"type": "varchar"
 					},
 					{
 						"name": "nombre",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					}
-				],
-				"typeProperties": {
-					"tableName": "prioridad"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/StaigingDB')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/StgProductos')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "StaigingDB",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "Staiging"
-				},
-				"annotations": [],
-				"type": "AzureMySqlTable",
-				"schema": [
-					{
-						"name": "codigo",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "nombre",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					}
-				],
-				"typeProperties": {
-					"tableName": "productos"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/StaigingDB')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/StgSLA')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "StaigingDB",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "Staiging"
-				},
-				"annotations": [],
-				"type": "AzureMySqlTable",
-				"schema": [
-					{
-						"name": "codigo",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "nombre",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
+						"type": "varchar"
 					},
 					{
 						"name": "descipcion",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
+						"type": "varchar"
 					},
 					{
 						"name": "isactive",
-						"type": "tinyint",
-						"precision": 0,
-						"scale": 0
+						"type": "bit"
 					},
 					{
 						"name": "isdefault",
-						"type": "tinyint",
-						"precision": 0,
-						"scale": 0
+						"type": "bit"
 					},
 					{
 						"name": "posicion",
 						"type": "int",
-						"precision": 0,
-						"scale": 0
+						"precision": 10
 					},
 					{
 						"name": "fechaAlta",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
+						"type": "varchar"
 					},
 					{
 						"name": "fechaModificacion",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
+						"type": "varchar"
 					},
 					{
 						"name": "companyid",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
+						"type": "varchar"
 					},
 					{
 						"name": "slaTargetPriority1RespondWithin",
@@ -3307,9 +2859,7 @@
 					},
 					{
 						"name": "escalationReminderResolutionAgentids",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
+						"type": "varchar"
 					},
 					{
 						"name": "escalationResolutionLevel1EscalationTime",
@@ -3319,155 +2869,236 @@
 					},
 					{
 						"name": "escalationResolutionLevel1AgentId",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
+						"type": "varchar"
 					}
 				],
 				"typeProperties": {
-					"tableName": "sla"
+					"schema": "whs",
+					"table": "dimSla"
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/StaigingDB')]"
+				"[concat(variables('factoryId'), '/linkedServices/SqlAutocorpDw')]"
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/StgTickets')]",
+			"name": "[concat(parameters('factoryName'), '/dimTiposTickets')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "StaigingDB",
+					"referenceName": "SqlAutocorpDw",
 					"type": "LinkedServiceReference"
 				},
 				"folder": {
-					"name": "Staiging"
+					"name": "DW/Dimensiones"
 				},
 				"annotations": [],
-				"type": "AzureMySqlTable",
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "codigo",
+						"type": "varchar"
+					},
+					{
+						"name": "nombre",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "whs",
+					"table": "dimTiposTicket"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SqlAutocorpDw')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/factTickets')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SqlAutocorpDw",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DW/Echos"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
 				"schema": [
 					{
 						"name": "codigo",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
+						"type": "varchar"
 					},
 					{
 						"name": "fechaAlta",
 						"type": "datetime",
-						"precision": 0,
-						"scale": 0
+						"precision": 23,
+						"scale": 3
 					},
 					{
 						"name": "fechaModificacion",
 						"type": "datetime",
-						"precision": 0,
-						"scale": 0
+						"precision": 23,
+						"scale": 3
 					},
 					{
 						"name": "horasDiferecia",
 						"type": "int",
-						"precision": 0,
-						"scale": 0
+						"precision": 10
 					},
 					{
 						"name": "minutosDiferencia",
 						"type": "int",
-						"precision": 0,
-						"scale": 0
+						"precision": 10
 					},
 					{
-						"name": "companiaCodigo",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
+						"name": "companiaId",
+						"type": "int",
+						"precision": 10
 					},
 					{
-						"name": "estadoCodigo",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
+						"name": "estadoId",
+						"type": "int",
+						"precision": 10
 					},
 					{
-						"name": "tipoCodigo",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
+						"name": "tipoId",
+						"type": "int",
+						"precision": 10
 					},
 					{
-						"name": "productoCodigo",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
+						"name": "productoId",
+						"type": "int",
+						"precision": 10
 					},
 					{
-						"name": "grupoCodigo",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
+						"name": "grupoId",
+						"type": "int",
+						"precision": 10
 					},
 					{
-						"name": "origenCodigo",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
+						"name": "origenId",
+						"type": "int",
+						"precision": 10
 					},
 					{
-						"name": "prioridadCodigo",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
+						"name": "prioridadId",
+						"type": "int",
+						"precision": 10
 					},
 					{
-						"name": "agenteCodigo",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
+						"name": "agenteId",
+						"type": "int",
+						"precision": 10
 					}
 				],
 				"typeProperties": {
-					"tableName": "tickets"
+					"schema": "whs",
+					"table": "factTickets"
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/StaigingDB')]"
+				"[concat(variables('factoryId'), '/linkedServices/SqlAutocorpDw')]"
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/StgTipos')]",
+			"name": "[concat(parameters('factoryName'), '/stgTicketsSQL')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "StaigingDB",
+					"referenceName": "SqlAutocorpDw",
 					"type": "LinkedServiceReference"
 				},
 				"folder": {
 					"name": "Staiging"
 				},
 				"annotations": [],
-				"type": "AzureMySqlTable",
+				"type": "AzureSqlTable",
 				"schema": [
 					{
 						"name": "codigo",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
+						"type": "varchar"
 					},
 					{
-						"name": "nombre",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
+						"name": "fechaAlta",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "fechaModificacion",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "horasDiferecia",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "minutosDiferencia",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "companiaCodigo",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "estadoCodigo",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "tipoCodigo",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "productoCodigo",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "grupoCodigo",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "origenCodigo",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "prioridadCodigo",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "agenteCodigo",
+						"type": "int",
+						"precision": 10
 					}
 				],
 				"typeProperties": {
-					"tableName": "tipoticket"
+					"schema": "stg",
+					"table": "Tickets"
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/StaigingDB')]"
+				"[concat(variables('factoryId'), '/linkedServices/SqlAutocorpDw')]"
 			]
 		},
 		{
@@ -3485,6 +3116,26 @@
 					"password": {
 						"type": "SecureString",
 						"value": "[parameters('APIFresh_password')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ApiConversariones')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "RestService",
+				"typeProperties": {
+					"url": "[parameters('ApiConversariones_properties_typeProperties_url')]",
+					"enableServerCertificateValidation": true,
+					"authenticationType": "Basic",
+					"userName": "[parameters('ApiConversariones_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('ApiConversariones_password')]"
 					}
 				}
 			},
@@ -3512,6 +3163,28 @@
 				"type": "AzureMySql",
 				"typeProperties": {
 					"connectionString": "[parameters('FreshDB_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SqlAutocorpDw')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"server": "[parameters('SqlAutocorpDw_properties_typeProperties_server')]",
+					"database": "[parameters('SqlAutocorpDw_properties_typeProperties_database')]",
+					"encrypt": "mandatory",
+					"trustServerCertificate": false,
+					"authenticationType": "SQL",
+					"userName": "[parameters('SqlAutocorpDw_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('SqlAutocorpDw_password')]"
+					}
 				}
 			},
 			"dependsOn": []
@@ -3557,802 +3230,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/001-Orquestador')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Inyectar Agentes')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"folder": {
-					"name": "Inyectar Dimensiones"
-				},
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "StgAgentes",
-								"type": "DatasetReference"
-							},
-							"name": "StgAgentes"
-						},
-						{
-							"dataset": {
-								"referenceName": "DwDimAgentes",
-								"type": "DatasetReference"
-							},
-							"name": "DimAgentes"
-						}
-					],
-					"sinks": [
-						{
-							"linkedService": {
-								"referenceName": "DataWareouse",
-								"type": "LinkedServiceReference"
-							},
-							"name": "InyectarDW"
-						}
-					],
-					"transformations": [
-						{
-							"name": "Validar"
-						}
-					],
-					"scriptLines": [
-						"source(output(",
-						"          codigo as string,",
-						"          nombre as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     isolationLevel: 'READ_UNCOMMITTED',",
-						"     format: 'table') ~> StgAgentes",
-						"source(output(",
-						"          id as integer,",
-						"          codigo as string,",
-						"          nombre as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     isolationLevel: 'READ_UNCOMMITTED',",
-						"     format: 'table') ~> DimAgentes",
-						"StgAgentes, DimAgentes exists(StgAgentes@codigo == DimAgentes@codigo",
-						"     && StgAgentes@nombre == DimAgentes@nombre,",
-						"     negate:true,",
-						"     broadcast: 'auto')~> Validar",
-						"Validar sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     format: 'table',",
-						"     tableName: 'dimagentes',",
-						"     deletable: false,",
-						"     insertable: true,",
-						"     updateable: false,",
-						"     upsertable: false,",
-						"     store: 'mysql',",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> InyectarDW"
-					]
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/StgAgentes')]",
-				"[concat(variables('factoryId'), '/datasets/DwDimAgentes')]",
-				"[concat(variables('factoryId'), '/linkedServices/DataWareouse')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Inyectar Companias')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"folder": {
-					"name": "Inyectar Dimensiones"
-				},
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "StgCompanias",
-								"type": "DatasetReference"
-							},
-							"name": "StgCompanias"
-						},
-						{
-							"dataset": {
-								"referenceName": "DwDimCompanias",
-								"type": "DatasetReference"
-							},
-							"name": "DwCompanias"
-						}
-					],
-					"sinks": [
-						{
-							"linkedService": {
-								"referenceName": "DataWareouse",
-								"type": "LinkedServiceReference"
-							},
-							"name": "InyectarDW"
-						}
-					],
-					"transformations": [
-						{
-							"name": "Validar"
-						}
-					],
-					"scriptLines": [
-						"source(output(",
-						"          codigo as string,",
-						"          nombre as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     isolationLevel: 'READ_UNCOMMITTED',",
-						"     format: 'table') ~> StgCompanias",
-						"source(output(",
-						"          id as integer,",
-						"          codigo as string,",
-						"          nombre as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     isolationLevel: 'READ_UNCOMMITTED',",
-						"     format: 'table') ~> DwCompanias",
-						"StgCompanias, DwCompanias exists(StgCompanias@codigo == DwCompanias@codigo,",
-						"     negate:true,",
-						"     broadcast: 'auto')~> Validar",
-						"Validar sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     format: 'table',",
-						"     tableName: 'dimcompanias',",
-						"     deletable: false,",
-						"     insertable: true,",
-						"     updateable: false,",
-						"     upsertable: false,",
-						"     store: 'mysql',",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     mapColumn(",
-						"          codigo,",
-						"          nombre",
-						"     )) ~> InyectarDW"
-					]
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/StgCompanias')]",
-				"[concat(variables('factoryId'), '/datasets/DwDimCompanias')]",
-				"[concat(variables('factoryId'), '/linkedServices/DataWareouse')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Inyectar Estados')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"folder": {
-					"name": "Inyectar Dimensiones"
-				},
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "StgEstados",
-								"type": "DatasetReference"
-							},
-							"name": "StgEstados"
-						},
-						{
-							"dataset": {
-								"referenceName": "DwDimEstados",
-								"type": "DatasetReference"
-							},
-							"name": "DwEstados"
-						}
-					],
-					"sinks": [
-						{
-							"linkedService": {
-								"referenceName": "DataWareouse",
-								"type": "LinkedServiceReference"
-							},
-							"name": "InyectarDW"
-						}
-					],
-					"transformations": [
-						{
-							"name": "Validar"
-						}
-					],
-					"scriptLines": [
-						"source(output(",
-						"          codigo as string,",
-						"          nombre as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     isolationLevel: 'READ_UNCOMMITTED',",
-						"     format: 'table') ~> StgEstados",
-						"source(output(",
-						"          id as integer,",
-						"          codigo as string,",
-						"          nombre as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     isolationLevel: 'READ_UNCOMMITTED',",
-						"     format: 'table') ~> DwEstados",
-						"StgEstados, DwEstados exists(StgEstados@codigo == DwEstados@codigo,",
-						"     negate:true,",
-						"     broadcast: 'auto')~> Validar",
-						"Validar sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     format: 'table',",
-						"     tableName: 'dimEstados',",
-						"     deletable: false,",
-						"     insertable: true,",
-						"     updateable: false,",
-						"     upsertable: false,",
-						"     store: 'mysql',",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     mapColumn(",
-						"          codigo,",
-						"          nombre",
-						"     )) ~> InyectarDW"
-					]
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/StgEstados')]",
-				"[concat(variables('factoryId'), '/datasets/DwDimEstados')]",
-				"[concat(variables('factoryId'), '/linkedServices/DataWareouse')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Inyectar Grupos')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"folder": {
-					"name": "Inyectar Dimensiones"
-				},
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "StgGrupos",
-								"type": "DatasetReference"
-							},
-							"name": "StgGrupos"
-						},
-						{
-							"dataset": {
-								"referenceName": "DwDimGrupos",
-								"type": "DatasetReference"
-							},
-							"name": "DwGrupos"
-						}
-					],
-					"sinks": [
-						{
-							"linkedService": {
-								"referenceName": "DataWareouse",
-								"type": "LinkedServiceReference"
-							},
-							"name": "InyectarDW"
-						}
-					],
-					"transformations": [
-						{
-							"name": "Validar"
-						}
-					],
-					"scriptLines": [
-						"source(output(",
-						"          codigo as string,",
-						"          nombre as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     isolationLevel: 'READ_UNCOMMITTED',",
-						"     format: 'table') ~> StgGrupos",
-						"source(output(",
-						"          id as integer,",
-						"          codigo as string,",
-						"          nombre as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     isolationLevel: 'READ_UNCOMMITTED',",
-						"     format: 'table') ~> DwGrupos",
-						"StgGrupos, DwGrupos exists(StgGrupos@codigo == DwGrupos@codigo,",
-						"     negate:true,",
-						"     broadcast: 'auto')~> Validar",
-						"Validar sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     format: 'table',",
-						"     tableName: 'dimgrupos',",
-						"     deletable: false,",
-						"     insertable: true,",
-						"     updateable: false,",
-						"     upsertable: false,",
-						"     store: 'mysql',",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     mapColumn(",
-						"          codigo,",
-						"          nombre",
-						"     )) ~> InyectarDW"
-					]
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/StgGrupos')]",
-				"[concat(variables('factoryId'), '/datasets/DwDimGrupos')]",
-				"[concat(variables('factoryId'), '/linkedServices/DataWareouse')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Inyectar Origenes')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"folder": {
-					"name": "Inyectar Dimensiones"
-				},
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "StgOrigenes",
-								"type": "DatasetReference"
-							},
-							"name": "StgOrigenes"
-						},
-						{
-							"dataset": {
-								"referenceName": "DwDimOrigenes",
-								"type": "DatasetReference"
-							},
-							"name": "DwOrigenes"
-						}
-					],
-					"sinks": [
-						{
-							"linkedService": {
-								"referenceName": "DataWareouse",
-								"type": "LinkedServiceReference"
-							},
-							"name": "InyectarDW"
-						}
-					],
-					"transformations": [
-						{
-							"name": "Validar"
-						}
-					],
-					"scriptLines": [
-						"source(output(",
-						"          codigo as string,",
-						"          nombre as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     isolationLevel: 'READ_UNCOMMITTED',",
-						"     format: 'table') ~> StgOrigenes",
-						"source(output(",
-						"          id as integer,",
-						"          codigo as string,",
-						"          nombre as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     isolationLevel: 'READ_UNCOMMITTED',",
-						"     format: 'table') ~> DwOrigenes",
-						"StgOrigenes, DwOrigenes exists(StgOrigenes@codigo == DwOrigenes@codigo,",
-						"     negate:true,",
-						"     broadcast: 'auto')~> Validar",
-						"Validar sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     format: 'table',",
-						"     tableName: 'dimorigenes',",
-						"     deletable: false,",
-						"     insertable: true,",
-						"     updateable: false,",
-						"     upsertable: false,",
-						"     store: 'mysql',",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     mapColumn(",
-						"          codigo,",
-						"          nombre",
-						"     )) ~> InyectarDW"
-					]
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/StgOrigenes')]",
-				"[concat(variables('factoryId'), '/datasets/DwDimOrigenes')]",
-				"[concat(variables('factoryId'), '/linkedServices/DataWareouse')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Inyectar Prioridades')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"folder": {
-					"name": "Inyectar Dimensiones"
-				},
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "StgPrioridad",
-								"type": "DatasetReference"
-							},
-							"name": "StgPrioridades"
-						},
-						{
-							"dataset": {
-								"referenceName": "DwDimPrioridades",
-								"type": "DatasetReference"
-							},
-							"name": "DwPrioridades"
-						}
-					],
-					"sinks": [
-						{
-							"linkedService": {
-								"referenceName": "DataWareouse",
-								"type": "LinkedServiceReference"
-							},
-							"name": "InyectarDW"
-						}
-					],
-					"transformations": [
-						{
-							"name": "Validar"
-						}
-					],
-					"scriptLines": [
-						"source(output(",
-						"          codigo as string,",
-						"          nombre as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     isolationLevel: 'READ_UNCOMMITTED',",
-						"     format: 'table') ~> StgPrioridades",
-						"source(output(",
-						"          id as integer,",
-						"          codigo as string,",
-						"          nombre as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     isolationLevel: 'READ_UNCOMMITTED',",
-						"     format: 'table') ~> DwPrioridades",
-						"StgPrioridades, DwPrioridades exists(StgPrioridades@codigo == DwPrioridades@codigo,",
-						"     negate:true,",
-						"     broadcast: 'auto')~> Validar",
-						"Validar sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     format: 'table',",
-						"     tableName: 'dimprioridades',",
-						"     deletable: false,",
-						"     insertable: true,",
-						"     updateable: false,",
-						"     upsertable: false,",
-						"     store: 'mysql',",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     mapColumn(",
-						"          codigo,",
-						"          nombre",
-						"     )) ~> InyectarDW"
-					]
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/StgPrioridad')]",
-				"[concat(variables('factoryId'), '/datasets/DwDimPrioridades')]",
-				"[concat(variables('factoryId'), '/linkedServices/DataWareouse')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Inyectar Productos')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"folder": {
-					"name": "Inyectar Dimensiones"
-				},
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "StgProductos",
-								"type": "DatasetReference"
-							},
-							"name": "StgProductos"
-						},
-						{
-							"dataset": {
-								"referenceName": "DwDimProductos",
-								"type": "DatasetReference"
-							},
-							"name": "DwProductos"
-						}
-					],
-					"sinks": [
-						{
-							"linkedService": {
-								"referenceName": "DataWareouse",
-								"type": "LinkedServiceReference"
-							},
-							"name": "InyectarDW"
-						}
-					],
-					"transformations": [
-						{
-							"name": "Validar"
-						}
-					],
-					"scriptLines": [
-						"source(output(",
-						"          codigo as string,",
-						"          nombre as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     isolationLevel: 'READ_UNCOMMITTED',",
-						"     format: 'table') ~> StgProductos",
-						"source(output(",
-						"          id as integer,",
-						"          codigo as string,",
-						"          nombre as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     isolationLevel: 'READ_UNCOMMITTED',",
-						"     format: 'table') ~> DwProductos",
-						"StgProductos, DwProductos exists(StgProductos@codigo == DwProductos@codigo,",
-						"     negate:true,",
-						"     broadcast: 'auto')~> Validar",
-						"Validar sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     format: 'table',",
-						"     tableName: 'dimproductos',",
-						"     deletable: false,",
-						"     insertable: true,",
-						"     updateable: false,",
-						"     upsertable: false,",
-						"     store: 'mysql',",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     mapColumn(",
-						"          codigo,",
-						"          nombre",
-						"     )) ~> InyectarDW"
-					]
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/StgProductos')]",
-				"[concat(variables('factoryId'), '/datasets/DwDimProductos')]",
-				"[concat(variables('factoryId'), '/linkedServices/DataWareouse')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Inyectar SLA')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"folder": {
-					"name": "Inyectar Dimensiones"
-				},
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "StgSLA",
-								"type": "DatasetReference"
-							},
-							"name": "StgSla"
-						}
-					],
-					"sinks": [
-						{
-							"dataset": {
-								"referenceName": "DwDimSla",
-								"type": "DatasetReference"
-							},
-							"name": "Insert"
-						}
-					],
-					"transformations": [
-						{
-							"name": "Select"
-						}
-					],
-					"scriptLines": [
-						"source(output(",
-						"          id as integer,",
-						"          codigo as string,",
-						"          nombre as string,",
-						"          descipcion as string,",
-						"          isactive as boolean,",
-						"          isdefault as boolean,",
-						"          posicion as integer,",
-						"          fecha as string,",
-						"          fechaModificacion as string,",
-						"          companyid as string,",
-						"          slaTargetPriority1RespondWithin as decimal(18,4),",
-						"          slaTargerPriority1ResolveWithin as decimal(18,4),",
-						"          slaTargetPriority2RespondWithin as decimal(18,4),",
-						"          slaTargerPriority2ResolveWithin as decimal(18,4),",
-						"          slaTargetPriority3RespondWithin as decimal(18,4),",
-						"          slaTargerPriority3ResolveWithin as decimal(18,4),",
-						"          slaTargetPriority4RespondWithin as decimal(18,4),",
-						"          slaTargerPriority4ResolveWithin as decimal(18,4)",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     isolationLevel: 'READ_UNCOMMITTED',",
-						"     query: 'select\\n    0 id,\\n    sla.codigo,\\n    sla.nombre,\\n    sla.descipcion,\\n    sla.isactive,     \\n    sla.isdefault,\\n    posicion,\\n    REPLACE(REPLACE(fechaAlta, \\'T\\', \\' \\') ,\\'Z\\',\\'\\')fecha, \\n     REPLACE(REPLACE(fechaModificacion, \\'T\\', \\' \\') ,\\'Z\\',\\'\\')  fechaModificacion,\\n    c.id companyid ,\\n    slaTargetPriority1RespondWithin     ,\\n    slaTargerPriority1ResolveWithin     , \\n    slaTargetPriority2RespondWithin     ,\\n    slaTargerPriority2ResolveWithin     ,   \\n    slaTargetPriority3RespondWithin     ,\\n    slaTargerPriority3ResolveWithin     ,    \\n    slaTargetPriority4RespondWithin     ,\\n    slaTargerPriority4ResolveWithin     \\nfrom Sla\\nLEFT JOIN Autocorp_DW.dimcompanias c on c.codigo = sla.companyid\\n\\n',",
-						"     format: 'query') ~> StgSla",
-						"StgSla select(skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> Select",
-						"Select sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     input(",
-						"          id as integer,",
-						"          codigo as string,",
-						"          nombre as string,",
-						"          descipcion as string,",
-						"          activo as integer,",
-						"          prederterminado as integer,",
-						"          posicion as integer,",
-						"          fechaAlta as timestamp,",
-						"          fechaModificacion as timestamp,",
-						"          companiaid as string,",
-						"          TiempoRespuestaPrioridad1 as decimal(18,4),",
-						"          TiempoResolucionPrioridad1 as decimal(18,4),",
-						"          TiempoRespuestaPrioridad2 as decimal(18,4),",
-						"          TiempoResolucionPrioridad2 as decimal(18,4),",
-						"          TiempoRespuestaPrioridad3 as decimal(18,4),",
-						"          TiempoResolucionPrioridad3 as decimal(18,4),",
-						"          TiempoRespuestaPrioridad4 as decimal(18,4),",
-						"          TiempoResolucionPrioridad4 as decimal(18,4)",
-						"     ),",
-						"     deletable:false,",
-						"     insertable:true,",
-						"     updateable:false,",
-						"     upsertable:false,",
-						"     format: 'table',",
-						"     preSQLs:['Truncate Table dimSLA'],",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     saveOrder: 1,",
-						"     mapColumn(",
-						"          codigo,",
-						"          nombre,",
-						"          descipcion,",
-						"          activo = isactive,",
-						"          prederterminado = isdefault,",
-						"          posicion,",
-						"          companiaid = companyid,",
-						"          TiempoRespuestaPrioridad1 = slaTargetPriority1RespondWithin,",
-						"          TiempoResolucionPrioridad1 = slaTargerPriority1ResolveWithin,",
-						"          TiempoRespuestaPrioridad2 = slaTargetPriority2RespondWithin,",
-						"          TiempoResolucionPrioridad2 = slaTargerPriority2ResolveWithin,",
-						"          TiempoRespuestaPrioridad3 = slaTargetPriority3RespondWithin,",
-						"          TiempoResolucionPrioridad3 = slaTargerPriority3ResolveWithin,",
-						"          TiempoRespuestaPrioridad4 = slaTargetPriority4RespondWithin,",
-						"          TiempoResolucionPrioridad4 = slaTargerPriority4ResolveWithin,",
-						"          fechaAlta = fecha,",
-						"          fechaModificacion",
-						"     )) ~> Insert"
-					]
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/StgSLA')]",
-				"[concat(variables('factoryId'), '/datasets/DwDimSla')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Inyectar Tipos')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"folder": {
-					"name": "Inyectar Dimensiones"
-				},
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "StgTipos",
-								"type": "DatasetReference"
-							},
-							"name": "StgTipos"
-						},
-						{
-							"dataset": {
-								"referenceName": "DwDimTiposTicket",
-								"type": "DatasetReference"
-							},
-							"name": "DwTipos"
-						}
-					],
-					"sinks": [
-						{
-							"linkedService": {
-								"referenceName": "DataWareouse",
-								"type": "LinkedServiceReference"
-							},
-							"name": "InyectarDW"
-						}
-					],
-					"transformations": [
-						{
-							"name": "Validar"
-						}
-					],
-					"scriptLines": [
-						"source(output(",
-						"          codigo as string,",
-						"          nombre as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     isolationLevel: 'READ_UNCOMMITTED',",
-						"     format: 'table') ~> StgTipos",
-						"source(output(",
-						"          id as integer,",
-						"          codigo as string,",
-						"          nombre as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     isolationLevel: 'READ_UNCOMMITTED',",
-						"     format: 'table') ~> DwTipos",
-						"StgTipos, DwTipos exists(StgTipos@codigo == DwTipos@codigo,",
-						"     negate:true,",
-						"     broadcast: 'auto')~> Validar",
-						"Validar sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     format: 'table',",
-						"     tableName: 'dimtiposticket',",
-						"     deletable: false,",
-						"     insertable: true,",
-						"     updateable: false,",
-						"     upsertable: false,",
-						"     store: 'mysql',",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     mapColumn(",
-						"          codigo,",
-						"          nombre",
-						"     )) ~> InyectarDW"
-					]
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/StgTipos')]",
-				"[concat(variables('factoryId'), '/datasets/DwDimTiposTicket')]",
-				"[concat(variables('factoryId'), '/linkedServices/DataWareouse')]"
 			]
 		}
 	]

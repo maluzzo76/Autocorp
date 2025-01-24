@@ -1,1 +1,6 @@
-{}
+{
+	"IdTichet": {
+		"type": "string",
+		"value": "0"
+	}
+}

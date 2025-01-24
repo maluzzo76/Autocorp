@@ -8,10 +8,16 @@
 		"APIFresh_password": {
 			"value": ""
 		},
+		"ApiConversariones_password": {
+			"value": ""
+		},
 		"DataWareouse_connectionString": {
 			"value": ""
 		},
 		"FreshDB_connectionString": {
+			"value": ""
+		},
+		"SqlAutocorpDw_password": {
 			"value": ""
 		},
 		"StaigingDB_connectionString": {
@@ -22,6 +28,21 @@
 		},
 		"APIFresh_properties_typeProperties_userName": {
 			"value": "yBjVC7W3wuMLeucdH4Hw"
+		},
+		"ApiConversariones_properties_typeProperties_url": {
+			"value": "https://autocorpar.freshdesk.com/api/v2/tickets/93311/conversations"
+		},
+		"ApiConversariones_properties_typeProperties_userName": {
+			"value": "yBjVC7W3wuMLeucdH4Hw"
+		},
+		"SqlAutocorpDw_properties_typeProperties_server": {
+			"value": "autocorpdw.database.windows.net"
+		},
+		"SqlAutocorpDw_properties_typeProperties_database": {
+			"value": "Autocorp_dw"
+		},
+		"SqlAutocorpDw_properties_typeProperties_userName": {
+			"value": "autocorp"
 		},
 		"containerUri": {
 			"value": ""

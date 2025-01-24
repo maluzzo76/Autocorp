@@ -11,6 +11,10 @@
 			"type": "secureString",
 			"metadata": "Cadena protegida para \"password\"de \"APIFresh\""
 		},
+		"ApiConversariones_password": {
+			"type": "secureString",
+			"metadata": "Cadena protegida para \"password\"de \"ApiConversariones\""
+		},
 		"DataWareouse_connectionString": {
 			"type": "secureString",
 			"metadata": "Cadena protegida para \"connectionString\"de \"DataWareouse\""
@@ -18,6 +22,10 @@
 		"FreshDB_connectionString": {
 			"type": "secureString",
 			"metadata": "Cadena protegida para \"connectionString\"de \"FreshDB\""
+		},
+		"SqlAutocorpDw_password": {
+			"type": "secureString",
+			"metadata": "Cadena protegida para \"password\"de \"SqlAutocorpDw\""
 		},
 		"StaigingDB_connectionString": {
 			"type": "secureString",
@@ -30,6 +38,26 @@
 		"APIFresh_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "yBjVC7W3wuMLeucdH4Hw"
+		},
+		"ApiConversariones_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://autocorpar.freshdesk.com/api/v2/tickets/93311/conversations"
+		},
+		"ApiConversariones_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "yBjVC7W3wuMLeucdH4Hw"
+		},
+		"SqlAutocorpDw_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "autocorpdw.database.windows.net"
+		},
+		"SqlAutocorpDw_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "Autocorp_dw"
+		},
+		"SqlAutocorpDw_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "autocorp"
 		},
 		"containerUri": {
 			"type": "string",
@@ -61,11 +89,17 @@
 					"APIFresh_password": {
 						"value": "[parameters('APIFresh_password')]"
 					},
+					"ApiConversariones_password": {
+						"value": "[parameters('ApiConversariones_password')]"
+					},
 					"DataWareouse_connectionString": {
 						"value": "[parameters('DataWareouse_connectionString')]"
 					},
 					"FreshDB_connectionString": {
 						"value": "[parameters('FreshDB_connectionString')]"
+					},
+					"SqlAutocorpDw_password": {
+						"value": "[parameters('SqlAutocorpDw_password')]"
 					},
 					"StaigingDB_connectionString": {
 						"value": "[parameters('StaigingDB_connectionString')]"
@@ -75,6 +109,21 @@
 					},
 					"APIFresh_properties_typeProperties_userName": {
 						"value": "[parameters('APIFresh_properties_typeProperties_userName')]"
+					},
+					"ApiConversariones_properties_typeProperties_url": {
+						"value": "[parameters('ApiConversariones_properties_typeProperties_url')]"
+					},
+					"ApiConversariones_properties_typeProperties_userName": {
+						"value": "[parameters('ApiConversariones_properties_typeProperties_userName')]"
+					},
+					"SqlAutocorpDw_properties_typeProperties_server": {
+						"value": "[parameters('SqlAutocorpDw_properties_typeProperties_server')]"
+					},
+					"SqlAutocorpDw_properties_typeProperties_database": {
+						"value": "[parameters('SqlAutocorpDw_properties_typeProperties_database')]"
+					},
+					"SqlAutocorpDw_properties_typeProperties_userName": {
+						"value": "[parameters('SqlAutocorpDw_properties_typeProperties_userName')]"
 					}
 				}
 			},
@@ -98,26 +147,6 @@
 			},
 			"dependsOn": [
 				"[resourceId('Microsoft.Resources/deployments', 'Autocorp_ArmTemplate_0')]"
-			]
-		},
-		{
-			"name": "Autocorp_ArmTemplate_2",
-			"type": "Microsoft.Resources/deployments",
-			"apiVersion": "2024-03-01",
-			"properties": {
-				"mode": "incremental",
-				"templateLink": {
-					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_2.json', parameters('containerSasToken'))]",
-					"contentVersion": "1.0.0.0"
-				},
-				"parameters": {
-					"factoryName": {
-						"value": "[parameters('factoryName')]"
-					}
-				}
-			},
-			"dependsOn": [
-				"[resourceId('Microsoft.Resources/deployments', 'Autocorp_ArmTemplate_1')]"
 			]
 		}
 	]
