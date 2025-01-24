@@ -98,6 +98,11 @@
 							"typeProperties": {
 								"scripts": [
 									{
+										"parameters": [
+											{
+												"value": ""
+											}
+										],
 										"type": "Query"
 									}
 								],
