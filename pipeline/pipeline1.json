@@ -166,7 +166,7 @@
 				"type": "String"
 			},
 			"vTicket_id": {
-				"type": "Integer"
+				"type": "String"
 			}
 		},
 		"annotations": []
