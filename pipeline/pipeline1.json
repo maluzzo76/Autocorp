@@ -101,7 +101,7 @@
 							"type": "SetVariable",
 							"dependsOn": [
 								{
-									"activity": "Web1",
+									"activity": "Set variable2",
 									"dependencyConditions": [
 										"Succeeded"
 									]
