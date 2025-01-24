@@ -67,7 +67,7 @@
 								},
 								"disableCertValidation": false,
 								"url": {
-									"value": "@concat('https://autocorpar.freshdesk.com/api/v2/tickets/',variables('IdParameter'),'/conversations')",
+									"value": "@concat('https://autocorpar.freshdesk.com/api/v2/tickets/',item().id,'/conversations')",
 									"type": "Expression"
 								}
 							}
