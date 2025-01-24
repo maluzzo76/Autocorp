@@ -171,7 +171,7 @@
 				"typeProperties": {
 					"variableName": "vTicket_id",
 					"value": {
-						"value": "@json(string(activity('Web1_copy1').output))",
+						"value": "@json(string(activity('Web1_copy1').output)).ticket_id",
 						"type": "Expression"
 					}
 				}
@@ -182,7 +182,7 @@
 				"type": "String"
 			},
 			"vTicket_id": {
-				"type": "Integer"
+				"type": "String"
 			}
 		},
 		"annotations": []
