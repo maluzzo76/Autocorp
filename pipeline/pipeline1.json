@@ -22,7 +22,7 @@
 					"isSequential": false,
 					"activities": [
 						{
-							"name": "Set variable1",
+							"name": "Set variableIdOP",
 							"type": "SetVariable",
 							"dependsOn": [],
 							"policy": {
@@ -43,7 +43,7 @@
 							"type": "WebActivity",
 							"dependsOn": [
 								{
-									"activity": "Set variable1",
+									"activity": "Set variableIdOP",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -97,7 +97,7 @@
 							}
 						},
 						{
-							"name": "Set variable3",
+							"name": "Set Variable Key",
 							"type": "SetVariable",
 							"dependsOn": [
 								{
@@ -167,7 +167,7 @@
 									]
 								},
 								{
-									"activity": "Set variable3",
+									"activity": "Set Variable Key",
 									"dependencyConditions": [
 										"Failed"
 									]
@@ -182,16 +182,23 @@
 						{
 							"name": "Set variable3_copy1",
 							"type": "SetVariable",
-							"dependsOn": [],
+							"dependsOn": [
+								{
+									"activity": "Set variable2",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
 							"policy": {
 								"secureOutput": false,
 								"secureInput": false
 							},
 							"userProperties": [],
 							"typeProperties": {
-								"variableName": "Key",
+								"variableName": "createDate",
 								"value": {
-									"value": "@variables('vTicket_id')[0].ticket_id",
+									"value": "@variables('vTicket_id')[0].created_at",
 									"type": "Expression"
 								}
 							}
@@ -238,6 +245,9 @@
 			"vError": {
 				"type": "String",
 				"defaultValue": "Error"
+			},
+			"createDate": {
+				"type": "String"
 			}
 		},
 		"annotations": []
