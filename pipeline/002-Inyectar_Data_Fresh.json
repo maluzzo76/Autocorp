@@ -953,11 +953,6 @@
 				}
 			}
 		],
-		"parameters": {
-			"idTicket": {
-				"type": "string"
-			}
-		},
 		"variables": {
 			"IdForEach": {
 				"type": "Integer"
