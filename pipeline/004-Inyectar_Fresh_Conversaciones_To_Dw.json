@@ -184,7 +184,7 @@
 									{
 										"type": "Query",
 										"text": {
-											"value": "@concat('delete stg.conversaciones where id = ',variables('vTicket_id')[0].ticket_id)",
+											"value": "@concat('delete stg.conversaciones where id = ',\npipeline().parameters.DelimitarioCommilaSimple,\nvariables('vTicket_id')[0].ticket_id,\npipeline().parameters.DelimitarioCommilaSimple)",
 											"type": "Expression"
 										}
 									}
