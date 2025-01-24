@@ -125,7 +125,7 @@
 							"type": "Script",
 							"dependsOn": [
 								{
-									"activity": "Set variable3",
+									"activity": "Set variable2",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -148,7 +148,7 @@
 									{
 										"type": "Query",
 										"text": {
-											"value": "@concat('insert into dbo.conversaciones (id) values (',variables('Key'),')')",
+											"value": "@concat('insert into dbo.conversaciones (id) values (',variables('vTicket_id')[0].ticket_id,')')",
 											"type": "Expression"
 										}
 									}
