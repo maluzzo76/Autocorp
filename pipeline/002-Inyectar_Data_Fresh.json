@@ -831,7 +831,14 @@
 						{
 							"name": "Insertar Comentarios",
 							"type": "Copy",
-							"dependsOn": [],
+							"dependsOn": [
+								{
+									"activity": "Set variable1",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
 							"policy": {
 								"timeout": "0.12:00:00",
 								"retry": 0,
@@ -893,7 +900,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"IdTickets": {
-											"value": "@item()\n",
+											"value": "@variables('IdForEach')",
 											"type": "Expression"
 										}
 									}
