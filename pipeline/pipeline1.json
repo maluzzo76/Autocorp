@@ -22,7 +22,7 @@
 					"isSequential": false,
 					"activities": [
 						{
-							"name": "Set variableIdOP",
+							"name": "Set variable IdParameter",
 							"type": "SetVariable",
 							"dependsOn": [],
 							"policy": {
@@ -39,11 +39,11 @@
 							}
 						},
 						{
-							"name": "Web1",
+							"name": "API - Conversaciones",
 							"type": "WebActivity",
 							"dependsOn": [
 								{
-									"activity": "Set variableIdOP",
+									"activity": "Set variable IdParameter",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -77,7 +77,7 @@
 							"type": "SetVariable",
 							"dependsOn": [
 								{
-									"activity": "Web1",
+									"activity": "API - Conversaciones",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -121,7 +121,7 @@
 							}
 						},
 						{
-							"name": "Script1",
+							"name": "Script Insert Conversaciones DW",
 							"type": "Script",
 							"dependsOn": [
 								{
@@ -157,11 +157,11 @@
 							}
 						},
 						{
-							"name": "Append variable1",
+							"name": "Mapping Error",
 							"type": "AppendVariable",
 							"dependsOn": [
 								{
-									"activity": "Script1",
+									"activity": "Script Insert Conversaciones DW",
 									"dependencyConditions": [
 										"Failed"
 									]
@@ -180,7 +180,7 @@
 							}
 						},
 						{
-							"name": "Set variable3_copy1",
+							"name": "set Variable Created_at",
 							"type": "SetVariable",
 							"dependsOn": [
 								{
