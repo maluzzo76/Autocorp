@@ -1,0 +1,15 @@
+{
+	"name": "Fresh_Conversasiones",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ApiConversariones",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "APIs"
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"schema": []
+	}
+}
