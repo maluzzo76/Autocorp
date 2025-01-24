@@ -1,0 +1,125 @@
+{
+	"name": "stgSla",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SqlAutocorpDw",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Staiging"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "codigo",
+				"type": "varchar"
+			},
+			{
+				"name": "nombre",
+				"type": "varchar"
+			},
+			{
+				"name": "descipcion",
+				"type": "varchar"
+			},
+			{
+				"name": "isactive",
+				"type": "bit"
+			},
+			{
+				"name": "isdefault",
+				"type": "bit"
+			},
+			{
+				"name": "posicion",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "fechaAlta",
+				"type": "varchar"
+			},
+			{
+				"name": "fechaModificacion",
+				"type": "varchar"
+			},
+			{
+				"name": "companyid",
+				"type": "varchar"
+			},
+			{
+				"name": "slaTargetPriority1RespondWithin",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 4
+			},
+			{
+				"name": "slaTargerPriority1ResolveWithin",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 4
+			},
+			{
+				"name": "slaTargetPriority2RespondWithin",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 4
+			},
+			{
+				"name": "slaTargerPriority2ResolveWithin",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 4
+			},
+			{
+				"name": "slaTargetPriority3RespondWithin",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 4
+			},
+			{
+				"name": "slaTargerPriority3ResolveWithin",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 4
+			},
+			{
+				"name": "slaTargetPriority4RespondWithin",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 4
+			},
+			{
+				"name": "slaTargerPriority4ResolveWithin",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 4
+			},
+			{
+				"name": "escalationReminderResolutionEscalationTime",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 4
+			},
+			{
+				"name": "escalationReminderResolutionAgentids",
+				"type": "varchar"
+			},
+			{
+				"name": "escalationResolutionLevel1EscalationTime",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 4
+			},
+			{
+				"name": "escalationResolutionLevel1AgentId",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "stg",
+			"table": "Sla"
+		}
+	}
+}

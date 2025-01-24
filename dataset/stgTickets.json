@@ -1,0 +1,86 @@
+{
+	"name": "stgTickets",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SqlAutocorpDw",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Staiging"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "codigo",
+				"type": "varchar"
+			},
+			{
+				"name": "fechaAlta",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "fechaModificacion",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "horasDiferecia",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "minutosDiferencia",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "companiaCodigo",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "estadoCodigo",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "tipoCodigo",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "productoCodigo",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "grupoCodigo",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "origenCodigo",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "prioridadCodigo",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "agenteCodigo",
+				"type": "int",
+				"precision": 10
+			}
+		],
+		"typeProperties": {
+			"schema": "stg",
+			"table": "Tickets"
+		}
+	}
+}

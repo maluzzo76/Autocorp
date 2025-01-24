@@ -1,12 +1,10 @@
 {
-	"name": "003-Inyecar_SLA",
+	"name": "003-Inyecar_Hechos_Fresh_To_Staiging",
 	"properties": {
 		"activities": [
 			{
 				"name": "Inyectar_SLA_API",
 				"type": "Copy",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -27,10 +25,16 @@
 						}
 					},
 					"sink": {
-						"type": "AzureMySqlSink",
-						"writeBatchSize": 10000,
-						"writeBatchTimeout": "00:00:30",
-						"preCopyScript": "truncate table Sla"
+						"type": "AzureSqlSink",
+						"writeBehavior": "upsert",
+						"upsertSettings": {
+							"useTempDB": true,
+							"keys": [
+								"codigo"
+							]
+						},
+						"sqlWriterUseTableLock": false,
+						"disableMetricsCollection": false
 					},
 					"enableStaging": false,
 					"translator": {
@@ -41,7 +45,8 @@
 									"path": "$['id']"
 								},
 								"sink": {
-									"name": "codigo"
+									"name": "codigo",
+									"type": "String"
 								}
 							},
 							{
@@ -49,7 +54,8 @@
 									"path": "$['name']"
 								},
 								"sink": {
-									"name": "nombre"
+									"name": "nombre",
+									"type": "String"
 								}
 							},
 							{
@@ -57,7 +63,8 @@
 									"path": "$['description']"
 								},
 								"sink": {
-									"name": "descipcion"
+									"name": "descipcion",
+									"type": "String"
 								}
 							},
 							{
@@ -65,7 +72,8 @@
 									"path": "$['active']"
 								},
 								"sink": {
-									"name": "isactive"
+									"name": "isactive",
+									"type": "Boolean"
 								}
 							},
 							{
@@ -73,7 +81,8 @@
 									"path": "$['sla_target']['priority_4']['respond_within']"
 								},
 								"sink": {
-									"name": "slaTargetPriority4RespondWithin"
+									"name": "slaTargetPriority4RespondWithin",
+									"type": "Decimal"
 								}
 							},
 							{
@@ -81,7 +90,8 @@
 									"path": "$['sla_target']['priority_4']['resolve_within']"
 								},
 								"sink": {
-									"name": "slaTargerPriority4ResolveWithin"
+									"name": "slaTargerPriority4ResolveWithin",
+									"type": "Decimal"
 								}
 							},
 							{
@@ -89,7 +99,8 @@
 									"path": "$['sla_target']['priority_3']['respond_within']"
 								},
 								"sink": {
-									"name": "slaTargetPriority3RespondWithin"
+									"name": "slaTargetPriority3RespondWithin",
+									"type": "Decimal"
 								}
 							},
 							{
@@ -97,7 +108,8 @@
 									"path": "$['sla_target']['priority_3']['resolve_within']"
 								},
 								"sink": {
-									"name": "slaTargerPriority3ResolveWithin"
+									"name": "slaTargerPriority3ResolveWithin",
+									"type": "Decimal"
 								}
 							},
 							{
@@ -105,7 +117,8 @@
 									"path": "$['sla_target']['priority_2']['respond_within']"
 								},
 								"sink": {
-									"name": "slaTargetPriority2RespondWithin"
+									"name": "slaTargetPriority2RespondWithin",
+									"type": "Decimal"
 								}
 							},
 							{
@@ -113,7 +126,8 @@
 									"path": "$['sla_target']['priority_2']['resolve_within']"
 								},
 								"sink": {
-									"name": "slaTargerPriority2ResolveWithin"
+									"name": "slaTargerPriority2ResolveWithin",
+									"type": "Decimal"
 								}
 							},
 							{
@@ -121,7 +135,8 @@
 									"path": "$['sla_target']['priority_1']['respond_within']"
 								},
 								"sink": {
-									"name": "slaTargetPriority1RespondWithin"
+									"name": "slaTargetPriority1RespondWithin",
+									"type": "Decimal"
 								}
 							},
 							{
@@ -129,47 +144,8 @@
 									"path": "$['sla_target']['priority_1']['resolve_within']"
 								},
 								"sink": {
-									"name": "slaTargerPriority1ResolveWithin"
-								}
-							},
-							{
-								"source": {
-									"path": "$['applicable_to']['company_ids'][0]"
-								},
-								"sink": {
-									"name": "companyid"
-								}
-							},
-							{
-								"source": {
-									"path": "$['is_default']"
-								},
-								"sink": {
-									"name": "isdefault"
-								}
-							},
-							{
-								"source": {
-									"path": "$['position']"
-								},
-								"sink": {
-									"name": "posicion"
-								}
-							},
-							{
-								"source": {
-									"path": "$['created_at']"
-								},
-								"sink": {
-									"name": "fechaAlta"
-								}
-							},
-							{
-								"source": {
-									"path": "$['updated_at']"
-								},
-								"sink": {
-									"name": "fechaModificacion"
+									"name": "slaTargerPriority1ResolveWithin",
+									"type": "Decimal"
 								}
 							},
 							{
@@ -177,7 +153,8 @@
 									"path": "$['escalation']['reminder_resolution']['agent_ids'][0]"
 								},
 								"sink": {
-									"name": "escalationReminderResolutionAgentids"
+									"name": "escalationReminderResolutionAgentids",
+									"type": "String"
 								}
 							},
 							{
@@ -185,11 +162,21 @@
 									"path": "$['escalation']['resolution']['level_1']['agent_ids'][0]"
 								},
 								"sink": {
-									"name": "escalationResolutionLevel1AgentId"
+									"name": "escalationResolutionLevel1AgentId",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['applicable_to']['company_ids'][0]"
+								},
+								"sink": {
+									"name": "companyid",
+									"type": "String"
 								}
 							}
 						],
-						"collectionReference": "$['.company_ids']"
+						"collectionReference": ""
 					}
 				},
 				"inputs": [
@@ -200,7 +187,215 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "StgSLA",
+						"referenceName": "stgSla",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Inyectar_Tickets_Fresh",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Inyectar_SLA_API",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureMySqlSource",
+						"query": "select DISTINCT\nt.id,\ncreated_at,\nupdated_at,\ntimestampdiff(HOUR,created_at,updated_at) AS `hours_between`,\ntimestampdiff(MINUTE,created_at,updated_at) AS `minutes_between`,\nCAST(company_id AS SIGNED)  as companiaCodigo,\ncast(`status` as SIGNED) as estadoCodigo, \ncast(`type` as SIGNED) as tipoCodigo, \ncast(tt.id as SIGNED) as tipoid,\ncast(product_id as SIGNED) as productoCodigo, \ncast(group_id as SIGNED)as grupoCodigo, \ncast(`source` as SIGNED) as origenCodigo,\ncast(`priority` as SIGNED) as prioridadCodigo,\ncast(`responder_id` as SIGNED) as agenteCodigo\nfrom freshdesk_tickets t\nleft join ticket_type tt on tt.name = t.type",
+						"queryTimeout": "02:00:00"
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"writeBehavior": "upsert",
+						"upsertSettings": {
+							"useTempDB": true,
+							"keys": [
+								"codigo"
+							]
+						},
+						"sqlWriterUseTableLock": false,
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "id",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "codigo",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "created_at",
+									"type": "String",
+									"physicalType": "text"
+								},
+								"sink": {
+									"name": "fechaAlta",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								}
+							},
+							{
+								"source": {
+									"name": "updated_at",
+									"type": "String",
+									"physicalType": "text"
+								},
+								"sink": {
+									"name": "fechaModificacion",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								}
+							},
+							{
+								"source": {
+									"name": "hours_between",
+									"type": "Int64"
+								},
+								"sink": {
+									"name": "horasDiferecia",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "minutes_between",
+									"type": "Int64"
+								},
+								"sink": {
+									"name": "minutosDiferencia",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "companiaCodigo",
+									"type": "Double"
+								},
+								"sink": {
+									"name": "companiaCodigo",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "estadoCodigo",
+									"type": "Int32"
+								},
+								"sink": {
+									"name": "estadoCodigo",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "tipoCodigo",
+									"type": "String"
+								},
+								"sink": {
+									"name": "tipoCodigo",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "productoCodigo",
+									"type": "String"
+								},
+								"sink": {
+									"name": "productoCodigo",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "grupoCodigo",
+									"type": "Double"
+								},
+								"sink": {
+									"name": "grupoCodigo",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "origenCodigo",
+									"type": "Int32"
+								},
+								"sink": {
+									"name": "origenCodigo",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "prioridadCodigo",
+									"type": "Int32"
+								},
+								"sink": {
+									"name": "prioridadCodigo",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "agenteCodigo",
+									"type": "Double"
+								},
+								"sink": {
+									"name": "agenteCodigo",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "FreshTickets",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "stgTickets",
 						"type": "DatasetReference"
 					}
 				]
