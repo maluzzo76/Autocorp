@@ -309,7 +309,8 @@
 									"path": "$['source_additional_info']"
 								}
 							}
-						]
+						],
+						"mapComplexValuesToString": true
 					}
 				},
 				"inputs": [
