@@ -101,10 +101,6 @@
 								"url": {
 									"value": "@concat('https://autocorpar.freshdesk.com/api/v2/tickets/',variables('IdParameter'),'/conversations')",
 									"type": "Expression"
-								},
-								"authentication": {
-									"type": "Basic",
-									"username": "yBjVC7W3wuMLeucdH4Hw"
 								}
 							}
 						}
