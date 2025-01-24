@@ -100,7 +100,7 @@
 									{
 										"type": "Query",
 										"text": {
-											"value": "@activity('Web1').output",
+											"value": "@activity('Web1').output.ticket_id",
 											"type": "Expression"
 										}
 									}
