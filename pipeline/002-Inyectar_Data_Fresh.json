@@ -914,7 +914,14 @@
 								"secureOutput": false,
 								"secureInput": false
 							},
-							"userProperties": []
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "IdForEach",
+								"value": {
+									"value": "@item().id",
+									"type": "Expression"
+								}
+							}
 						}
 					]
 				}
@@ -945,6 +952,11 @@
 				}
 			}
 		],
+		"variables": {
+			"IdForEach": {
+				"type": "String"
+			}
+		},
 		"annotations": [],
 		"lastPublishTime": "2025-01-13T18:22:27Z"
 	},
