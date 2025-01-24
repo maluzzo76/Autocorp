@@ -171,7 +171,7 @@
 				"typeProperties": {
 					"variableName": "vTicket_id",
 					"value": {
-						"value": "@startswith(string(activity('Web1_copy1').output),'ticket_id' )",
+						"value": "@json(string(activity('Web1_copy1').output))",
 						"type": "Expression"
 					}
 				}
