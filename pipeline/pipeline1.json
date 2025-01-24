@@ -133,7 +133,11 @@
 										"typeProperties": {
 											"scripts": [
 												{
-													"type": "Query"
+													"type": "Query",
+													"text": {
+														"value": "@item().ticket_id",
+														"type": "Expression"
+													}
 												}
 											],
 											"scriptBlockExecutionTimeout": "02:00:00"
@@ -169,12 +173,6 @@
 					},
 					"firstRowOnly": false
 				}
-			},
-			{
-				"name": "ForEach2",
-				"type": "ForEach",
-				"dependsOn": [],
-				"userProperties": []
 			}
 		],
 		"variables": {
