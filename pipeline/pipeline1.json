@@ -97,7 +97,7 @@
 									"additionalColumns": [
 										{
 											"name": "MyId",
-											"value": "{item().id}"
+											"value": "{@item().id}"
 										}
 									],
 									"httpRequestTimeout": "00:01:40",
