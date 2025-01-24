@@ -22,7 +22,24 @@
 					"isSequential": false,
 					"activities": [
 						{
-							"name": "Insertar Comentarios",
+							"name": "Set variable1",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "",
+								"value": {
+									"value": "@item().id",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "Copy data1",
 							"type": "Copy",
 							"dependsOn": [
 								{
@@ -50,72 +67,14 @@
 										"supportRFC5988": "true"
 									}
 								},
-								"sink": {
-									"type": "AzureMySqlSink",
-									"writeBatchSize": 10000,
-									"writeBatchTimeout": "00:00:30"
-								},
-								"enableStaging": false,
-								"translator": {
-									"type": "TabularTranslator",
-									"mappings": [
-										{
-											"source": {
-												"path": "$['created_at']"
-											},
-											"sink": {
-												"name": "create_at"
-											}
-										},
-										{
-											"source": {
-												"path": "$['updated_at']"
-											},
-											"sink": {
-												"name": "update_at"
-											}
-										},
-										{
-											"source": {
-												"path": "$['ticket_id']"
-											},
-											"sink": {
-												"name": "id"
-											}
-										}
-									],
-									"collectionReference": ""
-								}
+								"enableStaging": false
 							},
 							"inputs": [
 								{
 									"referenceName": "APIConversariones",
 									"type": "DatasetReference"
 								}
-							],
-							"outputs": [
-								{
-									"referenceName": "StgConversaciones",
-									"type": "DatasetReference"
-								}
 							]
-						},
-						{
-							"name": "Set variable1",
-							"type": "SetVariable",
-							"dependsOn": [],
-							"policy": {
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"variableName": "",
-								"value": {
-									"value": "@item().id",
-									"type": "Expression"
-								}
-							}
 						}
 					]
 				}
