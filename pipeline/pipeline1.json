@@ -5,6 +5,8 @@
 			{
 				"name": "ForEach1",
 				"type": "ForEach",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Lookup1",
@@ -102,6 +104,8 @@
 			{
 				"name": "Lookup1",
 				"type": "Lookup",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -125,8 +129,8 @@
 				}
 			},
 			{
-				"name": "Copy data1",
-				"type": "Copy",
+				"name": "Web1_copy1",
+				"type": "WebActivity",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -137,194 +141,16 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"source": {
-						"type": "RestSource",
-						"httpRequestTimeout": "00:01:40",
-						"requestInterval": "00.00:00:00.010",
-						"requestMethod": "GET",
-						"paginationRules": {
-							"supportRFC5988": "true"
+					"method": "GET",
+					"headers": {
+						"Authorization": {
+							"value": "@concat('Basic ', base64('yBjVC7W3wuMLeucdH4Hw:X'))",
+							"type": "Expression"
 						}
 					},
-					"sink": {
-						"type": "AzureMySqlSink",
-						"writeBatchSize": 10000,
-						"writeBatchTimeout": "00:00:30"
-					},
-					"enableStaging": false,
-					"translator": {
-						"type": "TabularTranslator",
-						"mappings": [
-							{
-								"source": {
-									"path": "$['body']"
-								}
-							},
-							{
-								"source": {
-									"path": "$['body_text']"
-								}
-							},
-							{
-								"source": {
-									"path": "$['id']"
-								},
-								"sink": {
-									"name": "id",
-									"type": "Int32"
-								}
-							},
-							{
-								"source": {
-									"path": "$['incoming']"
-								}
-							},
-							{
-								"source": {
-									"path": "$['private']"
-								}
-							},
-							{
-								"source": {
-									"path": "$['user_id']"
-								}
-							},
-							{
-								"source": {
-									"path": "$['support_email']"
-								}
-							},
-							{
-								"source": {
-									"path": "$['source']"
-								}
-							},
-							{
-								"source": {
-									"path": "$['category']"
-								}
-							},
-							{
-								"source": {
-									"path": "$['to_emails'][0]"
-								}
-							},
-							{
-								"source": {
-									"path": "$['from_email']"
-								}
-							},
-							{
-								"source": {
-									"path": "$['cc_emails'][0]"
-								}
-							},
-							{
-								"source": {
-									"path": "$['bcc_emails'][0]"
-								}
-							},
-							{
-								"source": {
-									"path": "$['email_failure_count']"
-								}
-							},
-							{
-								"source": {
-									"path": "$['outgoing_failures']"
-								}
-							},
-							{
-								"source": {
-									"path": "$['thread_id']"
-								}
-							},
-							{
-								"source": {
-									"path": "$['thread_message_id']"
-								}
-							},
-							{
-								"source": {
-									"path": "$['created_at']"
-								}
-							},
-							{
-								"source": {
-									"path": "$['updated_at']"
-								}
-							},
-							{
-								"source": {
-									"path": "$['last_edited_at']"
-								}
-							},
-							{
-								"source": {
-									"path": "$['last_edited_user_id']"
-								}
-							},
-							{
-								"source": {
-									"path": "$['attachments'][0]"
-								}
-							},
-							{
-								"source": {
-									"path": "$['automation_id']"
-								}
-							},
-							{
-								"source": {
-									"path": "$['automation_type_id']"
-								}
-							},
-							{
-								"source": {
-									"path": "$['auto_response']"
-								}
-							},
-							{
-								"source": {
-									"path": "$['ticket_id']"
-								}
-							},
-							{
-								"source": {
-									"path": "$['threading_type']"
-								}
-							},
-							{
-								"source": {
-									"path": "$['delivery_details']['failed_emails'][0]"
-								}
-							},
-							{
-								"source": {
-									"path": "$['delivery_details']['pending_emails'][0]"
-								}
-							},
-							{
-								"source": {
-									"path": "$['source_additional_info']"
-								}
-							}
-						],
-						"mapComplexValuesToString": true
-					}
-				},
-				"inputs": [
-					{
-						"referenceName": "Fresh_Conversasiones",
-						"type": "DatasetReference"
-					}
-				],
-				"outputs": [
-					{
-						"referenceName": "StgConversaciones",
-						"type": "DatasetReference"
-					}
-				]
+					"disableCertValidation": false,
+					"url": "https://autocorpar.freshdesk.com/api/v2/tickets/93311/conversations"
+				}
 			}
 		],
 		"variables": {
