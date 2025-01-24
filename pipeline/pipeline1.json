@@ -202,7 +202,14 @@
 								"secureOutput": false,
 								"secureInput": false
 							},
-							"userProperties": []
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "Key",
+								"value": {
+									"value": "@item().ticket_id",
+									"type": "Expression"
+								}
+							}
 						}
 					]
 				}
@@ -214,6 +221,9 @@
 			},
 			"vTicket_id": {
 				"type": "Array"
+			},
+			"Key": {
+				"type": "String"
 			}
 		},
 		"annotations": []
