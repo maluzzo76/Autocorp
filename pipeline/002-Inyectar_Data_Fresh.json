@@ -893,7 +893,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"IdTickets": {
-											"value": "@activity('Lookup1').output.valueitem().id",
+											"value": "@item()",
 											"type": "Expression"
 										}
 									}
