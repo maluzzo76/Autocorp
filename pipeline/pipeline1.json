@@ -129,12 +129,6 @@
 									"dependencyConditions": [
 										"Succeeded"
 									]
-								},
-								{
-									"activity": "set Variable Created_at",
-									"dependencyConditions": [
-										"Succeeded"
-									]
 								}
 							],
 							"policy": {
@@ -160,30 +154,6 @@
 									}
 								],
 								"scriptBlockExecutionTimeout": "02:00:00"
-							}
-						},
-						{
-							"name": "set Variable Created_at",
-							"type": "SetVariable",
-							"dependsOn": [
-								{
-									"activity": "API - Conversaciones",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"policy": {
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"variableName": "createDate",
-								"value": {
-									"value": "@variables('vTicket_id')[0].created_at",
-									"type": "Expression"
-								}
 							}
 						}
 					]
