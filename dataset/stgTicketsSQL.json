@@ -1,5 +1,5 @@
 {
-	"name": "stgTickets",
+	"name": "stgTicketsSQL",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "SqlAutocorpDw",
