@@ -33,7 +33,7 @@
 							"typeProperties": {
 								"variableName": "IdParameter",
 								"value": {
-									"value": "@item().id",
+									"value": "@string(item().id)",
 									"type": "Expression"
 								}
 							}
@@ -98,8 +98,12 @@
 							"typeProperties": {
 								"method": "GET",
 								"url": {
-									"value": "@concat('https://autocorpar.freshdesk.com/api/v2/tickets/',item(),'/conversations')",
+									"value": "@concat('https://autocorpar.freshdesk.com/api/v2/tickets/',variables('IdParameter'),'/conversations')",
 									"type": "Expression"
+								},
+								"authentication": {
+									"type": "Basic",
+									"username": "yBjVC7W3wuMLeucdH4Hw"
 								}
 							}
 						}
