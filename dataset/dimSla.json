@@ -6,7 +6,7 @@
 			"type": "LinkedServiceReference"
 		},
 		"folder": {
-			"name": "Staiging"
+			"name": "DW/Dimensiones"
 		},
 		"annotations": [],
 		"type": "AzureSqlTable",
