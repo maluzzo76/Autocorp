@@ -502,13 +502,20 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureMySqlSource",
+						"query": "select id,\nupper(name) name\nfrom ticket_type;",
 						"queryTimeout": "02:00:00"
 					},
 					"sink": {
-						"type": "AzureMySqlSink",
-						"writeBatchSize": 10000,
-						"writeBatchTimeout": "00:00:30",
-						"preCopyScript": "Truncate Table TipoTicket"
+						"type": "AzureSqlSink",
+						"writeBehavior": "upsert",
+						"upsertSettings": {
+							"useTempDB": true,
+							"keys": [
+								"codigo"
+							]
+						},
+						"sqlWriterUseTableLock": false,
+						"disableMetricsCollection": false
 					},
 					"enableStaging": false,
 					"translator": {
@@ -554,7 +561,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "StgTipos",
+						"referenceName": "dimTiposTickets",
 						"type": "DatasetReference"
 					}
 				]
