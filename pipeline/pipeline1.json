@@ -207,7 +207,7 @@
 				"type": "Array"
 			},
 			"Key": {
-				"type": "Integer"
+				"type": "String"
 			}
 		},
 		"annotations": []
