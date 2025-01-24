@@ -1,5 +1,5 @@
 {
-	"name": "stgSla",
+	"name": "dimSla",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "SqlAutocorpDw",
@@ -119,7 +119,7 @@
 		],
 		"typeProperties": {
 			"schema": "whs",
-			"table": "Sla"
+			"table": "dimSla"
 		}
 	}
 }
