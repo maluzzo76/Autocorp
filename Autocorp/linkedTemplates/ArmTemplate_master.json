@@ -15,10 +15,6 @@
 			"type": "secureString",
 			"metadata": "Cadena protegida para \"password\"de \"ApiConversariones\""
 		},
-		"DataWareouse_connectionString": {
-			"type": "secureString",
-			"metadata": "Cadena protegida para \"connectionString\"de \"DataWareouse\""
-		},
 		"FreshDB_connectionString": {
 			"type": "secureString",
 			"metadata": "Cadena protegida para \"connectionString\"de \"FreshDB\""
@@ -27,9 +23,13 @@
 			"type": "secureString",
 			"metadata": "Cadena protegida para \"password\"de \"SqlAutocorpDw\""
 		},
-		"StaigingDB_connectionString": {
+		"Storege_Fresh_connectionString": {
 			"type": "secureString",
-			"metadata": "Cadena protegida para \"connectionString\"de \"StaigingDB\""
+			"metadata": "Cadena protegida para \"connectionString\"de \"Storege_Fresh\""
+		},
+		"Logs Fabric_connectionString": {
+			"type": "secureString",
+			"metadata": "Cadena protegida para \"connectionString\"de \"Logs Fabric\""
 		},
 		"APIFresh_properties_typeProperties_url": {
 			"type": "string",
@@ -92,17 +92,17 @@
 					"ApiConversariones_password": {
 						"value": "[parameters('ApiConversariones_password')]"
 					},
-					"DataWareouse_connectionString": {
-						"value": "[parameters('DataWareouse_connectionString')]"
-					},
 					"FreshDB_connectionString": {
 						"value": "[parameters('FreshDB_connectionString')]"
 					},
 					"SqlAutocorpDw_password": {
 						"value": "[parameters('SqlAutocorpDw_password')]"
 					},
-					"StaigingDB_connectionString": {
-						"value": "[parameters('StaigingDB_connectionString')]"
+					"Storege_Fresh_connectionString": {
+						"value": "[parameters('Storege_Fresh_connectionString')]"
+					},
+					"Logs Fabric_connectionString": {
+						"value": "[parameters('Logs Fabric_connectionString')]"
 					},
 					"APIFresh_properties_typeProperties_url": {
 						"value": "[parameters('APIFresh_properties_typeProperties_url')]"

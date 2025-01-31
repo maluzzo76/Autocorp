@@ -11,16 +11,16 @@
 		"ApiConversariones_password": {
 			"value": ""
 		},
-		"DataWareouse_connectionString": {
-			"value": ""
-		},
 		"FreshDB_connectionString": {
 			"value": ""
 		},
 		"SqlAutocorpDw_password": {
 			"value": ""
 		},
-		"StaigingDB_connectionString": {
+		"Storege_Fresh_connectionString": {
+			"value": ""
+		},
+		"Logs Fabric_connectionString": {
 			"value": ""
 		},
 		"APIFresh_properties_typeProperties_url": {

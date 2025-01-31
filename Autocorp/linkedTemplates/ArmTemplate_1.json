@@ -495,6 +495,177 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/TicketsCnsolidados_xslx')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Storege_Fresh",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Source/Fresh/Storege"
+				},
+				"annotations": [],
+				"type": "Excel",
+				"typeProperties": {
+					"sheetName": "Hoja1",
+					"location": {
+						"type": "AzureFileStorageLocation",
+						"fileName": "Freshdesk_Tickets_Consolidado_completo.xlsx"
+					},
+					"firstRowAsHeader": true
+				},
+				"schema": [
+					{
+						"name": "cc_emails",
+						"type": "String"
+					},
+					{
+						"name": "fwd_emails",
+						"type": "String"
+					},
+					{
+						"name": "reply_cc_emails",
+						"type": "String"
+					},
+					{
+						"name": "ticket_cc_emails",
+						"type": "String"
+					},
+					{
+						"name": "ticket_bcc_emails",
+						"type": "String"
+					},
+					{
+						"name": "fr_escalated",
+						"type": "String"
+					},
+					{
+						"name": "spam",
+						"type": "String"
+					},
+					{
+						"name": "email_config_id",
+						"type": "String"
+					},
+					{
+						"name": "group_id",
+						"type": "String"
+					},
+					{
+						"name": "priority",
+						"type": "String"
+					},
+					{
+						"name": "requester_id",
+						"type": "String"
+					},
+					{
+						"name": "responder_id",
+						"type": "String"
+					},
+					{
+						"name": "source",
+						"type": "String"
+					},
+					{
+						"name": "company_id",
+						"type": "String"
+					},
+					{
+						"name": "status",
+						"type": "String"
+					},
+					{
+						"name": "subject",
+						"type": "String"
+					},
+					{
+						"name": "association_type",
+						"type": "String"
+					},
+					{
+						"name": "support_email",
+						"type": "String"
+					},
+					{
+						"name": "to_emails",
+						"type": "String"
+					},
+					{
+						"name": "product_id",
+						"type": "String"
+					},
+					{
+						"name": "id",
+						"type": "String"
+					},
+					{
+						"name": "type",
+						"type": "String"
+					},
+					{
+						"name": "due_by",
+						"type": "String"
+					},
+					{
+						"name": "fr_due_by",
+						"type": "String"
+					},
+					{
+						"name": "is_escalated",
+						"type": "String"
+					},
+					{
+						"name": "created_at",
+						"type": "String"
+					},
+					{
+						"name": "updated_at",
+						"type": "String"
+					},
+					{
+						"name": "associated_tickets_count",
+						"type": "String"
+					},
+					{
+						"name": "tags",
+						"type": "String"
+					},
+					{
+						"name": "form_id",
+						"type": "String"
+					},
+					{
+						"name": "nr_due_by",
+						"type": "String"
+					},
+					{
+						"name": "nr_escalated",
+						"type": "String"
+					},
+					{
+						"name": "cf_patente",
+						"type": "String"
+					},
+					{
+						"name": "cf_id_efleet",
+						"type": "String"
+					},
+					{
+						"name": "cf_generar_ot_efleet",
+						"type": "String"
+					},
+					{
+						"name": "cf_kilometraje",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/002-Inyectar_Dimensiones_Fresh_To_DW')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -1590,6 +1761,9 @@
 						"defaultValue": [
 							"[['a','b','c']"
 						]
+					},
+					"vId": {
+						"type": "String"
 					}
 				},
 				"annotations": [],
@@ -1854,6 +2028,9 @@
 						"type": "Array"
 					},
 					"VError": {
+						"type": "String"
+					},
+					"vId": {
 						"type": "String"
 					}
 				},
@@ -2256,6 +2433,495 @@
 							"waitOnCompletion": true,
 							"parameters": {}
 						}
+					},
+					{
+						"name": "Importar Tickets Excel Consolidado",
+						"type": "Copy",
+						"state": "Inactive",
+						"onInactiveMarkAs": "Succeeded",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "ExcelSource",
+								"storeSettings": {
+									"type": "AzureFileStorageReadSettings",
+									"recursive": false,
+									"enablePartitionDiscovery": false
+								}
+							},
+							"sink": {
+								"type": "AzureMySqlSink",
+								"writeBatchSize": 10000,
+								"writeBatchTimeout": "00:00:30",
+								"preCopyScript": "delete from freshdesk_tickets"
+							},
+							"enableStaging": false,
+							"enableSkipIncompatibleRow": true,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "cc_emails",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "cc_emails",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "fwd_emails",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "fwd_emails",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "reply_cc_emails",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "reply_cc_emails",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "ticket_cc_emails",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "ticket_cc_emails",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "ticket_bcc_emails",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "ticket_bcc_emails",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "fr_escalated",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "fr_escalated",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "spam",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "spam",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "email_config_id",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "email_config_id",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "group_id",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "group_id",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "priority",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "priority",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "requester_id",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "requester_id",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "responder_id",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "responder_id",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "source",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "source",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "company_id",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "company_id",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "status",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "status",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "subject",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "subject",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "association_type",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "association_type",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "support_email",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "support_email",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "to_emails",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "to_emails",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "product_id",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "product_id",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "id",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "id",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "type",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "type",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "due_by",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "due_by",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "fr_due_by",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "fr_due_by",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "is_escalated",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "is_escalated",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "created_at",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "created_at",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "updated_at",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "updated_at",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "associated_tickets_count",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "associated_tickets_count",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "tags",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "tags",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "nr_due_by",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "nr_due_by",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "nr_escalated",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "nr_escalated",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "form_id",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "form_id",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "cf_patente",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "cf_patente",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "cf_id_efleet",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "cf_id_efleet",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "cf_generar_ot_efleet",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "cf_generar_ot_efleet",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "cf_kilometraje",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "cf_kilometraje",
+											"type": "String",
+											"physicalType": "text"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "TicketsCnsolidados_xslx",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "FreshTickets",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
 					}
 				],
 				"policy": {
@@ -2267,6 +2933,9 @@
 					},
 					"nombre": {
 						"type": "String"
+					},
+					"vId": {
+						"type": "String"
 					}
 				},
 				"annotations": [],
@@ -2276,7 +2945,8 @@
 				"[concat(variables('factoryId'), '/pipelines/002-Inyectar_Dimensiones_Fresh_To_DW')]",
 				"[concat(variables('factoryId'), '/pipelines/003-Inyecar_Hechos_Fresh_To_Staiging')]",
 				"[concat(variables('factoryId'), '/pipelines/005-Inyectar_Echos')]",
-				"[concat(variables('factoryId'), '/pipelines/004-Inyectar_Fresh_Conversaciones_To_Dw')]"
+				"[concat(variables('factoryId'), '/pipelines/004-Inyectar_Fresh_Conversaciones_To_Dw')]",
+				"[concat(variables('factoryId'), '/datasets/TicketsCnsolidados_xslx')]"
 			]
 		},
 		{

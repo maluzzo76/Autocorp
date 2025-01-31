@@ -15,10 +15,6 @@
 			"type": "secureString",
 			"metadata": "Cadena protegida para \"password\"de \"ApiConversariones\""
 		},
-		"DataWareouse_connectionString": {
-			"type": "secureString",
-			"metadata": "Cadena protegida para \"connectionString\"de \"DataWareouse\""
-		},
 		"FreshDB_connectionString": {
 			"type": "secureString",
 			"metadata": "Cadena protegida para \"connectionString\"de \"FreshDB\""
@@ -27,9 +23,13 @@
 			"type": "secureString",
 			"metadata": "Cadena protegida para \"password\"de \"SqlAutocorpDw\""
 		},
-		"StaigingDB_connectionString": {
+		"Storege_Fresh_connectionString": {
 			"type": "secureString",
-			"metadata": "Cadena protegida para \"connectionString\"de \"StaigingDB\""
+			"metadata": "Cadena protegida para \"connectionString\"de \"Storege_Fresh\""
+		},
+		"Logs Fabric_connectionString": {
+			"type": "secureString",
+			"metadata": "Cadena protegida para \"connectionString\"de \"Logs Fabric\""
 		},
 		"APIFresh_properties_typeProperties_url": {
 			"type": "string",
@@ -105,19 +105,6 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/DataWareouse')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureMySql",
-				"typeProperties": {
-					"connectionString": "[parameters('DataWareouse_connectionString')]"
-				}
-			},
-			"dependsOn": []
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/FreshDB')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -153,14 +140,28 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/StaigingDB')]",
+			"name": "[concat(parameters('factoryName'), '/Storege_Fresh')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"annotations": [],
-				"type": "AzureMySql",
+				"type": "AzureFileStorage",
 				"typeProperties": {
-					"connectionString": "[parameters('StaigingDB_connectionString')]"
+					"connectionString": "[parameters('Storege_Fresh_connectionString')]",
+					"fileShare": "freshdesk-fileshare"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Logs Fabric')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('Logs Fabric_connectionString')]"
 				}
 			},
 			"dependsOn": []
