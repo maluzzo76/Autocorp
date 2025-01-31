@@ -92,6 +92,493 @@
 					},
 					"waitOnCompletion": true
 				}
+			},
+			{
+				"name": "Importar Tickets Excel Consolidado",
+				"type": "Copy",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "ExcelSource",
+						"storeSettings": {
+							"type": "AzureFileStorageReadSettings",
+							"recursive": false,
+							"enablePartitionDiscovery": false
+						}
+					},
+					"sink": {
+						"type": "AzureMySqlSink",
+						"writeBatchSize": 10000,
+						"writeBatchTimeout": "00:00:30",
+						"preCopyScript": "delete from freshdesk_tickets"
+					},
+					"enableStaging": false,
+					"enableSkipIncompatibleRow": true,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "cc_emails",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "cc_emails",
+									"type": "String",
+									"physicalType": "text"
+								}
+							},
+							{
+								"source": {
+									"name": "fwd_emails",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "fwd_emails",
+									"type": "String",
+									"physicalType": "text"
+								}
+							},
+							{
+								"source": {
+									"name": "reply_cc_emails",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "reply_cc_emails",
+									"type": "String",
+									"physicalType": "text"
+								}
+							},
+							{
+								"source": {
+									"name": "ticket_cc_emails",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ticket_cc_emails",
+									"type": "String",
+									"physicalType": "text"
+								}
+							},
+							{
+								"source": {
+									"name": "ticket_bcc_emails",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ticket_bcc_emails",
+									"type": "String",
+									"physicalType": "text"
+								}
+							},
+							{
+								"source": {
+									"name": "fr_escalated",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "fr_escalated",
+									"type": "String",
+									"physicalType": "text"
+								}
+							},
+							{
+								"source": {
+									"name": "spam",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "spam",
+									"type": "String",
+									"physicalType": "text"
+								}
+							},
+							{
+								"source": {
+									"name": "email_config_id",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "email_config_id",
+									"type": "String",
+									"physicalType": "text"
+								}
+							},
+							{
+								"source": {
+									"name": "group_id",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "group_id",
+									"type": "String",
+									"physicalType": "text"
+								}
+							},
+							{
+								"source": {
+									"name": "priority",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "priority",
+									"type": "String",
+									"physicalType": "text"
+								}
+							},
+							{
+								"source": {
+									"name": "requester_id",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "requester_id",
+									"type": "String",
+									"physicalType": "text"
+								}
+							},
+							{
+								"source": {
+									"name": "responder_id",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "responder_id",
+									"type": "String",
+									"physicalType": "text"
+								}
+							},
+							{
+								"source": {
+									"name": "source",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "source",
+									"type": "String",
+									"physicalType": "text"
+								}
+							},
+							{
+								"source": {
+									"name": "company_id",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "company_id",
+									"type": "String",
+									"physicalType": "text"
+								}
+							},
+							{
+								"source": {
+									"name": "status",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "status",
+									"type": "String",
+									"physicalType": "text"
+								}
+							},
+							{
+								"source": {
+									"name": "subject",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "subject",
+									"type": "String",
+									"physicalType": "text"
+								}
+							},
+							{
+								"source": {
+									"name": "association_type",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "association_type",
+									"type": "String",
+									"physicalType": "text"
+								}
+							},
+							{
+								"source": {
+									"name": "support_email",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "support_email",
+									"type": "String",
+									"physicalType": "text"
+								}
+							},
+							{
+								"source": {
+									"name": "to_emails",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "to_emails",
+									"type": "String",
+									"physicalType": "text"
+								}
+							},
+							{
+								"source": {
+									"name": "product_id",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "product_id",
+									"type": "String",
+									"physicalType": "text"
+								}
+							},
+							{
+								"source": {
+									"name": "id",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "id",
+									"type": "String",
+									"physicalType": "text"
+								}
+							},
+							{
+								"source": {
+									"name": "type",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "type",
+									"type": "String",
+									"physicalType": "text"
+								}
+							},
+							{
+								"source": {
+									"name": "due_by",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "due_by",
+									"type": "String",
+									"physicalType": "text"
+								}
+							},
+							{
+								"source": {
+									"name": "fr_due_by",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "fr_due_by",
+									"type": "String",
+									"physicalType": "text"
+								}
+							},
+							{
+								"source": {
+									"name": "is_escalated",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "is_escalated",
+									"type": "String",
+									"physicalType": "text"
+								}
+							},
+							{
+								"source": {
+									"name": "created_at",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "created_at",
+									"type": "String",
+									"physicalType": "text"
+								}
+							},
+							{
+								"source": {
+									"name": "updated_at",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "updated_at",
+									"type": "String",
+									"physicalType": "text"
+								}
+							},
+							{
+								"source": {
+									"name": "associated_tickets_count",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "associated_tickets_count",
+									"type": "String",
+									"physicalType": "text"
+								}
+							},
+							{
+								"source": {
+									"name": "tags",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "tags",
+									"type": "String",
+									"physicalType": "text"
+								}
+							},
+							{
+								"source": {
+									"name": "nr_due_by",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "nr_due_by",
+									"type": "String",
+									"physicalType": "text"
+								}
+							},
+							{
+								"source": {
+									"name": "nr_escalated",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "nr_escalated",
+									"type": "String",
+									"physicalType": "text"
+								}
+							},
+							{
+								"source": {
+									"name": "form_id",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "form_id",
+									"type": "String",
+									"physicalType": "text"
+								}
+							},
+							{
+								"source": {
+									"name": "cf_patente",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "cf_patente",
+									"type": "String",
+									"physicalType": "text"
+								}
+							},
+							{
+								"source": {
+									"name": "cf_id_efleet",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "cf_id_efleet",
+									"type": "String",
+									"physicalType": "text"
+								}
+							},
+							{
+								"source": {
+									"name": "cf_generar_ot_efleet",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "cf_generar_ot_efleet",
+									"type": "String",
+									"physicalType": "text"
+								}
+							},
+							{
+								"source": {
+									"name": "cf_kilometraje",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "cf_kilometraje",
+									"type": "String",
+									"physicalType": "text"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "TicketsCnsolidados_xslx",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "FreshTickets",
+						"type": "DatasetReference"
+					}
+				]
 			}
 		],
 		"variables": {
@@ -99,6 +586,9 @@
 				"type": "String"
 			},
 			"nombre": {
+				"type": "String"
+			},
+			"vId": {
 				"type": "String"
 			}
 		},

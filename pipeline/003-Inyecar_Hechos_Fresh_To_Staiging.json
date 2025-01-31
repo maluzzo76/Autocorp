@@ -407,6 +407,9 @@
 				"defaultValue": [
 					"['a','b','c']"
 				]
+			},
+			"vId": {
+				"type": "String"
 			}
 		},
 		"annotations": [],
