@@ -5,11 +5,11 @@
 		"annotations": [],
 		"type": "RestService",
 		"typeProperties": {
-			"url": "https://autocorpar.freshdesk.com/api/v2/search/tickets?query=\"created_at:>%272024-10-01%27%20AND%20due_by:<%272024-11-01%27\"",
+			"url": "https://autocorpar.freshdesk.com/api/v2/search/tickets?query=\"created_at:>%272024-10-01%27%20AND%20created_at:<%272024-11-01%27\"",
 			"enableServerCertificateValidation": true,
 			"authenticationType": "Basic",
 			"userName": "yBjVC7W3wuMLeucdH4Hw",
-			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkRBVEFGQUNUT1JZQDY3OURBQjBCLTc4NzMtNDBBQS04QzdFLTY0OEI4NzQ1NEJENF9iMDIyZmFjMy04NWRhLTQyZDMtYWE4ZC1iYjMzMjQzNTllYmEiDQp9"
+			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkRBVEFGQUNUT1JZQDY3OURBQjBCLTc4NzMtNDBBQS04QzdFLTY0OEI4NzQ1NEJENF8yZWZhYjRkOC0zN2E1LTQzZTYtOWQxMi1hMjc2MTU1ZjJkODkiDQp9"
 		}
 	}
 }
