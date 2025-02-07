@@ -19,6 +19,10 @@
 			"type": "secureString",
 			"metadata": "Cadena protegida para \"connectionString\"de \"FreshDB\""
 		},
+		"Logs Fabric_connectionString": {
+			"type": "secureString",
+			"metadata": "Cadena protegida para \"connectionString\"de \"Logs Fabric\""
+		},
 		"SqlAutocorpDw_password": {
 			"type": "secureString",
 			"metadata": "Cadena protegida para \"password\"de \"SqlAutocorpDw\""
@@ -27,9 +31,9 @@
 			"type": "secureString",
 			"metadata": "Cadena protegida para \"connectionString\"de \"Storege_Fresh\""
 		},
-		"Logs Fabric_connectionString": {
+		"ApiTickets_password": {
 			"type": "secureString",
-			"metadata": "Cadena protegida para \"connectionString\"de \"Logs Fabric\""
+			"metadata": "Cadena protegida para \"password\"de \"ApiTickets\""
 		},
 		"APIFresh_properties_typeProperties_url": {
 			"type": "string",
@@ -58,6 +62,14 @@
 		"SqlAutocorpDw_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "autocorp"
+		},
+		"ApiTickets_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://autocorpar.freshdesk.com/api/v2/tickets"
+		},
+		"ApiTickets_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "yBjVC7W3wuMLeucdH4Hw"
 		},
 		"containerUri": {
 			"type": "string",
@@ -95,14 +107,17 @@
 					"FreshDB_connectionString": {
 						"value": "[parameters('FreshDB_connectionString')]"
 					},
+					"Logs Fabric_connectionString": {
+						"value": "[parameters('Logs Fabric_connectionString')]"
+					},
 					"SqlAutocorpDw_password": {
 						"value": "[parameters('SqlAutocorpDw_password')]"
 					},
 					"Storege_Fresh_connectionString": {
 						"value": "[parameters('Storege_Fresh_connectionString')]"
 					},
-					"Logs Fabric_connectionString": {
-						"value": "[parameters('Logs Fabric_connectionString')]"
+					"ApiTickets_password": {
+						"value": "[parameters('ApiTickets_password')]"
 					},
 					"APIFresh_properties_typeProperties_url": {
 						"value": "[parameters('APIFresh_properties_typeProperties_url')]"
@@ -124,6 +139,12 @@
 					},
 					"SqlAutocorpDw_properties_typeProperties_userName": {
 						"value": "[parameters('SqlAutocorpDw_properties_typeProperties_userName')]"
+					},
+					"ApiTickets_properties_typeProperties_url": {
+						"value": "[parameters('ApiTickets_properties_typeProperties_url')]"
+					},
+					"ApiTickets_properties_typeProperties_userName": {
+						"value": "[parameters('ApiTickets_properties_typeProperties_userName')]"
 					}
 				}
 			},
