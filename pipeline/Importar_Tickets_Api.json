@@ -1,0 +1,363 @@
+{
+	"name": "Importar_Tickets_Api",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy data1",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "RestSource",
+						"httpRequestTimeout": "00:01:40",
+						"requestInterval": "00.00:00:00.010",
+						"requestMethod": "GET",
+						"paginationRules": {
+							"supportRFC5988": "true"
+						}
+					},
+					"sink": {
+						"type": "AzureMySqlSink",
+						"writeBatchSize": 10000,
+						"writeBatchTimeout": "00:00:30"
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['cc_emails'][0]"
+								},
+								"sink": {
+									"name": "cc_emails"
+								}
+							},
+							{
+								"source": {
+									"path": "$['fwd_emails'][0]"
+								}
+							},
+							{
+								"source": {
+									"path": "$['reply_cc_emails'][0]"
+								}
+							},
+							{
+								"source": {
+									"path": "$['ticket_cc_emails'][0]"
+								}
+							},
+							{
+								"source": {
+									"path": "$['ticket_bcc_emails'][0]"
+								}
+							},
+							{
+								"source": {
+									"path": "$['fr_escalated']"
+								},
+								"sink": {
+									"name": "fr_escalated",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['spam']"
+								},
+								"sink": {
+									"name": "spam",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['email_config_id']"
+								},
+								"sink": {
+									"name": "email_config_id",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['group_id']"
+								},
+								"sink": {
+									"name": "group_id",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['priority']"
+								},
+								"sink": {
+									"name": "priority",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['requester_id']"
+								},
+								"sink": {
+									"name": "requester_id",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['responder_id']"
+								},
+								"sink": {
+									"name": "responder_id",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['source']"
+								},
+								"sink": {
+									"name": "source",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['company_id']"
+								},
+								"sink": {
+									"name": "company_id",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['status']"
+								},
+								"sink": {
+									"name": "status",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['subject']"
+								},
+								"sink": {
+									"name": "subject",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['association_type']"
+								},
+								"sink": {
+									"name": "association_type",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['support_email']"
+								},
+								"sink": {
+									"name": "support_email",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['to_emails'][0]"
+								}
+							},
+							{
+								"source": {
+									"path": "$['product_id']"
+								},
+								"sink": {
+									"name": "product_id",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['id']"
+								},
+								"sink": {
+									"name": "id",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['type']"
+								},
+								"sink": {
+									"name": "type",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['due_by']"
+								},
+								"sink": {
+									"name": "due_by",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['fr_due_by']"
+								},
+								"sink": {
+									"name": "fr_due_by",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['is_escalated']"
+								},
+								"sink": {
+									"name": "is_escalated",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['custom_fields']['cf_patente']"
+								},
+								"sink": {
+									"name": "cf_patente",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['custom_fields']['cf_id_efleet']"
+								},
+								"sink": {
+									"name": "cf_id_efleet",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['custom_fields']['cf_generar_ot_efleet']"
+								},
+								"sink": {
+									"name": "cf_generar_ot_efleet",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['custom_fields']['cf_kilometraje']"
+								},
+								"sink": {
+									"name": "cf_kilometraje",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['custom_fields']['cf_obs_efleet']"
+								},
+								"sink": {
+									"name": "cf_obs_efleet",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['custom_fields']['cf_motivo_de_reclamo']"
+								},
+								"sink": {
+									"name": "cf_motivo_de_reclamo",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['created_at']"
+								},
+								"sink": {
+									"name": "created_at",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['updated_at']"
+								},
+								"sink": {
+									"name": "updated_at",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['associated_tickets_count']"
+								},
+								"sink": {
+									"name": "associated_tickets_count",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['tags'][0]"
+								}
+							},
+							{
+								"source": {
+									"path": "$['nr_due_by']"
+								},
+								"sink": {
+									"name": "nr_due_by",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['nr_escalated']"
+								},
+								"sink": {
+									"name": "nr_escalated",
+									"type": "String"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "Fresh_Tickets",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "FreshTickets",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"annotations": []
+	}
+}

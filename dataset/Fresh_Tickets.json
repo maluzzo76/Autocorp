@@ -1,0 +1,15 @@
+{
+	"name": "Fresh_Tickets",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ApiTickets",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "APIs"
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"schema": []
+	}
+}
