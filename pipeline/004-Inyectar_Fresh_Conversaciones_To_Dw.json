@@ -247,6 +247,15 @@
 			},
 			"VError": {
 				"type": "String"
+			},
+			"Items": {
+				"type": "Array"
+			},
+			"VItem": {
+				"type": "String"
+			},
+			"Item": {
+				"type": "String"
 			}
 		},
 		"annotations": []
