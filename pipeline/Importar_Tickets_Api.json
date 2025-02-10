@@ -3,45 +3,89 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Web1",
-				"type": "WebActivity",
+				"name": "Until1",
+				"type": "Until",
 				"dependsOn": [],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
 				"userProperties": [],
 				"typeProperties": {
-					"method": "GET",
-					"headers": {
-						"Authorization": "@concat('Basic ', base64('yBjVC7W3wuMLeucdH4Hw:X'))"
-					},
-					"url": "https://autocorpar.freshdesk.com/api/v2/tickets"
-				}
-			},
-			{
-				"name": "ForEach1",
-				"type": "ForEach",
-				"dependsOn": [
-					{
-						"activity": "Web1",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"items": {
-						"value": "@json(activity('Web1').output.Response)",
+					"expression": {
+						"value": "@if(equals(variables('pages'),2),true,false)",
 						"type": "Expression"
 					},
 					"activities": [
 						{
-							"name": "Set variable1",
+							"name": "Get_Tickets",
+							"type": "WebActivity",
+							"dependsOn": [
+								{
+									"activity": "Set Page",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"method": "GET",
+								"headers": {
+									"Authorization": {
+										"value": "@concat('Basic ', base64('yBjVC7W3wuMLeucdH4Hw:X'))",
+										"type": "Expression"
+									}
+								},
+								"url": {
+									"value": "@concat('https://autocorpar.freshdesk.com/api/v2/tickets?page=','1','&per_page=30')",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "ForEach1_copy1",
+							"type": "ForEach",
+							"dependsOn": [
+								{
+									"activity": "Get_Tickets",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"items": {
+									"value": "@json(activity('Get_Tickets').output.Response)\n",
+									"type": "Expression"
+								},
+								"activities": [
+									{
+										"name": "Set Insert",
+										"type": "SetVariable",
+										"dependsOn": [],
+										"policy": {
+											"secureOutput": false,
+											"secureInput": false
+										},
+										"userProperties": [],
+										"typeProperties": {
+											"variableName": "Item",
+											"value": {
+												"value": "@string(item().id)",
+												"type": "Expression"
+											}
+										}
+									}
+								]
+							}
+						},
+						{
+							"name": "Set Page",
 							"type": "SetVariable",
 							"dependsOn": [],
 							"policy": {
@@ -50,18 +94,51 @@
 							},
 							"userProperties": [],
 							"typeProperties": {
-								"variableName": "Item",
+								"variableName": "pages",
 								"value": {
-									"value": "@string(item().id)",
+									"value": "@add(int(variables('index')), 1)",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "Set Index",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Set Page",
+									"dependencyConditions": [
+										"Completed"
+									]
+								}
+							],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "index",
+								"value": {
+									"value": "@string(variables('pages'))",
 									"type": "Expression"
 								}
 							}
 						}
-					]
+					],
+					"timeout": "0.12:00:00"
 				}
 			}
 		],
 		"variables": {
+			"pages": {
+				"type": "Integer",
+				"defaultValue": 1
+			},
+			"index": {
+				"type": "String",
+				"defaultValue": "0"
+			},
 			"Item": {
 				"type": "String"
 			}
