@@ -1,0 +1,12 @@
+{
+	"name": "ApiTickets",
+	"properties": {
+		"annotations": [],
+		"type": "RestService",
+		"typeProperties": {
+			"url": "https://autocorpdwapi.azurewebsites.net/api/freshwork/tickets",
+			"enableServerCertificateValidation": true,
+			"authenticationType": "Anonymous"
+		}
+	}
+}
