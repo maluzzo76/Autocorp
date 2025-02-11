@@ -3,130 +3,46 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Loop",
-				"type": "Until",
+				"name": "Copy data1",
+				"type": "Copy",
 				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
 				"userProperties": [],
 				"typeProperties": {
-					"expression": {
-						"value": "@if(equals(variables('pages'),2),true,false)",
-						"type": "Expression"
-					},
-					"activities": [
-						{
-							"name": "Get_Tickets",
-							"type": "WebActivity",
-							"dependsOn": [
-								{
-									"activity": "Set Page",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"policy": {
-								"timeout": "0.12:00:00",
-								"retry": 0,
-								"retryIntervalInSeconds": 30,
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"method": "GET",
-								"headers": {
-									"Authorization": {
-										"value": "@concat('Basic ', base64('yBjVC7W3wuMLeucdH4Hw:X'))",
-										"type": "Expression"
-									}
-								},
-								"url": {
-									"value": "@concat('https://autocorpar.freshdesk.com/api/v2/tickets?page=','1','&per_page=30')",
-									"type": "Expression"
-								}
-							}
-						},
-						{
-							"name": "Set Page",
-							"type": "SetVariable",
-							"dependsOn": [],
-							"policy": {
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"variableName": "pages",
-								"value": {
-									"value": "@add(int(variables('index')), 1)",
-									"type": "Expression"
-								}
-							}
-						},
-						{
-							"name": "Set Index",
-							"type": "SetVariable",
-							"dependsOn": [
-								{
-									"activity": "Set Page",
-									"dependencyConditions": [
-										"Completed"
-									]
-								}
-							],
-							"policy": {
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"variableName": "index",
-								"value": {
-									"value": "@string(variables('pages'))",
-									"type": "Expression"
-								}
-							}
-						},
-						{
-							"name": "Set Items",
-							"type": "SetVariable",
-							"dependsOn": [
-								{
-									"activity": "Get_Tickets",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"policy": {
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"variableName": "Item",
-								"value": {
-									"value": "@json(activity('Get_Tickets').output.Response)",
-									"type": "Expression"
-								}
-							}
-						},
-						{
-							"name": "Azure Function1",
-							"type": "AzureFunctionActivity",
-							"dependsOn": [],
-							"policy": {
-								"timeout": "0.12:00:00",
-								"retry": 0,
-								"retryIntervalInSeconds": 30,
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": []
+					"source": {
+						"type": "RestSource",
+						"httpRequestTimeout": "00:01:40",
+						"requestInterval": "00.00:00:00.010",
+						"requestMethod": "POST",
+						"paginationRules": {
+							"supportRFC5988": "true"
 						}
-					],
-					"timeout": "0.12:00:00"
-				}
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "Fresh_Tickets",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "stgTickets",
+						"type": "DatasetReference"
+					}
+				]
 			}
 		],
 		"variables": {
