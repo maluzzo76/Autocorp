@@ -12,7 +12,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "002-Inyectar_Dimensiones_Fresh_To_DW",
+						"referenceName": "003-Inyectar_Dimensiones_Fresh_To_DW",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true
@@ -35,7 +35,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "003-Inyecar_Hechos_Fresh_To_Staiging",
+						"referenceName": "004-Inyecar_Hechos_Fresh_To_Staiging",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true
@@ -64,7 +64,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "005-Inyectar_Echos",
+						"referenceName": "006-Inyectar_Echos",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true
@@ -87,7 +87,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "004-Inyectar_Fresh_Conversaciones_To_Dw",
+						"referenceName": "005-Inyectar_Fresh_Conversaciones_To_Dw",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true
