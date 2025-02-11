@@ -1,13 +1,20 @@
 {
+	"0": {
+		"codigo": "98662",
+		"fechaAlta": "02/11/2025 16:59:16",
+		"fechaModificacion": "02/11/2025 16:59:59",
+		"companiaCodigo": "67001105973",
+		"estadoCodigo": "2",
+		"tipoCodigo": "VTV",
+		"productoCodigo": null,
+		"grupoCodigo": null,
+		"origenCodigo": "3",
+		"prioridadCodigo": "1",
+		"agenteCodigo": "67010824013"
+	},
 	"name": "ApiTickets",
 	"properties": {
-		"annotations": [],
 		"type": "RestService",
-		"typeProperties": {
-			"url": "https://autocorpdwapi.azurewebsites.net/api/freshwork/tickets",
-			"enableServerCertificateValidation": true,
-			"authenticationType": "Anonymous"
-		}
-	},
-	"type": "Microsoft.DataFactory/factories/linkedservices"
+		"annotations": []
+	}
 }
