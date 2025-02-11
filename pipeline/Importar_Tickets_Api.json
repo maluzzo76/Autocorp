@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Until1",
+				"name": "Loop",
 				"type": "Until",
 				"dependsOn": [],
 				"userProperties": [],
@@ -47,44 +47,6 @@
 							}
 						},
 						{
-							"name": "ForEach1_copy1",
-							"type": "ForEach",
-							"dependsOn": [
-								{
-									"activity": "Get_Tickets",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"userProperties": [],
-							"typeProperties": {
-								"items": {
-									"value": "@json(activity('Get_Tickets').output.Response)\n",
-									"type": "Expression"
-								},
-								"activities": [
-									{
-										"name": "Set Insert",
-										"type": "SetVariable",
-										"dependsOn": [],
-										"policy": {
-											"secureOutput": false,
-											"secureInput": false
-										},
-										"userProperties": [],
-										"typeProperties": {
-											"variableName": "Item",
-											"value": {
-												"value": "@string(item().id)",
-												"type": "Expression"
-											}
-										}
-									}
-								]
-							}
-						},
-						{
 							"name": "Set Page",
 							"type": "SetVariable",
 							"dependsOn": [],
@@ -124,6 +86,43 @@
 									"type": "Expression"
 								}
 							}
+						},
+						{
+							"name": "Set Items",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Get_Tickets",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "Item",
+								"value": {
+									"value": "@json(activity('Get_Tickets').output.Response)",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "Azure Function1",
+							"type": "AzureFunctionActivity",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": []
 						}
 					],
 					"timeout": "0.12:00:00"
@@ -140,7 +139,7 @@
 				"defaultValue": "0"
 			},
 			"Item": {
-				"type": "String"
+				"type": "Array"
 			}
 		},
 		"annotations": []
