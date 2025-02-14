@@ -57,12 +57,6 @@
 						"dependencyConditions": [
 							"Succeeded"
 						]
-					},
-					{
-						"activity": "Inyecta_Conversaciones_DW",
-						"dependencyConditions": [
-							"Succeeded"
-						]
 					}
 				],
 				"policy": {
@@ -82,7 +76,7 @@
 				"type": "ExecutePipeline",
 				"dependsOn": [
 					{
-						"activity": "Inyectar_Data_Fresh",
+						"activity": "Inyectar_FactTickets",
 						"dependencyConditions": [
 							"Succeeded"
 						]

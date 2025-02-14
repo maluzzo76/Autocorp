@@ -97,6 +97,39 @@
 					},
 					"firstRowOnly": false
 				}
+			},
+			{
+				"name": "Update FactTickets Fecha Primer Respuesta",
+				"type": "Script",
+				"dependsOn": [
+					{
+						"activity": "Get Conversaciones by Ticket",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"linkedServiceName": {
+					"referenceName": "SqlAutocorpDw",
+					"type": "LinkedServiceReference"
+				},
+				"typeProperties": {
+					"scripts": [
+						{
+							"type": "Query",
+							"text": "update whs.factTickets set FechaPrimerRespuesta = r1.fechaRespuesta\r\nfrom\r\n(\r\nSELECT  codigo, c.created_at fechaRespuesta\r\nFROM whs.factTickets t\r\ninner JOIN stg.Conversaciones c ON c.id = t.codigo\r\nwhere t.FechaPrimerRespuesta is null\r\n) as r1\r\nwhere whs.factTickets.codigo = r1.codigo"
+						}
+					],
+					"scriptBlockExecutionTimeout": "02:00:00"
+				}
 			}
 		],
 		"parameters": {
