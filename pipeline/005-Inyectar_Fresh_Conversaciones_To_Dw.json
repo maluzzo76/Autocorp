@@ -33,7 +33,7 @@
 							"typeProperties": {
 								"variableName": "IdParameter",
 								"value": {
-									"value": "@string(item().id)",
+									"value": "@string(item().codigo)",
 									"type": "Expression"
 								}
 							}
@@ -210,7 +210,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "SELECT codigo as id FROM [stg].[Tickets] \r\nWHERE fechaAlta >  dateadd(day,-40,getdate())\r\norder by codigo",
+						"sqlReaderQuery": "SELECT codigo FROM whs.v_getConversaciones",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
@@ -224,6 +224,8 @@
 			{
 				"name": "Azure Function1",
 				"type": "AzureFunctionActivity",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -232,7 +234,15 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
-				"userProperties": []
+				"userProperties": [],
+				"typeProperties": {
+					"functionName": "ImportarConversaciones",
+					"method": "GET"
+				},
+				"linkedServiceName": {
+					"referenceName": "AF_DW",
+					"type": "LinkedServiceReference"
+				}
 			}
 		],
 		"parameters": {
