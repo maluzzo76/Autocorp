@@ -1,0 +1,11 @@
+{
+	"name": "AF_DW",
+	"properties": {
+		"annotations": [],
+		"type": "AzureFunction",
+		"typeProperties": {
+			"functionAppUrl": "https://dwservices.azurewebsites.net",
+			"authentication": "Anonymous"
+		}
+	}
+}
