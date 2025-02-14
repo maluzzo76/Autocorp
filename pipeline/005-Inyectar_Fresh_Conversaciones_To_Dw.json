@@ -39,8 +39,8 @@
 							}
 						},
 						{
-							"name": "API - Conversaciones",
-							"type": "WebActivity",
+							"name": "Insertar Conversaciones",
+							"type": "AzureFunctionActivity",
 							"dependsOn": [
 								{
 									"activity": "Set variable IdParameter",
@@ -58,138 +58,15 @@
 							},
 							"userProperties": [],
 							"typeProperties": {
-								"method": "GET",
-								"headers": {
-									"Authorization": {
-										"value": "@concat('Basic ', base64('yBjVC7W3wuMLeucdH4Hw:X'))",
-										"type": "Expression"
-									}
+								"functionName": {
+									"value": "@concat('ImportarConversaciones?id=',item().codigo)",
+									"type": "Expression"
 								},
-								"disableCertValidation": false,
-								"url": {
-									"value": "@concat('https://autocorpar.freshdesk.com/api/v2/tickets/',item().id,'/conversations')",
-									"type": "Expression"
-								}
-							}
-						},
-						{
-							"name": "Set variable vTicketsId",
-							"type": "SetVariable",
-							"dependsOn": [
-								{
-									"activity": "API - Conversaciones",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"policy": {
-								"secureOutput": false,
-								"secureInput": false
+								"method": "GET"
 							},
-							"userProperties": [],
-							"typeProperties": {
-								"variableName": "vTicket_id",
-								"value": {
-									"value": "@json(activity('API - Conversaciones').output.Response)\n\n",
-									"type": "Expression"
-								}
-							}
-						},
-						{
-							"name": "Set Variable Key",
-							"type": "SetVariable",
-							"dependsOn": [
-								{
-									"activity": "Set variable vTicketsId",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"policy": {
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"variableName": "Key",
-								"value": {
-									"value": "@variables('vTicket_id')[0].ticket_id",
-									"type": "Expression"
-								}
-							}
-						},
-						{
-							"name": "Script Insert Conversaciones DW",
-							"type": "Script",
-							"dependsOn": [
-								{
-									"activity": "Script Detete Conversaciones",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"policy": {
-								"timeout": "0.12:00:00",
-								"retry": 0,
-								"retryIntervalInSeconds": 30,
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
 							"linkedServiceName": {
-								"referenceName": "SqlAutocorpDw",
+								"referenceName": "AF_DW",
 								"type": "LinkedServiceReference"
-							},
-							"typeProperties": {
-								"scripts": [
-									{
-										"type": "Query",
-										"text": {
-											"value": "@concat('insert into stg.conversaciones (id, created_at, updated_at) values (',variables('vTicket_id')[0].ticket_id,\n    pipeline().parameters.DelimitadorComa,\n    pipeline().parameters.DelimitarioCommilaSimple,\n    variables('vTicket_id')[0].created_at,\n    pipeline().parameters.DelimitarioCommilaSimple,\n    pipeline().parameters.DelimitadorComa,\n    pipeline().parameters.DelimitarioCommilaSimple,\n    variables('vTicket_id')[0].updated_at,\n    pipeline().parameters.DelimitarioCommilaSimple,')')",
-											"type": "Expression"
-										}
-									}
-								],
-								"scriptBlockExecutionTimeout": "02:00:00"
-							}
-						},
-						{
-							"name": "Script Detete Conversaciones",
-							"type": "Script",
-							"dependsOn": [
-								{
-									"activity": "Set variable vTicketsId",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"policy": {
-								"timeout": "0.12:00:00",
-								"retry": 0,
-								"retryIntervalInSeconds": 30,
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"linkedServiceName": {
-								"referenceName": "SqlAutocorpDw",
-								"type": "LinkedServiceReference"
-							},
-							"typeProperties": {
-								"scripts": [
-									{
-										"type": "Query",
-										"text": {
-											"value": "@concat('delete stg.conversaciones where id = ',\npipeline().parameters.DelimitarioCommilaSimple,\nvariables('vTicket_id')[0].ticket_id,\npipeline().parameters.DelimitarioCommilaSimple)",
-											"type": "Expression"
-										}
-									}
-								],
-								"scriptBlockExecutionTimeout": "02:00:00"
 							}
 						}
 					]
@@ -219,29 +96,6 @@
 						"type": "DatasetReference"
 					},
 					"firstRowOnly": false
-				}
-			},
-			{
-				"name": "Azure Function1",
-				"type": "AzureFunctionActivity",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
-				"dependsOn": [],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"functionName": "ImportarConversaciones",
-					"method": "GET"
-				},
-				"linkedServiceName": {
-					"referenceName": "AF_DW",
-					"type": "LinkedServiceReference"
 				}
 			}
 		],
