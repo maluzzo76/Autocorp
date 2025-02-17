@@ -5,6 +5,9 @@
 		"factoryName": {
 			"value": "Autocorp"
 		},
+		"AF_DW_functionKey": {
+			"value": ""
+		},
 		"APIFresh_password": {
 			"value": ""
 		},
@@ -23,8 +26,8 @@
 		"Storege_Fresh_connectionString": {
 			"value": ""
 		},
-		"ApiTickets_password": {
-			"value": ""
+		"AF_DW_properties_typeProperties_functionAppUrl": {
+			"value": "https://dwservices.azurewebsites.net"
 		},
 		"APIFresh_properties_typeProperties_url": {
 			"value": "https://autocorpar.freshdesk.com/api/v2/sla_policies"
@@ -38,6 +41,9 @@
 		"ApiConversariones_properties_typeProperties_userName": {
 			"value": "yBjVC7W3wuMLeucdH4Hw"
 		},
+		"ApiTickets_properties_typeProperties_url": {
+			"value": "https://autocorpdwapi.azurewebsites.net/api/freshwork/tickets"
+		},
 		"SqlAutocorpDw_properties_typeProperties_server": {
 			"value": "autocorpdw.database.windows.net"
 		},
@@ -46,12 +52,6 @@
 		},
 		"SqlAutocorpDw_properties_typeProperties_userName": {
 			"value": "autocorp"
-		},
-		"ApiTickets_properties_typeProperties_url": {
-			"value": "https://autocorpar.freshdesk.com/api/v2/tickets"
-		},
-		"ApiTickets_properties_typeProperties_userName": {
-			"value": "yBjVC7W3wuMLeucdH4Hw"
 		},
 		"containerUri": {
 			"value": ""

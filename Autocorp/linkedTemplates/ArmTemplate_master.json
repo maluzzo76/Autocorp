@@ -7,6 +7,10 @@
 			"metadata": "Nombre de instancia de Data Factory",
 			"defaultValue": "Autocorp"
 		},
+		"AF_DW_functionKey": {
+			"type": "secureString",
+			"metadata": "Cadena protegida para \"functionKey\"de \"AF_DW\""
+		},
 		"APIFresh_password": {
 			"type": "secureString",
 			"metadata": "Cadena protegida para \"password\"de \"APIFresh\""
@@ -31,9 +35,9 @@
 			"type": "secureString",
 			"metadata": "Cadena protegida para \"connectionString\"de \"Storege_Fresh\""
 		},
-		"ApiTickets_password": {
-			"type": "secureString",
-			"metadata": "Cadena protegida para \"password\"de \"ApiTickets\""
+		"AF_DW_properties_typeProperties_functionAppUrl": {
+			"type": "string",
+			"defaultValue": "https://dwservices.azurewebsites.net"
 		},
 		"APIFresh_properties_typeProperties_url": {
 			"type": "string",
@@ -51,6 +55,10 @@
 			"type": "string",
 			"defaultValue": "yBjVC7W3wuMLeucdH4Hw"
 		},
+		"ApiTickets_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://autocorpdwapi.azurewebsites.net/api/freshwork/tickets"
+		},
 		"SqlAutocorpDw_properties_typeProperties_server": {
 			"type": "string",
 			"defaultValue": "autocorpdw.database.windows.net"
@@ -62,14 +70,6 @@
 		"SqlAutocorpDw_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "autocorp"
-		},
-		"ApiTickets_properties_typeProperties_url": {
-			"type": "string",
-			"defaultValue": "https://autocorpar.freshdesk.com/api/v2/tickets"
-		},
-		"ApiTickets_properties_typeProperties_userName": {
-			"type": "string",
-			"defaultValue": "yBjVC7W3wuMLeucdH4Hw"
 		},
 		"containerUri": {
 			"type": "string",
@@ -98,6 +98,9 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
+					"AF_DW_functionKey": {
+						"value": "[parameters('AF_DW_functionKey')]"
+					},
 					"APIFresh_password": {
 						"value": "[parameters('APIFresh_password')]"
 					},
@@ -116,8 +119,8 @@
 					"Storege_Fresh_connectionString": {
 						"value": "[parameters('Storege_Fresh_connectionString')]"
 					},
-					"ApiTickets_password": {
-						"value": "[parameters('ApiTickets_password')]"
+					"AF_DW_properties_typeProperties_functionAppUrl": {
+						"value": "[parameters('AF_DW_properties_typeProperties_functionAppUrl')]"
 					},
 					"APIFresh_properties_typeProperties_url": {
 						"value": "[parameters('APIFresh_properties_typeProperties_url')]"
@@ -131,6 +134,9 @@
 					"ApiConversariones_properties_typeProperties_userName": {
 						"value": "[parameters('ApiConversariones_properties_typeProperties_userName')]"
 					},
+					"ApiTickets_properties_typeProperties_url": {
+						"value": "[parameters('ApiTickets_properties_typeProperties_url')]"
+					},
 					"SqlAutocorpDw_properties_typeProperties_server": {
 						"value": "[parameters('SqlAutocorpDw_properties_typeProperties_server')]"
 					},
@@ -139,12 +145,6 @@
 					},
 					"SqlAutocorpDw_properties_typeProperties_userName": {
 						"value": "[parameters('SqlAutocorpDw_properties_typeProperties_userName')]"
-					},
-					"ApiTickets_properties_typeProperties_url": {
-						"value": "[parameters('ApiTickets_properties_typeProperties_url')]"
-					},
-					"ApiTickets_properties_typeProperties_userName": {
-						"value": "[parameters('ApiTickets_properties_typeProperties_userName')]"
 					}
 				}
 			},

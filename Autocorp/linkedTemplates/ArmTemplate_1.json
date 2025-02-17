@@ -13,6 +13,213 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/TicketsCnsolidados_xslx')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Storege_Fresh",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Source/Fresh/Storege"
+				},
+				"annotations": [],
+				"type": "Excel",
+				"typeProperties": {
+					"sheetName": "Hoja1",
+					"location": {
+						"type": "AzureFileStorageLocation",
+						"fileName": "Freshdesk_Tickets_Consolidado_completo.xlsx"
+					},
+					"firstRowAsHeader": true
+				},
+				"schema": [
+					{
+						"name": "cc_emails",
+						"type": "String"
+					},
+					{
+						"name": "fwd_emails",
+						"type": "String"
+					},
+					{
+						"name": "reply_cc_emails",
+						"type": "String"
+					},
+					{
+						"name": "ticket_cc_emails",
+						"type": "String"
+					},
+					{
+						"name": "ticket_bcc_emails",
+						"type": "String"
+					},
+					{
+						"name": "fr_escalated",
+						"type": "String"
+					},
+					{
+						"name": "spam",
+						"type": "String"
+					},
+					{
+						"name": "email_config_id",
+						"type": "String"
+					},
+					{
+						"name": "group_id",
+						"type": "String"
+					},
+					{
+						"name": "priority",
+						"type": "String"
+					},
+					{
+						"name": "requester_id",
+						"type": "String"
+					},
+					{
+						"name": "responder_id",
+						"type": "String"
+					},
+					{
+						"name": "source",
+						"type": "String"
+					},
+					{
+						"name": "company_id",
+						"type": "String"
+					},
+					{
+						"name": "status",
+						"type": "String"
+					},
+					{
+						"name": "subject",
+						"type": "String"
+					},
+					{
+						"name": "association_type",
+						"type": "String"
+					},
+					{
+						"name": "support_email",
+						"type": "String"
+					},
+					{
+						"name": "to_emails",
+						"type": "String"
+					},
+					{
+						"name": "product_id",
+						"type": "String"
+					},
+					{
+						"name": "id",
+						"type": "String"
+					},
+					{
+						"name": "type",
+						"type": "String"
+					},
+					{
+						"name": "due_by",
+						"type": "String"
+					},
+					{
+						"name": "fr_due_by",
+						"type": "String"
+					},
+					{
+						"name": "is_escalated",
+						"type": "String"
+					},
+					{
+						"name": "created_at",
+						"type": "String"
+					},
+					{
+						"name": "updated_at",
+						"type": "String"
+					},
+					{
+						"name": "associated_tickets_count",
+						"type": "String"
+					},
+					{
+						"name": "tags",
+						"type": "String"
+					},
+					{
+						"name": "form_id",
+						"type": "String"
+					},
+					{
+						"name": "nr_due_by",
+						"type": "String"
+					},
+					{
+						"name": "nr_escalated",
+						"type": "String"
+					},
+					{
+						"name": "cf_patente",
+						"type": "String"
+					},
+					{
+						"name": "cf_id_efleet",
+						"type": "String"
+					},
+					{
+						"name": "cf_generar_ot_efleet",
+						"type": "String"
+					},
+					{
+						"name": "cf_kilometraje",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dimAgentes')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SqlAutocorpDw",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DW/Dimensiones"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "codigo",
+						"type": "varchar"
+					},
+					{
+						"name": "nombre",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "whs",
+					"table": "dimAgentes"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/dimCompanias')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -539,7 +746,193 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/002-Inyectar_Dimensiones_Fresh_To_DW')]",
+			"name": "[concat(parameters('factoryName'), '/002-Importar_Tickets_Fresh_to_Stg')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Intectar Tickes stg",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "RestSource",
+								"httpRequestTimeout": "00:01:40",
+								"requestInterval": "00.00:00:00.010",
+								"requestMethod": "GET",
+								"paginationRules": {
+									"supportRFC5988": "true"
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"writeBehavior": "upsert",
+								"upsertSettings": {
+									"useTempDB": true,
+									"keys": [
+										"codigo"
+									]
+								},
+								"sqlWriterUseTableLock": false,
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"path": "$['codigo']"
+										},
+										"sink": {
+											"name": "codigo",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['fechaAlta']"
+										},
+										"sink": {
+											"name": "fechaAlta",
+											"type": "DateTime"
+										}
+									},
+									{
+										"source": {
+											"path": "$['fechaModificacion']"
+										},
+										"sink": {
+											"name": "fechaModificacion",
+											"type": "DateTime"
+										}
+									},
+									{
+										"source": {
+											"path": "$['companiaCodigo']"
+										},
+										"sink": {
+											"name": "companiaCodigo",
+											"type": "Decimal"
+										}
+									},
+									{
+										"source": {
+											"path": "$['estadoCodigo']"
+										},
+										"sink": {
+											"name": "estadoCodigo",
+											"type": "Decimal"
+										}
+									},
+									{
+										"source": {
+											"path": "$['tipoCodigo']"
+										},
+										"sink": {
+											"name": "tipoCodigo",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['productoCodigo']"
+										},
+										"sink": {
+											"name": "productoCodigo",
+											"type": "Decimal"
+										}
+									},
+									{
+										"source": {
+											"path": "$['grupoCodigo']"
+										},
+										"sink": {
+											"name": "grupoCodigo",
+											"type": "Decimal"
+										}
+									},
+									{
+										"source": {
+											"path": "$['origenCodigo']"
+										},
+										"sink": {
+											"name": "origenCodigo",
+											"type": "Decimal"
+										}
+									},
+									{
+										"source": {
+											"path": "$['prioridadCodigo']"
+										},
+										"sink": {
+											"name": "prioridadCodigo",
+											"type": "Decimal"
+										}
+									},
+									{
+										"source": {
+											"path": "$['agenteCodigo']"
+										},
+										"sink": {
+											"name": "agenteCodigo",
+											"type": "Decimal"
+										}
+									}
+								],
+								"collectionReference": "",
+								"mapComplexValuesToString": false
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "Fresh_Tickets",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "stgTickets",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"variables": {
+					"pages": {
+						"type": "Integer",
+						"defaultValue": 1
+					},
+					"index": {
+						"type": "String",
+						"defaultValue": "0"
+					},
+					"Item": {
+						"type": "String"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/stgTickets')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/003-Inyectar_Dimensiones_Fresh_To_DW')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -1209,6 +1602,7 @@
 				"lastPublishTime": "2025-01-13T18:22:27Z"
 			},
 			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/dimAgentes')]",
 				"[concat(variables('factoryId'), '/datasets/dimOrigenes')]",
 				"[concat(variables('factoryId'), '/datasets/dimProductos')]",
 				"[concat(variables('factoryId'), '/datasets/dimCompanias')]",
@@ -1219,7 +1613,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/003-Inyecar_Hechos_Fresh_To_Staiging')]",
+			"name": "[concat(parameters('factoryName'), '/004-Inyecar_Hechos_Fresh_To_Staiging')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -1415,216 +1809,6 @@
 								"parameters": {}
 							}
 						]
-					},
-					{
-						"name": "Inyectar_Tickets_Fresh",
-						"type": "Copy",
-						"dependsOn": [
-							{
-								"activity": "Inyectar_SLA_API",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "AzureMySqlSource",
-								"query": "select DISTINCT\nt.id,\ncreated_at,\nupdated_at,\ntimestampdiff(HOUR,created_at,updated_at) AS `hours_between`,\ntimestampdiff(MINUTE,created_at,updated_at) AS `minutes_between`,\nCAST(company_id AS SIGNED)  as companiaCodigo,\ncast(`status` as SIGNED) as estadoCodigo, \ncast(`type` as SIGNED) as tipoCodigo, \ncast(tt.id as SIGNED) as tipoid,\ncast(product_id as SIGNED) as productoCodigo, \ncast(group_id as SIGNED)as grupoCodigo, \ncast(`source` as SIGNED) as origenCodigo,\ncast(`priority` as SIGNED) as prioridadCodigo,\ncast(`responder_id` as SIGNED) as agenteCodigo\nfrom freshdesk_tickets t\nleft join ticket_type tt on tt.name = t.type",
-								"queryTimeout": "02:00:00"
-							},
-							"sink": {
-								"type": "AzureSqlSink",
-								"writeBehavior": "upsert",
-								"upsertSettings": {
-									"useTempDB": true,
-									"keys": [
-										"codigo"
-									]
-								},
-								"sqlWriterUseTableLock": false,
-								"disableMetricsCollection": false
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"name": "id",
-											"type": "Int32",
-											"physicalType": "int"
-										},
-										"sink": {
-											"name": "codigo",
-											"type": "String",
-											"physicalType": "varchar"
-										}
-									},
-									{
-										"source": {
-											"name": "created_at",
-											"type": "String",
-											"physicalType": "text"
-										},
-										"sink": {
-											"name": "fechaAlta",
-											"type": "DateTime",
-											"physicalType": "datetime"
-										}
-									},
-									{
-										"source": {
-											"name": "updated_at",
-											"type": "String",
-											"physicalType": "text"
-										},
-										"sink": {
-											"name": "fechaModificacion",
-											"type": "DateTime",
-											"physicalType": "datetime"
-										}
-									},
-									{
-										"source": {
-											"name": "hours_between",
-											"type": "Int64"
-										},
-										"sink": {
-											"name": "horasDiferecia",
-											"type": "Int32",
-											"physicalType": "int"
-										}
-									},
-									{
-										"source": {
-											"name": "minutes_between",
-											"type": "Int64"
-										},
-										"sink": {
-											"name": "minutosDiferencia",
-											"type": "Int32",
-											"physicalType": "int"
-										}
-									},
-									{
-										"source": {
-											"name": "companiaCodigo",
-											"type": "Double"
-										},
-										"sink": {
-											"name": "companiaCodigo",
-											"type": "Int32",
-											"physicalType": "int"
-										}
-									},
-									{
-										"source": {
-											"name": "estadoCodigo",
-											"type": "Int32"
-										},
-										"sink": {
-											"name": "estadoCodigo",
-											"type": "Int32",
-											"physicalType": "int"
-										}
-									},
-									{
-										"source": {
-											"name": "tipoCodigo",
-											"type": "String"
-										},
-										"sink": {
-											"name": "tipoCodigo",
-											"type": "Int32",
-											"physicalType": "int"
-										}
-									},
-									{
-										"source": {
-											"name": "productoCodigo",
-											"type": "String"
-										},
-										"sink": {
-											"name": "productoCodigo",
-											"type": "Int32",
-											"physicalType": "int"
-										}
-									},
-									{
-										"source": {
-											"name": "grupoCodigo",
-											"type": "Double"
-										},
-										"sink": {
-											"name": "grupoCodigo",
-											"type": "Int32",
-											"physicalType": "int"
-										}
-									},
-									{
-										"source": {
-											"name": "origenCodigo",
-											"type": "Int32"
-										},
-										"sink": {
-											"name": "origenCodigo",
-											"type": "Int32",
-											"physicalType": "int"
-										}
-									},
-									{
-										"source": {
-											"name": "prioridadCodigo",
-											"type": "Int32"
-										},
-										"sink": {
-											"name": "prioridadCodigo",
-											"type": "Int32",
-											"physicalType": "int"
-										}
-									},
-									{
-										"source": {
-											"name": "agenteCodigo",
-											"type": "Double"
-										},
-										"sink": {
-											"name": "agenteCodigo",
-											"type": "Int32",
-											"physicalType": "int"
-										}
-									}
-								],
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "FreshTickets",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "stgTickets",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
 					}
 				],
 				"policy": {
@@ -1645,12 +1829,11 @@
 				"lastPublishTime": "2025-01-14T18:54:25Z"
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/dimSla')]",
-				"[concat(variables('factoryId'), '/datasets/stgTickets')]"
+				"[concat(variables('factoryId'), '/datasets/dimSla')]"
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/004-Inyectar_Fresh_Conversaciones_To_Dw')]",
+			"name": "[concat(parameters('factoryName'), '/005-Inyectar_Fresh_Conversaciones_To_Dw')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -1686,14 +1869,14 @@
 									"typeProperties": {
 										"variableName": "IdParameter",
 										"value": {
-											"value": "@string(item().id)",
+											"value": "@string(item().codigo)",
 											"type": "Expression"
 										}
 									}
 								},
 								{
-									"name": "API - Conversaciones",
-									"type": "WebActivity",
+									"name": "Insertar Conversaciones",
+									"type": "AzureFunctionActivity",
 									"dependsOn": [
 										{
 											"activity": "Set variable IdParameter",
@@ -1711,138 +1894,16 @@
 									},
 									"userProperties": [],
 									"typeProperties": {
-										"method": "GET",
-										"headers": {
-											"Authorization": {
-												"value": "@concat('Basic ', base64('yBjVC7W3wuMLeucdH4Hw:X'))",
-												"type": "Expression"
-											}
+										"functionName": {
+											"value": "@concat('ImportarConversaciones?id=',item().codigo)",
+											"type": "Expression"
 										},
-										"disableCertValidation": false,
-										"url": {
-											"value": "@concat('https://autocorpar.freshdesk.com/api/v2/tickets/',item().id,'/conversations')",
-											"type": "Expression"
-										}
-									}
-								},
-								{
-									"name": "Set variable vTicketsId",
-									"type": "SetVariable",
-									"dependsOn": [
-										{
-											"activity": "API - Conversaciones",
-											"dependencyConditions": [
-												"Succeeded"
-											]
-										}
-									],
-									"policy": {
-										"secureOutput": false,
-										"secureInput": false
+										"headers": {},
+										"method": "GET"
 									},
-									"userProperties": [],
-									"typeProperties": {
-										"variableName": "vTicket_id",
-										"value": {
-											"value": "@json(activity('API - Conversaciones').output.Response)\n\n",
-											"type": "Expression"
-										}
-									}
-								},
-								{
-									"name": "Set Variable Key",
-									"type": "SetVariable",
-									"dependsOn": [
-										{
-											"activity": "Set variable vTicketsId",
-											"dependencyConditions": [
-												"Succeeded"
-											]
-										}
-									],
-									"policy": {
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"variableName": "Key",
-										"value": {
-											"value": "@variables('vTicket_id')[0].ticket_id",
-											"type": "Expression"
-										}
-									}
-								},
-								{
-									"name": "Script Insert Conversaciones DW",
-									"type": "Script",
-									"dependsOn": [
-										{
-											"activity": "Script Detete Conversaciones",
-											"dependencyConditions": [
-												"Succeeded"
-											]
-										}
-									],
-									"policy": {
-										"timeout": "0.12:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
 									"linkedServiceName": {
-										"referenceName": "SqlAutocorpDw",
+										"referenceName": "AF_DW",
 										"type": "LinkedServiceReference"
-									},
-									"typeProperties": {
-										"scripts": [
-											{
-												"type": "Query",
-												"text": {
-													"value": "@concat('insert into stg.conversaciones (id, created_at, updated_at) values (',variables('vTicket_id')[0].ticket_id,\n    pipeline().parameters.DelimitadorComa,\n    pipeline().parameters.DelimitarioCommilaSimple,\n    variables('vTicket_id')[0].created_at,\n    pipeline().parameters.DelimitarioCommilaSimple,\n    pipeline().parameters.DelimitadorComa,\n    pipeline().parameters.DelimitarioCommilaSimple,\n    variables('vTicket_id')[0].updated_at,\n    pipeline().parameters.DelimitarioCommilaSimple,')')",
-													"type": "Expression"
-												}
-											}
-										],
-										"scriptBlockExecutionTimeout": "02:00:00"
-									}
-								},
-								{
-									"name": "Script Detete Conversaciones",
-									"type": "Script",
-									"dependsOn": [
-										{
-											"activity": "Set variable vTicketsId",
-											"dependencyConditions": [
-												"Succeeded"
-											]
-										}
-									],
-									"policy": {
-										"timeout": "0.12:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"linkedServiceName": {
-										"referenceName": "SqlAutocorpDw",
-										"type": "LinkedServiceReference"
-									},
-									"typeProperties": {
-										"scripts": [
-											{
-												"type": "Query",
-												"text": {
-													"value": "@concat('delete stg.conversaciones where id = ',\npipeline().parameters.DelimitarioCommilaSimple,\nvariables('vTicket_id')[0].ticket_id,\npipeline().parameters.DelimitarioCommilaSimple)",
-													"type": "Expression"
-												}
-											}
-										],
-										"scriptBlockExecutionTimeout": "02:00:00"
 									}
 								}
 							]
@@ -1863,7 +1924,7 @@
 						"typeProperties": {
 							"source": {
 								"type": "AzureSqlSource",
-								"sqlReaderQuery": "SELECT codigo as id FROM [stg].[Tickets] \r\nWHERE fechaAlta >  dateadd(day,-40,getdate())\r\norder by codigo",
+								"sqlReaderQuery": "SELECT codigo FROM whs.v_getConversaciones",
 								"queryTimeout": "02:00:00",
 								"partitionOption": "None"
 							},
@@ -1873,6 +1934,39 @@
 								"parameters": {}
 							},
 							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "Update FactTickets Fecha Primer Respuesta",
+						"type": "Script",
+						"dependsOn": [
+							{
+								"activity": "Get Conversaciones by Ticket",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"linkedServiceName": {
+							"referenceName": "SqlAutocorpDw",
+							"type": "LinkedServiceReference"
+						},
+						"typeProperties": {
+							"scripts": [
+								{
+									"type": "Query",
+									"text": "update whs.factTickets set FechaPrimerRespuesta = r1.fechaRespuesta\r\nfrom\r\n(\r\nSELECT  id codigo, created_at fechaRespuesta\r\nFROM  stg.Conversaciones \r\nwhere created_at is not null\r\n) as r1\r\nwhere whs.factTickets.codigo = r1.codigo"
+								}
+							],
+							"scriptBlockExecutionTimeout": "02:00:00"
 						}
 					}
 				],
@@ -1904,6 +1998,15 @@
 					},
 					"VError": {
 						"type": "String"
+					},
+					"Items": {
+						"type": "Array"
+					},
+					"VItem": {
+						"type": "String"
+					},
+					"Item": {
+						"type": "String"
 					}
 				},
 				"annotations": []
@@ -1913,7 +2016,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/005-Inyectar_Echos')]",
+			"name": "[concat(parameters('factoryName'), '/006-Inyectar_Echos')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -1933,7 +2036,7 @@
 						"typeProperties": {
 							"source": {
 								"type": "AzureSqlSource",
-								"sqlReaderQuery": "select\r\nt.codigo,\r\nt.fechaAlta,\r\nt.fechaModificacion,\r\nc.id companiaId,\r\ne.id estadoId,\r\ntt.id  tipoId,\r\np.id productoId,\r\ng.id grupoId,\r\no.id origenId,\r\npr.id prioridadId,\r\na.id agenteId,\r\nsla.id slaId,\r\ncase \r\n    when pr.codigo = 1 then sla.slaTargerPriority1ResolveWithin /60\r\n    when pr.codigo = 2 then sla.slaTargerPriority2ResolveWithin /60\r\n    when pr.codigo = 3 then sla.slaTargerPriority3ResolveWithin /60\r\n    when pr.codigo = 4 then sla.slaTargerPriority4ResolveWithin /60\r\nend SlaResolucion,\r\ncase \r\n    when pr.codigo = 1 then sla.slaTargetPriority1RespondWithin /60\r\n    when pr.codigo = 2 then sla.slaTargetPriority2RespondWithin /60\r\n    when pr.codigo = 3 then sla.slaTargetPriority3RespondWithin /60\r\n    when pr.codigo = 4 then sla.slaTargetPriority4RespondWithin /60\r\nend SlaRespuesta,\r\npresp.FechaPrimerRespuesta,\r\nhorasDiferecia,\r\nminutosDiferencia\r\n\r\nfrom stg.tickets t \r\nleft join whs.dimCompanias c on c.codigo = t.companiaCodigo\r\nleft join whs.dimEstados e on e.codigo = t.estadoCodigo\r\nleft join whs.dimTiposTicket tt on tt.codigo = t.tipoCodigo\r\nleft join whs.dimProductos p on p.codigo = t.productoCodigo\r\nleft join whs.dimGrupos g on g.codigo = t.grupoCodigo\r\nleft join whs.dimOrigenes o on o.codigo = t.origenCodigo\r\nleft join whs.dimPrioridades pr on pr.codigo = t.prioridadCodigo\r\nleft join whs.dimAgentes a on a.codigo = t.agenteCodigo\r\nleft join whs.dimSla sla on sla.companyid = t.companiaCodigo or sla.nombre = 'Default SLA Policy' and sla.isactive = 1\r\nleft join (\r\n                select id codigo,\r\n            min(created_at) FechaPrimerRespuesta\r\n            from stg.Conversaciones where id = 92984\r\n            group by id\r\n            ) presp on presp.codigo = t.codigo\r\n",
+								"sqlReaderQuery": "select\r\nt.codigo,\r\nt.fechaAlta,\r\nt.fechaModificacion,\r\nc.id companiaId,\r\ne.id estadoId,\r\ntt.id  tipoId,\r\np.id productoId,\r\ng.id grupoId,\r\no.id origenId,\r\npr.id prioridadId,\r\na.id agenteId,\r\nsla.id slaId,\r\ncase \r\n    when pr.codigo = 1 then sla.slaTargerPriority1ResolveWithin /60\r\n    when pr.codigo = 2 then sla.slaTargerPriority2ResolveWithin /60\r\n    when pr.codigo = 3 then sla.slaTargerPriority3ResolveWithin /60\r\n    when pr.codigo = 4 then sla.slaTargerPriority4ResolveWithin /60\r\nend SlaResolucion,\r\ncase \r\n    when pr.codigo = 1 then sla.slaTargetPriority1RespondWithin /60\r\n    when pr.codigo = 2 then sla.slaTargetPriority2RespondWithin /60\r\n    when pr.codigo = 3 then sla.slaTargetPriority3RespondWithin /60\r\n    when pr.codigo = 4 then sla.slaTargetPriority4RespondWithin /60\r\nend SlaRespuesta,\r\npresp.FechaPrimerRespuesta,\r\nhorasDiferecia,\r\nminutosDiferencia\r\n\r\nfrom stg.tickets t \r\nleft join whs.dimCompanias c on c.codigo = t.companiaCodigo\r\nleft join whs.dimEstados e on e.codigo = t.estadoCodigo\r\nleft join whs.dimTiposTicket tt on tt.nombre = t.tipoCodigo\r\nleft join whs.dimProductos p on p.codigo = t.productoCodigo\r\nleft join whs.dimGrupos g on g.codigo = t.grupoCodigo\r\nleft join whs.dimOrigenes o on o.codigo = t.origenCodigo\r\nleft join whs.dimPrioridades pr on pr.codigo = t.prioridadCodigo\r\nleft join whs.dimAgentes a on a.codigo = t.agenteCodigo\r\nleft join whs.dimSla sla on sla.companyid = t.companiaCodigo or sla.nombre = 'Default SLA Policy' and sla.isactive = 1\r\nleft join (\r\n                select id codigo,\r\n            min(created_at) FechaPrimerRespuesta\r\n            from stg.Conversaciones where id = 92984\r\n            group by id\r\n            ) presp on presp.codigo = t.codigo\r\n",
 								"queryTimeout": "02:00:00",
 								"partitionOption": "None"
 							},
@@ -2214,14 +2317,21 @@
 					{
 						"name": "Inyectar_Data_Fresh",
 						"type": "ExecutePipeline",
-						"dependsOn": [],
+						"dependsOn": [
+							{
+								"activity": "Iyectar Tickets Api Fresh To Stg",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
 						"policy": {
 							"secureInput": false
 						},
 						"userProperties": [],
 						"typeProperties": {
 							"pipeline": {
-								"referenceName": "002-Inyectar_Dimensiones_Fresh_To_DW",
+								"referenceName": "003-Inyectar_Dimensiones_Fresh_To_DW",
 								"type": "PipelineReference"
 							},
 							"waitOnCompletion": true,
@@ -2229,7 +2339,7 @@
 						}
 					},
 					{
-						"name": "Inyectar_Hechos_stg",
+						"name": "Inyectar_SLA",
 						"type": "ExecutePipeline",
 						"dependsOn": [
 							{
@@ -2245,7 +2355,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"pipeline": {
-								"referenceName": "003-Inyecar_Hechos_Fresh_To_Staiging",
+								"referenceName": "004-Inyecar_Hechos_Fresh_To_Staiging",
 								"type": "PipelineReference"
 							},
 							"waitOnCompletion": true,
@@ -2257,13 +2367,7 @@
 						"type": "ExecutePipeline",
 						"dependsOn": [
 							{
-								"activity": "Inyectar_Hechos_stg",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							},
-							{
-								"activity": "Inyecta_Conversaciones_DW",
+								"activity": "Inyectar_SLA",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -2275,7 +2379,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"pipeline": {
-								"referenceName": "005-Inyectar_Echos",
+								"referenceName": "006-Inyectar_Echos",
 								"type": "PipelineReference"
 							},
 							"waitOnCompletion": true,
@@ -2287,7 +2391,7 @@
 						"type": "ExecutePipeline",
 						"dependsOn": [
 							{
-								"activity": "Inyectar_Data_Fresh",
+								"activity": "Inyectar_FactTickets",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -2299,7 +2403,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"pipeline": {
-								"referenceName": "004-Inyectar_Fresh_Conversaciones_To_Dw",
+								"referenceName": "005-Inyectar_Fresh_Conversaciones_To_Dw",
 								"type": "PipelineReference"
 							},
 							"waitOnCompletion": true,
@@ -2794,6 +2898,23 @@
 								"parameters": {}
 							}
 						]
+					},
+					{
+						"name": "Iyectar Tickets Api Fresh To Stg",
+						"type": "ExecutePipeline",
+						"dependsOn": [],
+						"policy": {
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "002-Importar_Tickets_Fresh_to_Stg",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
 					}
 				],
 				"policy": {
@@ -2814,10 +2935,12 @@
 				"lastPublishTime": "2025-01-14T15:43:21Z"
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/002-Inyectar_Dimensiones_Fresh_To_DW')]",
-				"[concat(variables('factoryId'), '/pipelines/003-Inyecar_Hechos_Fresh_To_Staiging')]",
-				"[concat(variables('factoryId'), '/pipelines/005-Inyectar_Echos')]",
-				"[concat(variables('factoryId'), '/pipelines/004-Inyectar_Fresh_Conversaciones_To_Dw')]"
+				"[concat(variables('factoryId'), '/pipelines/003-Inyectar_Dimensiones_Fresh_To_DW')]",
+				"[concat(variables('factoryId'), '/pipelines/004-Inyecar_Hechos_Fresh_To_Staiging')]",
+				"[concat(variables('factoryId'), '/pipelines/006-Inyectar_Echos')]",
+				"[concat(variables('factoryId'), '/pipelines/005-Inyectar_Fresh_Conversaciones_To_Dw')]",
+				"[concat(variables('factoryId'), '/datasets/TicketsCnsolidados_xslx')]",
+				"[concat(variables('factoryId'), '/pipelines/002-Importar_Tickets_Fresh_to_Stg')]"
 			]
 		},
 		{

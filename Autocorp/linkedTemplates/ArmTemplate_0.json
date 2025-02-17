@@ -7,6 +7,10 @@
 			"metadata": "Nombre de instancia de Data Factory",
 			"defaultValue": "Autocorp"
 		},
+		"AF_DW_functionKey": {
+			"type": "secureString",
+			"metadata": "Cadena protegida para \"functionKey\"de \"AF_DW\""
+		},
 		"APIFresh_password": {
 			"type": "secureString",
 			"metadata": "Cadena protegida para \"password\"de \"APIFresh\""
@@ -31,9 +35,9 @@
 			"type": "secureString",
 			"metadata": "Cadena protegida para \"connectionString\"de \"Storege_Fresh\""
 		},
-		"ApiTickets_password": {
-			"type": "secureString",
-			"metadata": "Cadena protegida para \"password\"de \"ApiTickets\""
+		"AF_DW_properties_typeProperties_functionAppUrl": {
+			"type": "string",
+			"defaultValue": "https://dwservices.azurewebsites.net"
 		},
 		"APIFresh_properties_typeProperties_url": {
 			"type": "string",
@@ -51,6 +55,10 @@
 			"type": "string",
 			"defaultValue": "yBjVC7W3wuMLeucdH4Hw"
 		},
+		"ApiTickets_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://autocorpdwapi.azurewebsites.net/api/freshwork/tickets"
+		},
 		"SqlAutocorpDw_properties_typeProperties_server": {
 			"type": "string",
 			"defaultValue": "autocorpdw.database.windows.net"
@@ -62,20 +70,30 @@
 		"SqlAutocorpDw_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "autocorp"
-		},
-		"ApiTickets_properties_typeProperties_url": {
-			"type": "string",
-			"defaultValue": "https://autocorpar.freshdesk.com/api/v2/tickets"
-		},
-		"ApiTickets_properties_typeProperties_userName": {
-			"type": "string",
-			"defaultValue": "yBjVC7W3wuMLeucdH4Hw"
 		}
 	},
 	"variables": {
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/AF_DW')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureFunction",
+				"typeProperties": {
+					"functionAppUrl": "[parameters('AF_DW_properties_typeProperties_functionAppUrl')]",
+					"authentication": "Anonymous",
+					"functionKey": {
+						"type": "SecureString",
+						"value": "[parameters('AF_DW_functionKey')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
 		{
 			"name": "[concat(parameters('factoryName'), '/APIFresh')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
@@ -112,6 +130,21 @@
 						"type": "SecureString",
 						"value": "[parameters('ApiConversariones_password')]"
 					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ApiTickets')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "RestService",
+				"typeProperties": {
+					"url": "[parameters('ApiTickets_properties_typeProperties_url')]",
+					"enableServerCertificateValidation": true,
+					"authenticationType": "Anonymous"
 				}
 			},
 			"dependsOn": []
@@ -174,26 +207,6 @@
 				"typeProperties": {
 					"connectionString": "[parameters('Storege_Fresh_connectionString')]",
 					"fileShare": "freshdesk-fileshare"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ApiTickets')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "RestService",
-				"typeProperties": {
-					"url": "[parameters('ApiTickets_properties_typeProperties_url')]",
-					"enableServerCertificateValidation": true,
-					"authenticationType": "Basic",
-					"userName": "[parameters('ApiTickets_properties_typeProperties_userName')]",
-					"password": {
-						"type": "SecureString",
-						"value": "[parameters('ApiTickets_password')]"
-					}
 				}
 			},
 			"dependsOn": []
@@ -853,214 +866,24 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/TicketsCnsolidados_xslx')]",
+			"name": "[concat(parameters('factoryName'), '/Fresh_Tickets')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "Storege_Fresh",
+					"referenceName": "ApiTickets",
 					"type": "LinkedServiceReference"
 				},
 				"folder": {
-					"name": "Source/Fresh/Storege"
+					"name": "APIs"
 				},
 				"annotations": [],
-				"type": "Excel",
-				"typeProperties": {
-					"sheetName": "Hoja1",
-					"location": {
-						"type": "AzureFileStorageLocation",
-						"fileName": "Freshdesk_Tickets_Consolidado_completo.xlsx"
-					},
-					"firstRowAsHeader": true
-				},
-				"schema": [
-					{
-						"name": "cc_emails",
-						"type": "String"
-					},
-					{
-						"name": "fwd_emails",
-						"type": "String"
-					},
-					{
-						"name": "reply_cc_emails",
-						"type": "String"
-					},
-					{
-						"name": "ticket_cc_emails",
-						"type": "String"
-					},
-					{
-						"name": "ticket_bcc_emails",
-						"type": "String"
-					},
-					{
-						"name": "fr_escalated",
-						"type": "String"
-					},
-					{
-						"name": "spam",
-						"type": "String"
-					},
-					{
-						"name": "email_config_id",
-						"type": "String"
-					},
-					{
-						"name": "group_id",
-						"type": "String"
-					},
-					{
-						"name": "priority",
-						"type": "String"
-					},
-					{
-						"name": "requester_id",
-						"type": "String"
-					},
-					{
-						"name": "responder_id",
-						"type": "String"
-					},
-					{
-						"name": "source",
-						"type": "String"
-					},
-					{
-						"name": "company_id",
-						"type": "String"
-					},
-					{
-						"name": "status",
-						"type": "String"
-					},
-					{
-						"name": "subject",
-						"type": "String"
-					},
-					{
-						"name": "association_type",
-						"type": "String"
-					},
-					{
-						"name": "support_email",
-						"type": "String"
-					},
-					{
-						"name": "to_emails",
-						"type": "String"
-					},
-					{
-						"name": "product_id",
-						"type": "String"
-					},
-					{
-						"name": "id",
-						"type": "String"
-					},
-					{
-						"name": "type",
-						"type": "String"
-					},
-					{
-						"name": "due_by",
-						"type": "String"
-					},
-					{
-						"name": "fr_due_by",
-						"type": "String"
-					},
-					{
-						"name": "is_escalated",
-						"type": "String"
-					},
-					{
-						"name": "created_at",
-						"type": "String"
-					},
-					{
-						"name": "updated_at",
-						"type": "String"
-					},
-					{
-						"name": "associated_tickets_count",
-						"type": "String"
-					},
-					{
-						"name": "tags",
-						"type": "String"
-					},
-					{
-						"name": "form_id",
-						"type": "String"
-					},
-					{
-						"name": "nr_due_by",
-						"type": "String"
-					},
-					{
-						"name": "nr_escalated",
-						"type": "String"
-					},
-					{
-						"name": "cf_patente",
-						"type": "String"
-					},
-					{
-						"name": "cf_id_efleet",
-						"type": "String"
-					},
-					{
-						"name": "cf_generar_ot_efleet",
-						"type": "String"
-					},
-					{
-						"name": "cf_kilometraje",
-						"type": "String"
-					}
-				]
+				"type": "RestResource",
+				"typeProperties": {},
+				"schema": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/Storege_Fresh')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/dimAgentes')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SqlAutocorpDw",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "DW/Dimensiones"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "id",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "codigo",
-						"type": "varchar"
-					},
-					{
-						"name": "nombre",
-						"type": "varchar"
-					}
-				],
-				"typeProperties": {
-					"schema": "whs",
-					"table": "dimAgentes"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/SqlAutocorpDw')]"
+				"[concat(variables('factoryId'), '/linkedServices/ApiTickets')]"
 			]
 		}
 	]
