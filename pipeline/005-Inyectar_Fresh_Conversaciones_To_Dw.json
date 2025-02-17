@@ -125,7 +125,7 @@
 					"scripts": [
 						{
 							"type": "Query",
-							"text": "update whs.factTickets set FechaPrimerRespuesta = r1.fechaRespuesta\r\nfrom\r\n(\r\nSELECT  codigo, c.created_at fechaRespuesta\r\nFROM whs.factTickets t\r\ninner JOIN stg.Conversaciones c ON c.id = t.codigo\r\nwhere t.FechaPrimerRespuesta is null\r\n) as r1\r\nwhere whs.factTickets.codigo = r1.codigo"
+							"text": "update whs.factTickets set FechaPrimerRespuesta = r1.fechaRespuesta\r\nfrom\r\n(\r\nSELECT  id codigo, created_at fechaRespuesta\r\nFROM  stg.Conversaciones \r\nwhere created_at is not null\r\n) as r1\r\nwhere whs.factTickets.codigo = r1.codigo"
 						}
 					],
 					"scriptBlockExecutionTimeout": "02:00:00"
