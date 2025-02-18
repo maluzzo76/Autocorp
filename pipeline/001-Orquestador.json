@@ -607,6 +607,9 @@
 			},
 			"vId": {
 				"type": "String"
+			},
+			"IdParameter": {
+				"type": "String"
 			}
 		},
 		"annotations": [],
