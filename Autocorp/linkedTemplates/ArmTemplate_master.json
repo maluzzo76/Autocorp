@@ -35,6 +35,10 @@
 			"type": "secureString",
 			"metadata": "Cadena protegida para \"connectionString\"de \"Storege_Fresh\""
 		},
+		"ApiAgente_password": {
+			"type": "secureString",
+			"metadata": "Cadena protegida para \"password\"de \"ApiAgente\""
+		},
 		"AF_DW_properties_typeProperties_functionAppUrl": {
 			"type": "string",
 			"defaultValue": "https://dwservices.azurewebsites.net"
@@ -70,6 +74,14 @@
 		"SqlAutocorpDw_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "autocorp"
+		},
+		"ApiAgente_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://autocorpar.freshdesk.com/api/v2/agents/"
+		},
+		"ApiAgente_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "yBjVC7W3wuMLeucdH4Hw"
 		},
 		"containerUri": {
 			"type": "string",
@@ -119,6 +131,9 @@
 					"Storege_Fresh_connectionString": {
 						"value": "[parameters('Storege_Fresh_connectionString')]"
 					},
+					"ApiAgente_password": {
+						"value": "[parameters('ApiAgente_password')]"
+					},
 					"AF_DW_properties_typeProperties_functionAppUrl": {
 						"value": "[parameters('AF_DW_properties_typeProperties_functionAppUrl')]"
 					},
@@ -145,6 +160,12 @@
 					},
 					"SqlAutocorpDw_properties_typeProperties_userName": {
 						"value": "[parameters('SqlAutocorpDw_properties_typeProperties_userName')]"
+					},
+					"ApiAgente_properties_typeProperties_url": {
+						"value": "[parameters('ApiAgente_properties_typeProperties_url')]"
+					},
+					"ApiAgente_properties_typeProperties_userName": {
+						"value": "[parameters('ApiAgente_properties_typeProperties_userName')]"
 					}
 				}
 			},
@@ -168,6 +189,26 @@
 			},
 			"dependsOn": [
 				"[resourceId('Microsoft.Resources/deployments', 'Autocorp_ArmTemplate_0')]"
+			]
+		},
+		{
+			"name": "Autocorp_ArmTemplate_2",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_2.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'Autocorp_ArmTemplate_1')]"
 			]
 		}
 	]

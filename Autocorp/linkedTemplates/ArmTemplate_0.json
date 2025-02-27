@@ -35,6 +35,10 @@
 			"type": "secureString",
 			"metadata": "Cadena protegida para \"connectionString\"de \"Storege_Fresh\""
 		},
+		"ApiAgente_password": {
+			"type": "secureString",
+			"metadata": "Cadena protegida para \"password\"de \"ApiAgente\""
+		},
 		"AF_DW_properties_typeProperties_functionAppUrl": {
 			"type": "string",
 			"defaultValue": "https://dwservices.azurewebsites.net"
@@ -70,6 +74,14 @@
 		"SqlAutocorpDw_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "autocorp"
+		},
+		"ApiAgente_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://autocorpar.freshdesk.com/api/v2/agents/"
+		},
+		"ApiAgente_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "yBjVC7W3wuMLeucdH4Hw"
 		}
 	},
 	"variables": {
@@ -207,6 +219,26 @@
 				"typeProperties": {
 					"connectionString": "[parameters('Storege_Fresh_connectionString')]",
 					"fileShare": "freshdesk-fileshare"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ApiAgente')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "RestService",
+				"typeProperties": {
+					"url": "[parameters('ApiAgente_properties_typeProperties_url')]",
+					"enableServerCertificateValidation": true,
+					"authenticationType": "Basic",
+					"userName": "[parameters('ApiAgente_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('ApiAgente_password')]"
+					}
 				}
 			},
 			"dependsOn": []
@@ -863,27 +895,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/APIFresh')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Fresh_Tickets')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ApiTickets",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "APIs"
-				},
-				"annotations": [],
-				"type": "RestResource",
-				"typeProperties": {},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ApiTickets')]"
 			]
 		}
 	]

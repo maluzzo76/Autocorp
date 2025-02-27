@@ -35,6 +35,10 @@
 			"type": "secureString",
 			"metadata": "Cadena protegida para \"connectionString\"de \"Storege_Fresh\""
 		},
+		"ApiAgente_password": {
+			"type": "secureString",
+			"metadata": "Cadena protegida para \"password\"de \"ApiAgente\""
+		},
 		"AF_DW_properties_typeProperties_functionAppUrl": {
 			"type": "string",
 			"defaultValue": "https://dwservices.azurewebsites.net"
@@ -70,6 +74,14 @@
 		"SqlAutocorpDw_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "autocorp"
+		},
+		"ApiAgente_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://autocorpar.freshdesk.com/api/v2/agents/"
+		},
+		"ApiAgente_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "yBjVC7W3wuMLeucdH4Hw"
 		}
 	},
 	"variables": {
@@ -909,8 +921,10 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "Inyectar_Agentes_Fresh",
+						"name": "Inyectar_Agentes_Fresh Old",
 						"type": "Copy",
+						"state": "Inactive",
+						"onInactiveMarkAs": "Succeeded",
 						"dependsOn": [],
 						"policy": {
 							"timeout": "0.12:00:00",
@@ -1559,6 +1573,81 @@
 								"parameters": {}
 							}
 						]
+					},
+					{
+						"name": "Inyectar_Agentes_Fresh_Api",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "RestSource",
+								"httpRequestTimeout": "00:01:40",
+								"requestInterval": "00.00:00:00.010",
+								"requestMethod": "GET",
+								"paginationRules": {
+									"supportRFC5988": "true"
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"writeBehavior": "upsert",
+								"upsertSettings": {
+									"useTempDB": true,
+									"keys": [
+										"codigo"
+									]
+								},
+								"sqlWriterUseTableLock": false,
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"validateDataConsistency": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"path": "$['id']"
+										},
+										"sink": {
+											"name": "codigo",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['contact']['name']"
+										},
+										"sink": {
+											"name": "nombre",
+											"type": "String"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "Api_Agentes",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "dimAgentes",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
 					}
 				],
 				"policy": {
@@ -1588,7 +1677,8 @@
 				"[concat(variables('factoryId'), '/datasets/FreshTipos')]",
 				"[concat(variables('factoryId'), '/datasets/dimTiposTickets')]",
 				"[concat(variables('factoryId'), '/datasets/FreshGrupos')]",
-				"[concat(variables('factoryId'), '/datasets/dimGrupos')]"
+				"[concat(variables('factoryId'), '/datasets/dimGrupos')]",
+				"[concat(variables('factoryId'), '/datasets/Api_Agentes')]"
 			]
 		},
 		{
@@ -3849,14 +3939,55 @@
 				"typeProperties": {
 					"recurrence": {
 						"frequency": "Hour",
-						"interval": 24,
-						"startTime": "2025-01-04T02:08:00",
+						"interval": 4,
+						"startTime": "2025-01-04T05:08:00",
 						"timeZone": "Argentina Standard Time"
 					}
 				}
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/001-Orquestador')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ApiAgente')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "RestService",
+				"typeProperties": {
+					"url": "[parameters('ApiAgente_properties_typeProperties_url')]",
+					"enableServerCertificateValidation": true,
+					"authenticationType": "Basic",
+					"userName": "[parameters('ApiAgente_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('ApiAgente_password')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Api_Agentes')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ApiAgente",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "APIs"
+				},
+				"annotations": [],
+				"type": "RestResource",
+				"typeProperties": {},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ApiAgente')]"
 			]
 		}
 	]

@@ -13,6 +13,25 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/Fresh_Tickets')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ApiTickets",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "APIs"
+				},
+				"annotations": [],
+				"type": "RestResource",
+				"typeProperties": {},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/TicketsCnsolidados_xslx')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -746,6 +765,25 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/Api_Agentes')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ApiAgente",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "APIs"
+				},
+				"annotations": [],
+				"type": "RestResource",
+				"typeProperties": {},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/002-Importar_Tickets_Fresh_to_Stg')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -928,6 +966,7 @@
 				"annotations": []
 			},
 			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/Fresh_Tickets')]",
 				"[concat(variables('factoryId'), '/datasets/stgTickets')]"
 			]
 		},
@@ -938,8 +977,10 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "Inyectar_Agentes_Fresh",
+						"name": "Inyectar_Agentes_Fresh Old",
 						"type": "Copy",
+						"state": "Inactive",
+						"onInactiveMarkAs": "Succeeded",
 						"dependsOn": [],
 						"policy": {
 							"timeout": "0.12:00:00",
@@ -1588,6 +1629,81 @@
 								"parameters": {}
 							}
 						]
+					},
+					{
+						"name": "Inyectar_Agentes_Fresh_Api",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "RestSource",
+								"httpRequestTimeout": "00:01:40",
+								"requestInterval": "00.00:00:00.010",
+								"requestMethod": "GET",
+								"paginationRules": {
+									"supportRFC5988": "true"
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"writeBehavior": "upsert",
+								"upsertSettings": {
+									"useTempDB": true,
+									"keys": [
+										"codigo"
+									]
+								},
+								"sqlWriterUseTableLock": false,
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"validateDataConsistency": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"path": "$['id']"
+										},
+										"sink": {
+											"name": "codigo",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['contact']['name']"
+										},
+										"sink": {
+											"name": "nombre",
+											"type": "String"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "Api_Agentes",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "dimAgentes",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
 					}
 				],
 				"policy": {
@@ -1609,7 +1725,8 @@
 				"[concat(variables('factoryId'), '/datasets/dimEstados')]",
 				"[concat(variables('factoryId'), '/datasets/dimPrioridades')]",
 				"[concat(variables('factoryId'), '/datasets/dimTiposTickets')]",
-				"[concat(variables('factoryId'), '/datasets/dimGrupos')]"
+				"[concat(variables('factoryId'), '/datasets/dimGrupos')]",
+				"[concat(variables('factoryId'), '/datasets/Api_Agentes')]"
 			]
 		},
 		{
@@ -2916,36 +3033,6 @@
 				"[concat(variables('factoryId'), '/pipelines/005-Inyectar_Fresh_Conversaciones_To_Dw')]",
 				"[concat(variables('factoryId'), '/datasets/TicketsCnsolidados_xslx')]",
 				"[concat(variables('factoryId'), '/pipelines/002-Importar_Tickets_Fresh_to_Stg')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Diario 2-00am')]",
-			"type": "Microsoft.DataFactory/factories/triggers",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"runtimeState": "Started",
-				"pipelines": [
-					{
-						"pipelineReference": {
-							"referenceName": "001-Orquestador",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					}
-				],
-				"type": "ScheduleTrigger",
-				"typeProperties": {
-					"recurrence": {
-						"frequency": "Hour",
-						"interval": 24,
-						"startTime": "2025-01-04T02:08:00",
-						"timeZone": "Argentina Standard Time"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/001-Orquestador')]"
 			]
 		}
 	]

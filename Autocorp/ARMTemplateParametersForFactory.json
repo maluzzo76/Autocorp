@@ -26,6 +26,9 @@
 		"Storege_Fresh_connectionString": {
 			"value": ""
 		},
+		"ApiAgente_password": {
+			"value": ""
+		},
 		"AF_DW_properties_typeProperties_functionAppUrl": {
 			"value": "https://dwservices.azurewebsites.net"
 		},
@@ -52,6 +55,12 @@
 		},
 		"SqlAutocorpDw_properties_typeProperties_userName": {
 			"value": "autocorp"
+		},
+		"ApiAgente_properties_typeProperties_url": {
+			"value": "https://autocorpar.freshdesk.com/api/v2/agents/"
+		},
+		"ApiAgente_properties_typeProperties_userName": {
+			"value": "yBjVC7W3wuMLeucdH4Hw"
 		}
 	}
 }
