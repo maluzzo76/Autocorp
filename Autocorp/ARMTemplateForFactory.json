@@ -3877,7 +3877,7 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/Diario 2-00am')]",
+			"name": "[concat(parameters('factoryName'), '/Diario 5am for 4 hours')]",
 			"type": "Microsoft.DataFactory/factories/triggers",
 			"apiVersion": "2018-06-01",
 			"properties": {
