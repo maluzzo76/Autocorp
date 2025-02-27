@@ -3,8 +3,10 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Inyectar_Agentes_Fresh",
+				"name": "Inyectar_Agentes_Fresh Old",
 				"type": "Copy",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -634,6 +636,79 @@
 				"outputs": [
 					{
 						"referenceName": "dimGrupos",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Inyectar_Agentes_Fresh_Api",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "RestSource",
+						"httpRequestTimeout": "00:01:40",
+						"requestInterval": "00.00:00:00.010",
+						"requestMethod": "GET",
+						"paginationRules": {
+							"supportRFC5988": "true"
+						}
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"writeBehavior": "upsert",
+						"upsertSettings": {
+							"useTempDB": true,
+							"keys": [
+								"codigo"
+							]
+						},
+						"sqlWriterUseTableLock": false,
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"validateDataConsistency": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['id']"
+								},
+								"sink": {
+									"name": "codigo",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['contact']['name']"
+								},
+								"sink": {
+									"name": "nombre",
+									"type": "String"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "Api_Agentes",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "dimAgentes",
 						"type": "DatasetReference"
 					}
 				]

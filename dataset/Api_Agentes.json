@@ -1,0 +1,15 @@
+{
+	"name": "Api_Agentes",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ApiAgente",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "APIs"
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"schema": []
+	}
+}
