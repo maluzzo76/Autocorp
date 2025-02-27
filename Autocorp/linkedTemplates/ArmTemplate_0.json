@@ -15,6 +15,10 @@
 			"type": "secureString",
 			"metadata": "Cadena protegida para \"password\"de \"APIFresh\""
 		},
+		"ApiAgente_password": {
+			"type": "secureString",
+			"metadata": "Cadena protegida para \"password\"de \"ApiAgente\""
+		},
 		"ApiConversariones_password": {
 			"type": "secureString",
 			"metadata": "Cadena protegida para \"password\"de \"ApiConversariones\""
@@ -35,10 +39,6 @@
 			"type": "secureString",
 			"metadata": "Cadena protegida para \"connectionString\"de \"Storege_Fresh\""
 		},
-		"ApiAgente_password": {
-			"type": "secureString",
-			"metadata": "Cadena protegida para \"password\"de \"ApiAgente\""
-		},
 		"AF_DW_properties_typeProperties_functionAppUrl": {
 			"type": "string",
 			"defaultValue": "https://dwservices.azurewebsites.net"
@@ -48,6 +48,14 @@
 			"defaultValue": "https://autocorpar.freshdesk.com/api/v2/sla_policies"
 		},
 		"APIFresh_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "yBjVC7W3wuMLeucdH4Hw"
+		},
+		"ApiAgente_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://autocorpar.freshdesk.com/api/v2/agents/"
+		},
+		"ApiAgente_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "yBjVC7W3wuMLeucdH4Hw"
 		},
@@ -74,14 +82,6 @@
 		"SqlAutocorpDw_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "autocorp"
-		},
-		"ApiAgente_properties_typeProperties_url": {
-			"type": "string",
-			"defaultValue": "https://autocorpar.freshdesk.com/api/v2/agents/"
-		},
-		"ApiAgente_properties_typeProperties_userName": {
-			"type": "string",
-			"defaultValue": "yBjVC7W3wuMLeucdH4Hw"
 		}
 	},
 	"variables": {
@@ -121,6 +121,26 @@
 					"password": {
 						"type": "SecureString",
 						"value": "[parameters('APIFresh_password')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ApiAgente')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "RestService",
+				"typeProperties": {
+					"url": "[parameters('ApiAgente_properties_typeProperties_url')]",
+					"enableServerCertificateValidation": true,
+					"authenticationType": "Basic",
+					"userName": "[parameters('ApiAgente_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('ApiAgente_password')]"
 					}
 				}
 			},
@@ -224,24 +244,25 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/ApiAgente')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"name": "[concat(parameters('factoryName'), '/Api_Agentes')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ApiAgente",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "APIs"
+				},
 				"annotations": [],
-				"type": "RestService",
-				"typeProperties": {
-					"url": "[parameters('ApiAgente_properties_typeProperties_url')]",
-					"enableServerCertificateValidation": true,
-					"authenticationType": "Basic",
-					"userName": "[parameters('ApiAgente_properties_typeProperties_userName')]",
-					"password": {
-						"type": "SecureString",
-						"value": "[parameters('ApiAgente_password')]"
-					}
-				}
+				"type": "RestResource",
+				"typeProperties": {},
+				"schema": []
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ApiAgente')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/FreshAgentes')]",
@@ -874,27 +895,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/ApiConversariones')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Fresh_SLA')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "APIFresh",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "APIs"
-				},
-				"annotations": [],
-				"type": "RestResource",
-				"typeProperties": {},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/APIFresh')]"
 			]
 		}
 	]

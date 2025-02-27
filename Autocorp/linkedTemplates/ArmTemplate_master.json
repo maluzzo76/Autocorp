@@ -15,6 +15,10 @@
 			"type": "secureString",
 			"metadata": "Cadena protegida para \"password\"de \"APIFresh\""
 		},
+		"ApiAgente_password": {
+			"type": "secureString",
+			"metadata": "Cadena protegida para \"password\"de \"ApiAgente\""
+		},
 		"ApiConversariones_password": {
 			"type": "secureString",
 			"metadata": "Cadena protegida para \"password\"de \"ApiConversariones\""
@@ -35,10 +39,6 @@
 			"type": "secureString",
 			"metadata": "Cadena protegida para \"connectionString\"de \"Storege_Fresh\""
 		},
-		"ApiAgente_password": {
-			"type": "secureString",
-			"metadata": "Cadena protegida para \"password\"de \"ApiAgente\""
-		},
 		"AF_DW_properties_typeProperties_functionAppUrl": {
 			"type": "string",
 			"defaultValue": "https://dwservices.azurewebsites.net"
@@ -48,6 +48,14 @@
 			"defaultValue": "https://autocorpar.freshdesk.com/api/v2/sla_policies"
 		},
 		"APIFresh_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "yBjVC7W3wuMLeucdH4Hw"
+		},
+		"ApiAgente_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://autocorpar.freshdesk.com/api/v2/agents/"
+		},
+		"ApiAgente_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "yBjVC7W3wuMLeucdH4Hw"
 		},
@@ -74,14 +82,6 @@
 		"SqlAutocorpDw_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "autocorp"
-		},
-		"ApiAgente_properties_typeProperties_url": {
-			"type": "string",
-			"defaultValue": "https://autocorpar.freshdesk.com/api/v2/agents/"
-		},
-		"ApiAgente_properties_typeProperties_userName": {
-			"type": "string",
-			"defaultValue": "yBjVC7W3wuMLeucdH4Hw"
 		},
 		"containerUri": {
 			"type": "string",
@@ -116,6 +116,9 @@
 					"APIFresh_password": {
 						"value": "[parameters('APIFresh_password')]"
 					},
+					"ApiAgente_password": {
+						"value": "[parameters('ApiAgente_password')]"
+					},
 					"ApiConversariones_password": {
 						"value": "[parameters('ApiConversariones_password')]"
 					},
@@ -131,9 +134,6 @@
 					"Storege_Fresh_connectionString": {
 						"value": "[parameters('Storege_Fresh_connectionString')]"
 					},
-					"ApiAgente_password": {
-						"value": "[parameters('ApiAgente_password')]"
-					},
 					"AF_DW_properties_typeProperties_functionAppUrl": {
 						"value": "[parameters('AF_DW_properties_typeProperties_functionAppUrl')]"
 					},
@@ -142,6 +142,12 @@
 					},
 					"APIFresh_properties_typeProperties_userName": {
 						"value": "[parameters('APIFresh_properties_typeProperties_userName')]"
+					},
+					"ApiAgente_properties_typeProperties_url": {
+						"value": "[parameters('ApiAgente_properties_typeProperties_url')]"
+					},
+					"ApiAgente_properties_typeProperties_userName": {
+						"value": "[parameters('ApiAgente_properties_typeProperties_userName')]"
 					},
 					"ApiConversariones_properties_typeProperties_url": {
 						"value": "[parameters('ApiConversariones_properties_typeProperties_url')]"
@@ -160,12 +166,6 @@
 					},
 					"SqlAutocorpDw_properties_typeProperties_userName": {
 						"value": "[parameters('SqlAutocorpDw_properties_typeProperties_userName')]"
-					},
-					"ApiAgente_properties_typeProperties_url": {
-						"value": "[parameters('ApiAgente_properties_typeProperties_url')]"
-					},
-					"ApiAgente_properties_typeProperties_userName": {
-						"value": "[parameters('ApiAgente_properties_typeProperties_userName')]"
 					}
 				}
 			},

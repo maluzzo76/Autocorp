@@ -15,6 +15,10 @@
 			"type": "secureString",
 			"metadata": "Cadena protegida para \"password\"de \"APIFresh\""
 		},
+		"ApiAgente_password": {
+			"type": "secureString",
+			"metadata": "Cadena protegida para \"password\"de \"ApiAgente\""
+		},
 		"ApiConversariones_password": {
 			"type": "secureString",
 			"metadata": "Cadena protegida para \"password\"de \"ApiConversariones\""
@@ -35,10 +39,6 @@
 			"type": "secureString",
 			"metadata": "Cadena protegida para \"connectionString\"de \"Storege_Fresh\""
 		},
-		"ApiAgente_password": {
-			"type": "secureString",
-			"metadata": "Cadena protegida para \"password\"de \"ApiAgente\""
-		},
 		"AF_DW_properties_typeProperties_functionAppUrl": {
 			"type": "string",
 			"defaultValue": "https://dwservices.azurewebsites.net"
@@ -48,6 +48,14 @@
 			"defaultValue": "https://autocorpar.freshdesk.com/api/v2/sla_policies"
 		},
 		"APIFresh_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "yBjVC7W3wuMLeucdH4Hw"
+		},
+		"ApiAgente_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://autocorpar.freshdesk.com/api/v2/agents/"
+		},
+		"ApiAgente_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "yBjVC7W3wuMLeucdH4Hw"
 		},
@@ -74,14 +82,6 @@
 		"SqlAutocorpDw_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "autocorp"
-		},
-		"ApiAgente_properties_typeProperties_url": {
-			"type": "string",
-			"defaultValue": "https://autocorpar.freshdesk.com/api/v2/agents/"
-		},
-		"ApiAgente_properties_typeProperties_userName": {
-			"type": "string",
-			"defaultValue": "yBjVC7W3wuMLeucdH4Hw"
 		}
 	},
 	"variables": {
@@ -921,89 +921,6 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "Inyectar_Agentes_Fresh Old",
-						"type": "Copy",
-						"state": "Inactive",
-						"onInactiveMarkAs": "Succeeded",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "AzureMySqlSource",
-								"query": "select id,\nupper(name) name\nfrom agent_table;"
-							},
-							"sink": {
-								"type": "AzureSqlSink",
-								"writeBehavior": "upsert",
-								"upsertSettings": {
-									"useTempDB": true,
-									"keys": [
-										"codigo"
-									]
-								},
-								"sqlWriterUseTableLock": false,
-								"disableMetricsCollection": false
-							},
-							"enableStaging": false,
-							"validateDataConsistency": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"name": "id",
-											"type": "Double",
-											"physicalType": "double"
-										},
-										"sink": {
-											"name": "codigo",
-											"type": "String",
-											"physicalType": "varchar"
-										}
-									},
-									{
-										"source": {
-											"name": "name",
-											"type": "String",
-											"physicalType": "text"
-										},
-										"sink": {
-											"name": "nombre",
-											"type": "String",
-											"physicalType": "varchar"
-										}
-									}
-								],
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "FreshAgentes",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "dimAgentes",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					},
-					{
 						"name": "Inyectar_Origenes_Fresh",
 						"description": "",
 						"type": "Copy",
@@ -1662,8 +1579,6 @@
 				"lastPublishTime": "2025-01-13T18:22:27Z"
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/FreshAgentes')]",
-				"[concat(variables('factoryId'), '/datasets/dimAgentes')]",
 				"[concat(variables('factoryId'), '/datasets/FreshOrigenes')]",
 				"[concat(variables('factoryId'), '/datasets/dimOrigenes')]",
 				"[concat(variables('factoryId'), '/datasets/FreshProductos')]",
@@ -1678,7 +1593,8 @@
 				"[concat(variables('factoryId'), '/datasets/dimTiposTickets')]",
 				"[concat(variables('factoryId'), '/datasets/FreshGrupos')]",
 				"[concat(variables('factoryId'), '/datasets/dimGrupos')]",
-				"[concat(variables('factoryId'), '/datasets/Api_Agentes')]"
+				"[concat(variables('factoryId'), '/datasets/Api_Agentes')]",
+				"[concat(variables('factoryId'), '/datasets/dimAgentes')]"
 			]
 		},
 		{
@@ -2077,7 +1993,7 @@
 						"typeProperties": {
 							"source": {
 								"type": "AzureSqlSource",
-								"sqlReaderQuery": "select distinct\r\nt.codigo,\r\nt.fechaAlta,\r\nt.fechaModificacion,\r\nc.id companiaId,\r\ne.id estadoId,\r\ntt.id  tipoId,\r\np.id productoId,\r\ng.id grupoId,\r\no.id origenId,\r\npr.id prioridadId,\r\na.id agenteId,\r\nsla.id slaId,\r\ncase \r\n    when pr.codigo = 1 then sla.slaTargerPriority1ResolveWithin /60\r\n    when pr.codigo = 2 then sla.slaTargerPriority2ResolveWithin /60\r\n    when pr.codigo = 3 then sla.slaTargerPriority3ResolveWithin /60\r\n    when pr.codigo = 4 then sla.slaTargerPriority4ResolveWithin /60\r\nend SlaResolucion,\r\ncase \r\n    when pr.codigo = 1 then sla.slaTargetPriority1RespondWithin /60\r\n    when pr.codigo = 2 then sla.slaTargetPriority2RespondWithin /60\r\n    when pr.codigo = 3 then sla.slaTargetPriority3RespondWithin /60\r\n    when pr.codigo = 4 then sla.slaTargetPriority4RespondWithin /60\r\nend SlaRespuesta,\r\ncase \r\n    when wt.FechaPrimerRespuesta is not null then wt.FechaPrimerRespuesta\r\nelse presp.FechaPrimerRespuesta\r\nend FechaPrimerRespuesta,\r\nt.horasDiferecia,\r\nt.minutosDiferencia\r\n\r\nfrom stg.tickets t \r\nleft join whs.dimCompanias c on c.codigo = t.companiaCodigo\r\nleft join whs.dimEstados e on e.codigo = t.estadoCodigo\r\nleft join whs.dimTiposTicket tt on tt.nombre = t.tipoCodigo\r\nleft join whs.dimProductos p on p.codigo = t.productoCodigo\r\nleft join whs.dimGrupos g on g.codigo = t.grupoCodigo\r\nleft join whs.dimOrigenes o on o.codigo = t.origenCodigo\r\nleft join whs.dimPrioridades pr on pr.codigo = t.prioridadCodigo\r\nleft join whs.dimAgentes a on a.codigo = t.agenteCodigo\r\nleft join whs.dimSla sla on sla.companyid = t.companiaCodigo or sla.nombre = 'Default SLA Policy' and sla.isactive = 1\r\nleft join (\r\n                select id codigo,\r\n            min(created_at) FechaPrimerRespuesta\r\n            from stg.Conversaciones \r\n            group by id\r\n            ) presp on presp.codigo = t.codigo\r\nleft join whs.factTickets wt on wt.codigo = t.codigo\r\nWHERE SLA.companyid IS NOT NULL\r\n",
+								"sqlReaderQuery": "select distinct\r\nt.codigo,\r\nt.fechaAlta,\r\nt.fechaModificacion,\r\nc.id companiaId,\r\ne.id estadoId,\r\ntt.id  tipoId,\r\np.id productoId,\r\ng.id grupoId,\r\no.id origenId,\r\npr.id prioridadId,\r\na.id agenteId,\r\nsla.id slaId,\r\ncase \r\n    when pr.codigo = 1 then sla.slaTargerPriority1ResolveWithin /60\r\n    when pr.codigo = 2 then sla.slaTargerPriority2ResolveWithin /60\r\n    when pr.codigo = 3 then sla.slaTargerPriority3ResolveWithin /60\r\n    when pr.codigo = 4 then sla.slaTargerPriority4ResolveWithin /60\r\nend SlaResolucion,\r\ncase \r\n    when pr.codigo = 1 then sla.slaTargetPriority1RespondWithin /60\r\n    when pr.codigo = 2 then sla.slaTargetPriority2RespondWithin /60\r\n    when pr.codigo = 3 then sla.slaTargetPriority3RespondWithin /60\r\n    when pr.codigo = 4 then sla.slaTargetPriority4RespondWithin /60\r\nend SlaRespuesta,\r\ncase \r\n    when wt.FechaPrimerRespuesta is not null then wt.FechaPrimerRespuesta\r\nelse presp.FechaPrimerRespuesta\r\nend FechaPrimerRespuesta,\r\nt.horasDiferecia,\r\nt.minutosDiferencia\r\n\r\nfrom stg.tickets t \r\nleft join whs.dimCompanias c on c.codigo = t.companiaCodigo\r\nleft join whs.dimEstados e on e.codigo = t.estadoCodigo\r\nleft join whs.dimTiposTicket tt on tt.nombre = t.tipoCodigo\r\nleft join whs.dimProductos p on p.codigo = t.productoCodigo\r\nleft join whs.dimGrupos g on g.codigo = t.grupoCodigo\r\nleft join whs.dimOrigenes o on o.codigo = t.origenCodigo\r\nleft join whs.dimPrioridades pr on pr.codigo = t.prioridadCodigo\r\nleft join whs.dimAgentes a on a.codigo = t.agenteCodigo\r\nleft join whs.dimSla sla on sla.companyid = t.companiaCodigo or sla.nombre like '%Default%' and sla.isactive = 1\r\nleft join (\r\n                select id codigo,\r\n            min(created_at) FechaPrimerRespuesta\r\n            from stg.Conversaciones \r\n            group by id\r\n            ) presp on presp.codigo = t.codigo\r\nleft join whs.factTickets wt on wt.codigo = t.codigo\r\n",
 								"queryTimeout": "02:00:00",
 								"partitionOption": "None"
 							},
@@ -2350,6 +2266,27 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/stgTickets')]",
 				"[concat(variables('factoryId'), '/datasets/factTickets')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Api_Agentes')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ApiAgente",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "APIs"
+				},
+				"annotations": [],
+				"type": "RestResource",
+				"typeProperties": {},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ApiAgente')]"
 			]
 		},
 		{
@@ -3823,6 +3760,26 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/ApiAgente')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "RestService",
+				"typeProperties": {
+					"url": "[parameters('ApiAgente_properties_typeProperties_url')]",
+					"enableServerCertificateValidation": true,
+					"authenticationType": "Basic",
+					"userName": "[parameters('ApiAgente_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('ApiAgente_password')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/ApiConversariones')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -3947,47 +3904,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/001-Orquestador')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ApiAgente')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "RestService",
-				"typeProperties": {
-					"url": "[parameters('ApiAgente_properties_typeProperties_url')]",
-					"enableServerCertificateValidation": true,
-					"authenticationType": "Basic",
-					"userName": "[parameters('ApiAgente_properties_typeProperties_userName')]",
-					"password": {
-						"type": "SecureString",
-						"value": "[parameters('ApiAgente_password')]"
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Api_Agentes')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ApiAgente",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "APIs"
-				},
-				"annotations": [],
-				"type": "RestResource",
-				"typeProperties": {},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ApiAgente')]"
 			]
 		}
 	]

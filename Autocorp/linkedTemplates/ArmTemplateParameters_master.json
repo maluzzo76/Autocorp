@@ -11,6 +11,9 @@
 		"APIFresh_password": {
 			"value": ""
 		},
+		"ApiAgente_password": {
+			"value": ""
+		},
 		"ApiConversariones_password": {
 			"value": ""
 		},
@@ -26,9 +29,6 @@
 		"Storege_Fresh_connectionString": {
 			"value": ""
 		},
-		"ApiAgente_password": {
-			"value": ""
-		},
 		"AF_DW_properties_typeProperties_functionAppUrl": {
 			"value": "https://dwservices.azurewebsites.net"
 		},
@@ -36,6 +36,12 @@
 			"value": "https://autocorpar.freshdesk.com/api/v2/sla_policies"
 		},
 		"APIFresh_properties_typeProperties_userName": {
+			"value": "yBjVC7W3wuMLeucdH4Hw"
+		},
+		"ApiAgente_properties_typeProperties_url": {
+			"value": "https://autocorpar.freshdesk.com/api/v2/agents/"
+		},
+		"ApiAgente_properties_typeProperties_userName": {
 			"value": "yBjVC7W3wuMLeucdH4Hw"
 		},
 		"ApiConversariones_properties_typeProperties_url": {
@@ -55,12 +61,6 @@
 		},
 		"SqlAutocorpDw_properties_typeProperties_userName": {
 			"value": "autocorp"
-		},
-		"ApiAgente_properties_typeProperties_url": {
-			"value": "https://autocorpar.freshdesk.com/api/v2/agents/"
-		},
-		"ApiAgente_properties_typeProperties_userName": {
-			"value": "yBjVC7W3wuMLeucdH4Hw"
 		},
 		"containerUri": {
 			"value": ""
