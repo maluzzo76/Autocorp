@@ -204,6 +204,9 @@
 				"type": "String"
 			}
 		},
+		"folder": {
+			"name": "FreshDesk"
+		},
 		"annotations": [],
 		"lastPublishTime": "2025-01-14T18:54:25Z"
 	},

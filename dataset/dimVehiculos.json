@@ -1,0 +1,159 @@
+{
+	"name": "dimVehiculos",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SqlAutocorpDw",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "DW/Dimensiones"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "anio",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "estadovehiculo",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "fechavencimientoVTV",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "garantíaactualizadakm",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "garantíaactualizadadia",
+				"type": "date"
+			},
+			{
+				"name": "estadogarantia",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "espropietarioflota",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "ultimokm",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "fechaultimokm",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "ultimafechaservicio",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "servicioultimokilometraje",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "categoriacliente",
+				"type": "varchar"
+			},
+			{
+				"name": "grupocategoriacliente",
+				"type": "varchar"
+			},
+			{
+				"name": "tienedocumentoscirculacion",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "seguroid",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "ultimafechavtv",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "nombrepropietario",
+				"type": "text"
+			},
+			{
+				"name": "nombrecontactoid",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "contratoarendamientoid",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "fechavencimientoarendamiento",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "fechavencimientorto",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "contactocompradorid",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "servicioultimatareaid",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "fechainicioseguro",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "fechaprecioinfoauto",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "precioinfoauto",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 4
+			}
+		],
+		"typeProperties": {
+			"schema": "whs",
+			"table": "dimVehiculos"
+		}
+	}
+}
