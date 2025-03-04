@@ -17,17 +17,12 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureMySqlSource",
+						"query": "select \r\nid codigo,\r\ncontract_id contratoId,\r\npolicy_id policyId,\r\n`description` descripcion,\r\n`code` codigoDeVehiculo,\r\ncolor,\r\nchassis,\r\nplate patente,\r\n`year` anio,\r\nvtv_due_date fechaVencimientoVTV,\r\ncardoc_due_date fechaVencimientoDocument,\r\nwarranty_up_to_km garantiaHastaKm,\r\nwarranty_up_to_date fechaActualizadaGarantia,\r\nwarranty_state garantiaEstado,\r\nis_fleet_owner isPropietarioFlota,\r\nlast_km ultimoKilometraje,\r\nlast_km_origin ultimoKilometrajeOrigen,\r\nlast_km_date fechaUltimoKm,\r\nservice_last_km servicioUltimoKm,\r\nservice_origin origenServicio,\r\nservice_last_date ultimaFechaServicio,\r\ncondition_type tipoCondicion,\r\ncategory_client categoriaCliente,\r\ngroup_category_client grupoCategoriaCliente ,\r\nfuel_card_number numeroTarjetaCombustible,\r\ntoll_card_number numeroTarjetaPeaje,\r\nhas_circulation_documents tieneDocumentoCirculacion,\r\ninsurance_ammount montoSeguro,\r\nversion_id versionID,\r\nvehicle_state_id vehiculoEstadoID,\r\nclient_structure_id clienteEstructuraID,\r\ninsurance_id seguroID,\r\ngps_provider_id proveedorGpsId,\r\nhas_duplicated_key tieneClaveDuplicado,\r\ngps_vehicle_number numeroGPS,\r\ngps_detail detalleGPS,\r\ngps_ammount gpsMonto,\r\nvtv_last_date ultimaFechaVTV,\r\nduplicated_key_date fechaClaveDuplicada,\r\nvtv_last_city_id ultimaCiudadVTVID,\r\nplate_city_id patenteCuidadID,\r\ngps_is_visible gpsIsVisible,\r\nowner_name propietario,\r\nowner_contact_id propietarioContactoID,\r\nmaintenance_plan_id planMantenimientoID,\r\nleasing_duedate arrendamientoFechaVencimiento,\r\nrto_due_date fechaDeRetiro,\r\nvtv_km_expiration kmVencimientoVTV,\r\nfuel_provider proveedorCombustible,\r\nservice_last_task_id UltimaTareaID,\r\ninsurance_start_date fechaInicioSeguro,\r\nsend_expiration_mailing ,\r\nhansa_code codigoHansa,\r\nlast_expiration_check fechaUltimaComparacion,\r\nvtv_caba_text vtvCabaTexto,\r\ninfoauto_price precioInfoauto,\r\ninfoauto_price_date fechaPrecioInfoAuto\r\n\r\nfrom vehicles",
 						"queryTimeout": "02:00:00"
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"writeBehavior": "upsert",
-						"upsertSettings": {
-							"useTempDB": true,
-							"keys": [
-								""
-							]
-						},
+						"writeBehavior": "insert",
 						"sqlWriterUseTableLock": false,
 						"disableMetricsCollection": false
 					},
@@ -37,9 +32,98 @@
 						"mappings": [
 							{
 								"source": {
-									"name": "year",
+									"name": "codigo",
+									"type": "UInt64"
+								},
+								"sink": {
+									"name": "codigo",
 									"type": "Int32",
 									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "contratoId",
+									"type": "UInt64"
+								},
+								"sink": {
+									"name": "contratoId",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "policyId",
+									"type": "UInt64"
+								},
+								"sink": {
+									"name": "policyId",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "descripcion",
+									"type": "String"
+								},
+								"sink": {
+									"name": "descripcion",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "codigoDeVehiculo",
+									"type": "String"
+								},
+								"sink": {
+									"name": "codigoDeVehiculo",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "color",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "color",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "chassis",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "chassis",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "patente",
+									"type": "String"
+								},
+								"sink": {
+									"name": "patente",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "anio",
+									"type": "Int32"
 								},
 								"sink": {
 									"name": "anio",
@@ -49,9 +133,8 @@
 							},
 							{
 								"source": {
-									"name": "vtv_due_date",
-									"type": "DateTime",
-									"physicalType": "date"
+									"name": "fechaVencimientoVTV",
+									"type": "DateTime"
 								},
 								"sink": {
 									"name": "fechaVencimientoVTV",
@@ -61,57 +144,89 @@
 							},
 							{
 								"source": {
-									"name": "vtv_last_date",
-									"type": "DateTime",
-									"physicalType": "date"
+									"name": "fechaVencimientoDocument",
+									"type": "DateTime"
 								},
 								"sink": {
-									"name": "ultimaFechaVtv",
+									"name": "fechaVencimientoDocumento",
 									"type": "DateTime",
 									"physicalType": "datetime"
 								}
 							},
 							{
 								"source": {
-									"name": "warranty_up_to_date",
-									"type": "DateTime",
-									"physicalType": "date"
+									"name": "garantiaHastaKm",
+									"type": "Int32"
 								},
 								"sink": {
-									"name": "fechaActualizacionGarantiaa",
-									"type": "DateTime",
-									"physicalType": "date"
+									"name": "garantiaHastaKm",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 0,
+									"precision": 18
 								}
 							},
 							{
 								"source": {
-									"name": "warranty_up_to_km",
-									"type": "Int32",
-									"physicalType": "int"
+									"name": "fechaActualizadaGarantia",
+									"type": "DateTime"
 								},
 								"sink": {
-									"name": "kmGarantia",
-									"type": "Int32",
-									"physicalType": "int"
-								}
-							},
-							{
-								"source": {
-									"name": "warranty_state",
-									"type": "Boolean",
-									"physicalType": "tinyint"
-								},
-								"sink": {
-									"name": "estadoGarantia",
-									"type": "Int32",
-									"physicalType": "int"
-								}
-							},
-							{
-								"source": {
-									"name": "last_km_date",
+									"name": "fechaActualizadaGarantia",
 									"type": "DateTime",
-									"physicalType": "date"
+									"physicalType": "datetime"
+								}
+							},
+							{
+								"source": {
+									"name": "garantiaEstado",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "garantiaEstadoId",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "isPropietarioFlota",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "isPropietarioFlota",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "ultimoKilometraje",
+									"type": "Int32"
+								},
+								"sink": {
+									"name": "ultimoKilometraje",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 0,
+									"precision": 18
+								}
+							},
+							{
+								"source": {
+									"name": "ultimoKilometrajeOrigen",
+									"type": "String"
+								},
+								"sink": {
+									"name": "ultimoKilometrajeOrigen",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "fechaUltimoKm",
+									"type": "DateTime"
 								},
 								"sink": {
 									"name": "fechaUltimoKm",
@@ -121,81 +236,54 @@
 							},
 							{
 								"source": {
-									"name": "service_last_date",
-									"type": "DateTime",
-									"physicalType": "date"
+									"name": "servicioUltimoKm",
+									"type": "Int32"
 								},
 								"sink": {
-									"name": "fechaUltimaServicio",
-									"type": "DateTime",
-									"physicalType": "datetime"
+									"name": "servicioUltimoKm",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 0,
+									"precision": 18
 								}
 							},
 							{
 								"source": {
-									"name": "service_last_km",
-									"type": "Int32",
-									"physicalType": "int"
+									"name": "origenServicio",
+									"type": "String"
 								},
 								"sink": {
-									"name": "ultimoServicioKm",
-									"type": "Int32",
-									"physicalType": "int"
-								}
-							},
-							{
-								"source": {
-									"name": "last_km",
-									"type": "Int32",
-									"physicalType": "int"
-								},
-								"sink": {
-									"name": "ultimoKm",
-									"type": "Int32",
-									"physicalType": "int"
-								}
-							},
-							{
-								"source": {
-									"name": "insurance_id",
-									"type": "UInt64",
-									"physicalType": "bigint"
-								},
-								"sink": {
-									"name": "seguroid",
-									"type": "Int32",
-									"physicalType": "int"
-								}
-							},
-							{
-								"source": {
-									"name": "insurance_start_date",
-									"type": "DateTime",
-									"physicalType": "date"
-								},
-								"sink": {
-									"name": "fechaInicioSeguro",
-									"type": "DateTime",
-									"physicalType": "datetime"
-								}
-							},
-							{
-								"source": {
-									"name": "vehicle_state_id",
-									"type": "UInt64",
-									"physicalType": "bigint"
-								},
-								"sink": {
-									"name": "estadoVehiculoId",
-									"type": "Int32",
-									"physicalType": "int"
-								}
-							},
-							{
-								"source": {
-									"name": "category_client",
+									"name": "origenServicio",
 									"type": "String",
 									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "ultimaFechaServicio",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "ultimaFechaServicio",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								}
+							},
+							{
+								"source": {
+									"name": "tipoCondicion",
+									"type": "String"
+								},
+								"sink": {
+									"name": "tipoCondicion",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "categoriaCliente",
+									"type": "String"
 								},
 								"sink": {
 									"name": "categoriaCliente",
@@ -205,9 +293,8 @@
 							},
 							{
 								"source": {
-									"name": "group_category_client",
-									"type": "String",
-									"physicalType": "varchar"
+									"name": "grupoCategoriaCliente",
+									"type": "String"
 								},
 								"sink": {
 									"name": "grupoCategoriaCliente",
@@ -217,69 +304,344 @@
 							},
 							{
 								"source": {
-									"name": "owner_name",
-									"type": "String",
-									"physicalType": "text"
+									"name": "numeroTarjetaCombustible",
+									"type": "String"
 								},
 								"sink": {
-									"name": "nombrePropietario",
+									"name": "numeroTarjetaCombustible",
 									"type": "String",
 									"physicalType": "varchar"
 								}
 							},
 							{
 								"source": {
-									"name": "owner_contact_id",
-									"type": "UInt64",
-									"physicalType": "bigint"
+									"name": "numeroTarjetaPeaje",
+									"type": "String"
 								},
 								"sink": {
-									"name": "contactoId",
+									"name": "numeroTarjetaPeaje",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "tieneDocumentoCirculacion",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "tieneDocumentoCirculacion",
 									"type": "Int32",
 									"physicalType": "int"
 								}
 							},
 							{
 								"source": {
-									"name": "leasing_contact_id",
-									"type": "UInt64",
-									"physicalType": "bigint"
+									"name": "montoSeguro",
+									"type": "Double"
 								},
 								"sink": {
-									"name": "contratoArendamientoId",
-									"type": "Int32",
-									"physicalType": "int"
-								}
-							},
-							{
-								"source": {
-									"name": "leasing_duedate",
-									"type": "DateTime",
-									"physicalType": "date"
-								},
-								"sink": {
-									"name": "fechaVencimientoArrendamiento",
-									"type": "DateTime",
-									"physicalType": "datetime"
-								}
-							},
-							{
-								"source": {
-									"name": "infoauto_price_date",
-									"type": "DateTime",
-									"physicalType": "datetime"
-								},
-								"sink": {
-									"name": "fechaPrecioInfoauto",
-									"type": "DateTime",
-									"physicalType": "datetime"
-								}
-							},
-							{
-								"source": {
-									"name": "infoauto_price",
+									"name": "montoSeguro",
 									"type": "Decimal",
-									"physicalType": "decimal"
+									"physicalType": "decimal",
+									"scale": 4,
+									"precision": 18
+								}
+							},
+							{
+								"source": {
+									"name": "versionID",
+									"type": "UInt64"
+								},
+								"sink": {
+									"name": "versionId",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "vehiculoEstadoID",
+									"type": "UInt64"
+								},
+								"sink": {
+									"name": "vehiculoEstadoId",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "clienteEstructuraID",
+									"type": "UInt64"
+								},
+								"sink": {
+									"name": "clienteEstructuraId",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "seguroID",
+									"type": "UInt64"
+								},
+								"sink": {
+									"name": "seguroId",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "proveedorGpsId",
+									"type": "UInt64"
+								},
+								"sink": {
+									"name": "proveedorGpsId",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "tieneClaveDuplicado",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "tieneClaveDuplicado",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "numeroGPS",
+									"type": "String"
+								},
+								"sink": {
+									"name": "numeroGPS",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "detalleGPS",
+									"type": "String"
+								},
+								"sink": {
+									"name": "detalleGPS",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "gpsMonto",
+									"type": "Int32"
+								},
+								"sink": {
+									"name": "gpsMonto",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 4,
+									"precision": 18
+								}
+							},
+							{
+								"source": {
+									"name": "ultimaFechaVTV",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "ultimaFechaVTV",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								}
+							},
+							{
+								"source": {
+									"name": "fechaClaveDuplicada",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "fechaClaveDuplicada",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								}
+							},
+							{
+								"source": {
+									"name": "ultimaCiudadVTVID",
+									"type": "UInt64"
+								},
+								"sink": {
+									"name": "ultimaCiudadVTVId",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "patenteCuidadID",
+									"type": "UInt64"
+								},
+								"sink": {
+									"name": "patenteCuidadId",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "gpsIsVisible",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "gpsIsVisible",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "propietario",
+									"type": "String"
+								},
+								"sink": {
+									"name": "propietario",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "propietarioContactoID",
+									"type": "UInt64"
+								},
+								"sink": {
+									"name": "propietarioContactoId",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "planMantenimientoID",
+									"type": "UInt64"
+								},
+								"sink": {
+									"name": "planMantenimientoId",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "arrendamientoFechaVencimiento",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "arrendamientoFechaVencimiento",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								}
+							},
+							{
+								"source": {
+									"name": "fechaDeRetiro",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "fechaDeRetiro",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								}
+							},
+							{
+								"source": {
+									"name": "kmVencimientoVTV",
+									"type": "Int32"
+								},
+								"sink": {
+									"name": "kmVencimientoVTV",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 0,
+									"precision": 18
+								}
+							},
+							{
+								"source": {
+									"name": "proveedorCombustible",
+									"type": "String"
+								},
+								"sink": {
+									"name": "proveedorCombustible",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "UltimaTareaID",
+									"type": "UInt64"
+								},
+								"sink": {
+									"name": "UltimaTareaId",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "fechaInicioSeguro",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "fechaInicioSeguro",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								}
+							},
+							{
+								"source": {
+									"name": "codigoHansa",
+									"type": "String"
+								},
+								"sink": {
+									"name": "codigoHansa",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "fechaUltimaComparacion",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "fechaUltimaComparacion",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								}
+							},
+							{
+								"source": {
+									"name": "vtvCabaTexto",
+									"type": "String"
+								},
+								"sink": {
+									"name": "vtvCabaTexto",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "precioInfoauto",
+									"type": "Decimal"
 								},
 								"sink": {
 									"name": "precioInfoauto",
@@ -288,11 +650,22 @@
 									"scale": 4,
 									"precision": 18
 								}
+							},
+							{
+								"source": {
+									"name": "fechaPrecioInfoAuto",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "fechaPrecioInfoAuto",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								}
 							}
 						],
 						"typeConversion": true,
 						"typeConversionSettings": {
-							"allowDataTruncation": true,
+							"allowDataTruncation": false,
 							"treatBooleanAsNumber": false
 						}
 					}
