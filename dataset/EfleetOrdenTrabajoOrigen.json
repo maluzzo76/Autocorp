@@ -1,0 +1,55 @@
+{
+	"name": "EfleetOrdenTrabajoOrigen",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "EfleetDB",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Source/Efleet"
+		},
+		"annotations": [],
+		"type": "AzureMySqlTable",
+		"schema": [
+			{
+				"name": "id",
+				"type": "bigint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "name",
+				"type": "varchar",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "hansa_code",
+				"type": "varchar",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "deleted_at",
+				"type": "timestamp",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "created_at",
+				"type": "timestamp",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "updated_at",
+				"type": "timestamp",
+				"precision": 0,
+				"scale": 0
+			}
+		],
+		"typeProperties": {
+			"tableName": "work_order_origins"
+		}
+	}
+}
