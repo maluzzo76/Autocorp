@@ -1,0 +1,74 @@
+{
+	"name": "dimClientes",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SqlAutocorpDw",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "DW/Dimensiones"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "codigo",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "nombre",
+				"type": "varchar"
+			},
+			{
+				"name": "empresa",
+				"type": "varchar"
+			},
+			{
+				"name": "grupo",
+				"type": "varchar"
+			},
+			{
+				"name": "clasificacion",
+				"type": "varchar"
+			},
+			{
+				"name": "primerLimiteDecredito",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 4
+			},
+			{
+				"name": "segundoLimiteDeCredito",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 4
+			},
+			{
+				"name": "tipoOperacion",
+				"type": "varchar"
+			},
+			{
+				"name": "tipoComprobante",
+				"type": "varchar"
+			},
+			{
+				"name": "tipoCliente",
+				"type": "varchar"
+			},
+			{
+				"name": "estadoCliente",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "whs",
+			"table": "dimClientes"
+		}
+	}
+}

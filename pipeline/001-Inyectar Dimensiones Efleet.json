@@ -688,6 +688,186 @@
 						"type": "DatasetReference"
 					}
 				]
+			},
+			{
+				"name": "inyectar Clientes",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureMySqlSource",
+						"query": "SELECT \r\nc.id codigo,\r\nc.fantasy_name nombre,\r\nc.business_name empresa,\r\nc.contact_id,\r\ncg.name grupo,\r\nc.classification clasificacion,\r\nc.first_credit_limit primerLimiteDeCredito,\r\nc.second_credit_limit segundoLimiteDeCredito,\r\not.name tipoOperacion,\r\nit.name tipoComprobante,\r\nct.name tipoCliente,\r\ncst.name estadoCliente\r\nFROM clients c\r\nleft join client_types ct on ct.id = c.client_type_id\r\nleft join invoice_types it on it.id = c.operation_type_id\r\nleft join operation_types ot on ot.id = c.operation_type_id\r\nleft join client_state_types cst on cst.id = c.client_state_type_id\r\nleft join client_groups cg on cg.id = c.client_group_id",
+						"queryTimeout": "02:00:00"
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"writeBehavior": "upsert",
+						"upsertSettings": {
+							"useTempDB": true,
+							"keys": [
+								"codigo"
+							]
+						},
+						"sqlWriterUseTableLock": false,
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "codigo",
+									"type": "UInt64"
+								},
+								"sink": {
+									"name": "codigo",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "nombre",
+									"type": "String"
+								},
+								"sink": {
+									"name": "nombre",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "empresa",
+									"type": "String"
+								},
+								"sink": {
+									"name": "empresa",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "grupo",
+									"type": "String"
+								},
+								"sink": {
+									"name": "grupo",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "clasificacion",
+									"type": "String"
+								},
+								"sink": {
+									"name": "clasificacion",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "primerLimiteDeCredito",
+									"type": "Double"
+								},
+								"sink": {
+									"name": "primerLimiteDecredito",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 4,
+									"precision": 18
+								}
+							},
+							{
+								"source": {
+									"name": "segundoLimiteDeCredito",
+									"type": "Double"
+								},
+								"sink": {
+									"name": "segundoLimiteDeCredito",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 4,
+									"precision": 18
+								}
+							},
+							{
+								"source": {
+									"name": "tipoOperacion",
+									"type": "String"
+								},
+								"sink": {
+									"name": "tipoOperacion",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "tipoComprobante",
+									"type": "String"
+								},
+								"sink": {
+									"name": "tipoComprobante",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "tipoCliente",
+									"type": "String"
+								},
+								"sink": {
+									"name": "tipoCliente",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "estadoCliente",
+									"type": "String"
+								},
+								"sink": {
+									"name": "estadoCliente",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "EfleetClientes",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "dimClientes",
+						"type": "DatasetReference"
+					}
+				]
 			}
 		],
 		"folder": {
