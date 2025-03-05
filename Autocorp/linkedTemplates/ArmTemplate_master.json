@@ -39,6 +39,10 @@
 			"type": "secureString",
 			"metadata": "Cadena protegida para \"connectionString\"de \"Storege_Fresh\""
 		},
+		"EfleetDB_connectionString": {
+			"type": "secureString",
+			"metadata": "Cadena protegida para \"connectionString\"de \"EfleetDB\""
+		},
 		"AF_DW_properties_typeProperties_functionAppUrl": {
 			"type": "string",
 			"defaultValue": "https://dwservices.azurewebsites.net"
@@ -133,6 +137,9 @@
 					},
 					"Storege_Fresh_connectionString": {
 						"value": "[parameters('Storege_Fresh_connectionString')]"
+					},
+					"EfleetDB_connectionString": {
+						"value": "[parameters('EfleetDB_connectionString')]"
 					},
 					"AF_DW_properties_typeProperties_functionAppUrl": {
 						"value": "[parameters('AF_DW_properties_typeProperties_functionAppUrl')]"

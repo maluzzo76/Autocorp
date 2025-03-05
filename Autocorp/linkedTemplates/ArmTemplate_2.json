@@ -13,6 +13,1795 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/005-Inyectar_Fresh_Conversaciones_To_Dw')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Get Conversaciones by Ticket",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "Get Ticktes",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Get Ticktes').output.value",
+								"type": "Expression"
+							},
+							"isSequential": false,
+							"activities": [
+								{
+									"name": "Set variable IdParameter",
+									"type": "SetVariable",
+									"dependsOn": [],
+									"policy": {
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "IdParameter",
+										"value": {
+											"value": "@string(item().codigo)",
+											"type": "Expression"
+										}
+									}
+								},
+								{
+									"name": "Insertar Conversaciones",
+									"type": "AzureFunctionActivity",
+									"dependsOn": [
+										{
+											"activity": "Set variable IdParameter",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"functionName": {
+											"value": "@concat('ImportarConversaciones?id=',item().codigo)",
+											"type": "Expression"
+										},
+										"headers": {},
+										"method": "GET"
+									},
+									"linkedServiceName": {
+										"referenceName": "AF_DW",
+										"type": "LinkedServiceReference"
+									}
+								}
+							]
+						}
+					},
+					{
+						"name": "Get Ticktes",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": "SELECT codigo FROM whs.v_getConversaciones",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "stgTickets",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "Update FactTickets Fecha Primer Respuesta",
+						"type": "Script",
+						"dependsOn": [
+							{
+								"activity": "Get Conversaciones by Ticket",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"linkedServiceName": {
+							"referenceName": "SqlAutocorpDw",
+							"type": "LinkedServiceReference"
+						},
+						"typeProperties": {
+							"scripts": [
+								{
+									"type": "Query",
+									"text": "update whs.factTickets set FechaPrimerRespuesta = r1.fechaRespuesta\r\nfrom\r\n(\r\nSELECT  id codigo, created_at fechaRespuesta\r\nFROM  stg.Conversaciones \r\nwhere created_at is not null\r\n) as r1\r\nwhere whs.factTickets.codigo = r1.codigo"
+								}
+							],
+							"scriptBlockExecutionTimeout": "02:00:00"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"variables": {
+					"IdParameter": {
+						"type": "String"
+					}
+				},
+				"folder": {
+					"name": "FreshDesk"
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/006-Inyectar_Echos')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Inyectar_Dw_FactTickets",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": "select distinct\r\nt.codigo,\r\nt.fechaAlta,\r\nt.fechaModificacion,\r\nc.id companiaId,\r\ne.id estadoId,\r\ntt.id  tipoId,\r\np.id productoId,\r\ng.id grupoId,\r\no.id origenId,\r\npr.id prioridadId,\r\na.id agenteId,\r\nsla.id slaId,\r\ncase \r\n    when pr.codigo = 1 then sla.slaTargerPriority1ResolveWithin /60\r\n    when pr.codigo = 2 then sla.slaTargerPriority2ResolveWithin /60\r\n    when pr.codigo = 3 then sla.slaTargerPriority3ResolveWithin /60\r\n    when pr.codigo = 4 then sla.slaTargerPriority4ResolveWithin /60\r\nend SlaResolucion,\r\ncase \r\n    when pr.codigo = 1 then sla.slaTargetPriority1RespondWithin /60\r\n    when pr.codigo = 2 then sla.slaTargetPriority2RespondWithin /60\r\n    when pr.codigo = 3 then sla.slaTargetPriority3RespondWithin /60\r\n    when pr.codigo = 4 then sla.slaTargetPriority4RespondWithin /60\r\nend SlaRespuesta,\r\ncase \r\n    when wt.FechaPrimerRespuesta is not null then wt.FechaPrimerRespuesta\r\nelse presp.FechaPrimerRespuesta\r\nend FechaPrimerRespuesta,\r\nt.horasDiferecia,\r\nt.minutosDiferencia\r\n\r\nfrom stg.tickets t \r\nleft join whs.dimCompanias c on c.codigo = t.companiaCodigo\r\nleft join whs.dimEstados e on e.codigo = t.estadoCodigo\r\nleft join whs.dimTiposTicket tt on tt.nombre = t.tipoCodigo\r\nleft join whs.dimProductos p on p.codigo = t.productoCodigo\r\nleft join whs.dimGrupos g on g.codigo = t.grupoCodigo\r\nleft join whs.dimOrigenes o on o.codigo = t.origenCodigo\r\nleft join whs.dimPrioridades pr on pr.codigo = t.prioridadCodigo\r\nleft join whs.dimAgentes a on a.codigo = t.agenteCodigo\r\nleft join whs.dimSla sla on sla.companyid = t.companiaCodigo or sla.nombre like '%Default%' and sla.isactive = 1\r\nleft join (\r\n                select id codigo,\r\n            min(created_at) FechaPrimerRespuesta\r\n            from stg.Conversaciones \r\n            group by id\r\n            ) presp on presp.codigo = t.codigo\r\nleft join whs.factTickets wt on wt.codigo = t.codigo\r\n",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"writeBehavior": "upsert",
+								"upsertSettings": {
+									"useTempDB": true,
+									"keys": [
+										"codigo"
+									]
+								},
+								"sqlWriterUseTableLock": false,
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "codigo",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "codigo",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "fechaAlta",
+											"type": "DateTime",
+											"physicalType": "datetime"
+										},
+										"sink": {
+											"name": "fechaAlta",
+											"type": "DateTime",
+											"physicalType": "datetime"
+										}
+									},
+									{
+										"source": {
+											"name": "fechaModificacion",
+											"type": "DateTime",
+											"physicalType": "datetime"
+										},
+										"sink": {
+											"name": "fechaModificacion",
+											"type": "DateTime",
+											"physicalType": "datetime"
+										}
+									},
+									{
+										"source": {
+											"name": "horasDiferecia",
+											"type": "Int32",
+											"physicalType": "int"
+										},
+										"sink": {
+											"name": "horasDiferecia",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "minutosDiferencia",
+											"type": "Int32",
+											"physicalType": "int"
+										},
+										"sink": {
+											"name": "minutosDiferencia",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "companiaId",
+											"type": "Int32",
+											"physicalType": "int"
+										},
+										"sink": {
+											"name": "companiaId",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "estadoId",
+											"type": "Int32",
+											"physicalType": "int"
+										},
+										"sink": {
+											"name": "estadoId",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "tipoId",
+											"type": "Int32",
+											"physicalType": "int"
+										},
+										"sink": {
+											"name": "tipoId",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "productoId",
+											"type": "Int32",
+											"physicalType": "int"
+										},
+										"sink": {
+											"name": "productoId",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "grupoId",
+											"type": "Int32",
+											"physicalType": "int"
+										},
+										"sink": {
+											"name": "grupoId",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "origenId",
+											"type": "Int32",
+											"physicalType": "int"
+										},
+										"sink": {
+											"name": "origenId",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "prioridadId",
+											"type": "Int32",
+											"physicalType": "int"
+										},
+										"sink": {
+											"name": "prioridadId",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "agenteId",
+											"type": "Int32",
+											"physicalType": "int"
+										},
+										"sink": {
+											"name": "agenteId",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "slaId",
+											"type": "Int32",
+											"physicalType": "int"
+										},
+										"sink": {
+											"name": "slaId",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "SlaResolucion",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 7,
+											"precision": 21
+										},
+										"sink": {
+											"name": "SlaResolucion",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 4,
+											"precision": 18
+										}
+									},
+									{
+										"source": {
+											"name": "SlaRespuesta",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 7,
+											"precision": 21
+										},
+										"sink": {
+											"name": "SlaRespuesta",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 4,
+											"precision": 18
+										}
+									},
+									{
+										"source": {
+											"name": "FechaPrimerRespuesta",
+											"type": "DateTime",
+											"physicalType": "datetime"
+										},
+										"sink": {
+											"name": "FechaPrimerRespuesta",
+											"type": "DateTime",
+											"physicalType": "datetime"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "stgTickets",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "factTickets",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"variables": {
+					"nombre": {
+						"type": "String"
+					},
+					"IdParameter": {
+						"type": "String"
+					}
+				},
+				"folder": {
+					"name": "FreshDesk"
+				},
+				"annotations": [],
+				"lastPublishTime": "2025-01-14T15:43:20Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/001-Inyectar Dimensiones Efleet')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Intectar vehiculos",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureMySqlSource",
+								"query": "select \r\nid codigo,\r\ncontract_id contratoId,\r\npolicy_id policyId,\r\n`description` descripcion,\r\n`code` codigoDeVehiculo,\r\ncolor,\r\nchassis,\r\nplate patente,\r\n`year` anio,\r\nvtv_due_date fechaVencimientoVTV,\r\ncardoc_due_date fechaVencimientoDocument,\r\nwarranty_up_to_km garantiaHastaKm,\r\nwarranty_up_to_date fechaActualizadaGarantia,\r\nwarranty_state garantiaEstado,\r\nis_fleet_owner isPropietarioFlota,\r\nlast_km ultimoKilometraje,\r\nlast_km_origin ultimoKilometrajeOrigen,\r\nlast_km_date fechaUltimoKm,\r\nservice_last_km servicioUltimoKm,\r\nservice_origin origenServicio,\r\ncase when year(service_last_date)<1990 then null else service_last_date end ultimaFechaServicio,\r\ncondition_type tipoCondicion,\r\ncategory_client categoriaCliente,\r\ngroup_category_client grupoCategoriaCliente ,\r\nfuel_card_number numeroTarjetaCombustible,\r\ntoll_card_number numeroTarjetaPeaje,\r\nhas_circulation_documents tieneDocumentoCirculacion,\r\ninsurance_ammount montoSeguro,\r\nversion_id versionID,\r\nvehicle_state_id vehiculoEstadoID,\r\nclient_structure_id clienteEstructuraID,\r\ninsurance_id seguroID,\r\ngps_provider_id proveedorGpsId,\r\nhas_duplicated_key tieneClaveDuplicado,\r\ngps_vehicle_number numeroGPS,\r\ngps_detail detalleGPS,\r\ngps_ammount gpsMonto,\r\nvtv_last_date ultimaFechaVTV,\r\nduplicated_key_date fechaClaveDuplicada,\r\nvtv_last_city_id ultimaCiudadVTVID,\r\nplate_city_id patenteCuidadID,\r\ngps_is_visible gpsIsVisible,\r\nowner_name propietario,\r\nowner_contact_id propietarioContactoID,\r\nmaintenance_plan_id planMantenimientoID,\r\nleasing_duedate arrendamientoFechaVencimiento,\r\nrto_due_date fechaDeRetiro,\r\nvtv_km_expiration kmVencimientoVTV,\r\nfuel_provider proveedorCombustible,\r\nservice_last_task_id UltimaTareaID,\r\ninsurance_start_date fechaInicioSeguro,\r\nsend_expiration_mailing ,\r\nhansa_code codigoHansa,\r\nlast_expiration_check fechaUltimaComparacion,\r\nvtv_caba_text vtvCabaTexto,\r\ninfoauto_price precioInfoauto,\r\ninfoauto_price_date fechaPrecioInfoAuto\r\n\r\nfrom vehicles",
+								"queryTimeout": "02:00:00"
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"writeBehavior": "upsert",
+								"upsertSettings": {
+									"useTempDB": true,
+									"keys": [
+										"codigo"
+									]
+								},
+								"sqlWriterUseTableLock": false,
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "codigo",
+											"type": "UInt64"
+										},
+										"sink": {
+											"name": "codigo",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "contratoId",
+											"type": "UInt64"
+										},
+										"sink": {
+											"name": "contratoId",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "policyId",
+											"type": "UInt64"
+										},
+										"sink": {
+											"name": "policyId",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "descripcion",
+											"type": "String"
+										},
+										"sink": {
+											"name": "descripcion",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "codigoDeVehiculo",
+											"type": "String"
+										},
+										"sink": {
+											"name": "codigoDeVehiculo",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "color",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "color",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "chassis",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "chassis",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "patente",
+											"type": "String"
+										},
+										"sink": {
+											"name": "patente",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "anio",
+											"type": "Int32"
+										},
+										"sink": {
+											"name": "anio",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "fechaVencimientoVTV",
+											"type": "DateTime"
+										},
+										"sink": {
+											"name": "fechaVencimientoVTV",
+											"type": "DateTime",
+											"physicalType": "datetime"
+										}
+									},
+									{
+										"source": {
+											"name": "fechaVencimientoDocument",
+											"type": "DateTime"
+										},
+										"sink": {
+											"name": "fechaVencimientoDocumento",
+											"type": "DateTime",
+											"physicalType": "datetime"
+										}
+									},
+									{
+										"source": {
+											"name": "garantiaHastaKm",
+											"type": "Int32"
+										},
+										"sink": {
+											"name": "garantiaHastaKm",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 0,
+											"precision": 18
+										}
+									},
+									{
+										"source": {
+											"name": "fechaActualizadaGarantia",
+											"type": "DateTime"
+										},
+										"sink": {
+											"name": "fechaActualizadaGarantia",
+											"type": "DateTime",
+											"physicalType": "datetime"
+										}
+									},
+									{
+										"source": {
+											"name": "garantiaEstado",
+											"type": "Boolean"
+										},
+										"sink": {
+											"name": "garantiaVigente",
+											"type": "Boolean",
+											"physicalType": "bit"
+										}
+									},
+									{
+										"source": {
+											"name": "isPropietarioFlota",
+											"type": "Boolean"
+										},
+										"sink": {
+											"name": "isPropietarioFlota",
+											"type": "Boolean",
+											"physicalType": "bit"
+										}
+									},
+									{
+										"source": {
+											"name": "ultimoKilometraje",
+											"type": "Int32"
+										},
+										"sink": {
+											"name": "ultimoKilometraje",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 0,
+											"precision": 18
+										}
+									},
+									{
+										"source": {
+											"name": "ultimoKilometrajeOrigen",
+											"type": "String"
+										},
+										"sink": {
+											"name": "ultimoKilometrajeOrigen",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "fechaUltimoKm",
+											"type": "DateTime"
+										},
+										"sink": {
+											"name": "fechaUltimoKm",
+											"type": "DateTime",
+											"physicalType": "datetime"
+										}
+									},
+									{
+										"source": {
+											"name": "servicioUltimoKm",
+											"type": "Int32"
+										},
+										"sink": {
+											"name": "servicioUltimoKm",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 0,
+											"precision": 18
+										}
+									},
+									{
+										"source": {
+											"name": "origenServicio",
+											"type": "String"
+										},
+										"sink": {
+											"name": "origenServicio",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "ultimaFechaServicio",
+											"type": "DateTime"
+										},
+										"sink": {
+											"name": "ultimaFechaServicio",
+											"type": "DateTime",
+											"physicalType": "datetime"
+										}
+									},
+									{
+										"source": {
+											"name": "tipoCondicion",
+											"type": "String"
+										},
+										"sink": {
+											"name": "tipoCondicion",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "categoriaCliente",
+											"type": "String"
+										},
+										"sink": {
+											"name": "categoriaCliente",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "grupoCategoriaCliente",
+											"type": "String"
+										},
+										"sink": {
+											"name": "grupoCategoriaCliente",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "numeroTarjetaCombustible",
+											"type": "String"
+										},
+										"sink": {
+											"name": "numeroTarjetaCombustible",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "numeroTarjetaPeaje",
+											"type": "String"
+										},
+										"sink": {
+											"name": "numeroTarjetaPeaje",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "tieneDocumentoCirculacion",
+											"type": "Boolean"
+										},
+										"sink": {
+											"name": "tieneDocumentoCirculacion",
+											"type": "Boolean",
+											"physicalType": "bit"
+										}
+									},
+									{
+										"source": {
+											"name": "montoSeguro",
+											"type": "Double"
+										},
+										"sink": {
+											"name": "montoSeguro",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 4,
+											"precision": 18
+										}
+									},
+									{
+										"source": {
+											"name": "versionID",
+											"type": "UInt64"
+										},
+										"sink": {
+											"name": "versionId",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "vehiculoEstadoID",
+											"type": "UInt64"
+										},
+										"sink": {
+											"name": "vehiculoEstadoId",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "clienteEstructuraID",
+											"type": "UInt64"
+										},
+										"sink": {
+											"name": "clienteEstructuraId",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "seguroID",
+											"type": "UInt64"
+										},
+										"sink": {
+											"name": "seguroId",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "proveedorGpsId",
+											"type": "UInt64"
+										},
+										"sink": {
+											"name": "proveedorGpsId",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "tieneClaveDuplicado",
+											"type": "Boolean"
+										},
+										"sink": {
+											"name": "tieneClaveDuplicado",
+											"type": "Boolean",
+											"physicalType": "bit"
+										}
+									},
+									{
+										"source": {
+											"name": "numeroGPS",
+											"type": "String"
+										},
+										"sink": {
+											"name": "numeroGPS",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "detalleGPS",
+											"type": "String"
+										},
+										"sink": {
+											"name": "detalleGPS",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "gpsMonto",
+											"type": "Int32"
+										},
+										"sink": {
+											"name": "gpsMonto",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 4,
+											"precision": 18
+										}
+									},
+									{
+										"source": {
+											"name": "ultimaFechaVTV",
+											"type": "DateTime"
+										},
+										"sink": {
+											"name": "ultimaFechaVTV",
+											"type": "DateTime",
+											"physicalType": "datetime"
+										}
+									},
+									{
+										"source": {
+											"name": "fechaClaveDuplicada",
+											"type": "DateTime"
+										},
+										"sink": {
+											"name": "fechaClaveDuplicada",
+											"type": "DateTime",
+											"physicalType": "datetime"
+										}
+									},
+									{
+										"source": {
+											"name": "ultimaCiudadVTVID",
+											"type": "UInt64"
+										},
+										"sink": {
+											"name": "ultimaCiudadVTVId",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "patenteCuidadID",
+											"type": "UInt64"
+										},
+										"sink": {
+											"name": "patenteCuidadId",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "gpsIsVisible",
+											"type": "Boolean"
+										},
+										"sink": {
+											"name": "gpsIsVisible",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "propietario",
+											"type": "String"
+										},
+										"sink": {
+											"name": "propietario",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "propietarioContactoID",
+											"type": "UInt64"
+										},
+										"sink": {
+											"name": "propietarioContactoId",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "planMantenimientoID",
+											"type": "UInt64"
+										},
+										"sink": {
+											"name": "planMantenimientoId",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "arrendamientoFechaVencimiento",
+											"type": "DateTime"
+										},
+										"sink": {
+											"name": "arrendamientoFechaVencimiento",
+											"type": "DateTime",
+											"physicalType": "datetime"
+										}
+									},
+									{
+										"source": {
+											"name": "fechaDeRetiro",
+											"type": "DateTime"
+										},
+										"sink": {
+											"name": "fechaDeRetiro",
+											"type": "DateTime",
+											"physicalType": "datetime"
+										}
+									},
+									{
+										"source": {
+											"name": "kmVencimientoVTV",
+											"type": "Int32"
+										},
+										"sink": {
+											"name": "kmVencimientoVTV",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 0,
+											"precision": 18
+										}
+									},
+									{
+										"source": {
+											"name": "proveedorCombustible",
+											"type": "String"
+										},
+										"sink": {
+											"name": "proveedorCombustible",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "UltimaTareaID",
+											"type": "UInt64"
+										},
+										"sink": {
+											"name": "UltimaTareaId",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "fechaInicioSeguro",
+											"type": "DateTime"
+										},
+										"sink": {
+											"name": "fechaInicioSeguro",
+											"type": "DateTime",
+											"physicalType": "datetime"
+										}
+									},
+									{
+										"source": {
+											"name": "codigoHansa",
+											"type": "String"
+										},
+										"sink": {
+											"name": "codigoHansa",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "fechaUltimaComparacion",
+											"type": "DateTime"
+										},
+										"sink": {
+											"name": "fechaUltimaComparacion",
+											"type": "DateTime",
+											"physicalType": "datetime"
+										}
+									},
+									{
+										"source": {
+											"name": "vtvCabaTexto",
+											"type": "String"
+										},
+										"sink": {
+											"name": "vtvCabaTexto",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "precioInfoauto",
+											"type": "Decimal"
+										},
+										"sink": {
+											"name": "precioInfoauto",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 4,
+											"precision": 18
+										}
+									},
+									{
+										"source": {
+											"name": "fechaPrecioInfoAuto",
+											"type": "DateTime"
+										},
+										"sink": {
+											"name": "fechaPrecioInfoAuto",
+											"type": "DateTime",
+											"physicalType": "datetime"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": false,
+									"treatBooleanAsNumber": true
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "EfleetVehiculo",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "dimVehiculos",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "EFleet"
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/001-Orquestador')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Inyectar_Data_Fresh",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "Iyectar Tickets Api Fresh To Stg",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "003-Inyectar_Dimensiones_Fresh_To_DW",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "Inyectar_SLA",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "Inyectar_Data_Fresh",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "004-Inyecar_Hechos_Fresh_To_Staiging",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "Inyectar_FactTickets",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "Inyectar_SLA",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "006-Inyectar_Echos",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "Inyecta_Conversaciones_DW",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "Inyectar_FactTickets",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "005-Inyectar_Fresh_Conversaciones_To_Dw",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "Importar Tickets Excel Consolidado",
+						"type": "Copy",
+						"state": "Inactive",
+						"onInactiveMarkAs": "Succeeded",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "ExcelSource",
+								"storeSettings": {
+									"type": "AzureFileStorageReadSettings",
+									"recursive": false,
+									"enablePartitionDiscovery": false
+								}
+							},
+							"sink": {
+								"type": "AzureMySqlSink",
+								"writeBatchSize": 10000,
+								"writeBatchTimeout": "00:00:30",
+								"preCopyScript": "delete from freshdesk_tickets"
+							},
+							"enableStaging": false,
+							"enableSkipIncompatibleRow": true,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "cc_emails",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "cc_emails",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "fwd_emails",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "fwd_emails",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "reply_cc_emails",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "reply_cc_emails",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "ticket_cc_emails",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "ticket_cc_emails",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "ticket_bcc_emails",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "ticket_bcc_emails",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "fr_escalated",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "fr_escalated",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "spam",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "spam",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "email_config_id",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "email_config_id",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "group_id",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "group_id",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "priority",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "priority",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "requester_id",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "requester_id",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "responder_id",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "responder_id",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "source",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "source",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "company_id",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "company_id",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "status",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "status",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "subject",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "subject",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "association_type",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "association_type",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "support_email",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "support_email",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "to_emails",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "to_emails",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "product_id",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "product_id",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "id",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "id",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "type",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "type",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "due_by",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "due_by",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "fr_due_by",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "fr_due_by",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "is_escalated",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "is_escalated",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "created_at",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "created_at",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "updated_at",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "updated_at",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "associated_tickets_count",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "associated_tickets_count",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "tags",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "tags",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "nr_due_by",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "nr_due_by",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "nr_escalated",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "nr_escalated",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "form_id",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "form_id",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "cf_patente",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "cf_patente",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "cf_id_efleet",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "cf_id_efleet",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "cf_generar_ot_efleet",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "cf_generar_ot_efleet",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "cf_kilometraje",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "cf_kilometraje",
+											"type": "String",
+											"physicalType": "text"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "TicketsCnsolidados_xslx",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "FreshTickets",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Iyectar Tickets Api Fresh To Stg",
+						"type": "ExecutePipeline",
+						"dependsOn": [],
+						"policy": {
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "002-Importar_Tickets_Fresh_to_Stg",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"variables": {
+					"ProcessID": {
+						"type": "String"
+					},
+					"nombre": {
+						"type": "String"
+					},
+					"vId": {
+						"type": "String"
+					},
+					"IdParameter": {
+						"type": "String"
+					}
+				},
+				"annotations": [],
+				"lastPublishTime": "2025-01-14T15:43:21Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/006-Inyectar_Echos')]",
+				"[concat(variables('factoryId'), '/pipelines/005-Inyectar_Fresh_Conversaciones_To_Dw')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/Diario 5am for 4 hours')]",
 			"type": "Microsoft.DataFactory/factories/triggers",
 			"apiVersion": "2018-06-01",
@@ -38,7 +1827,9 @@
 					}
 				}
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/001-Orquestador')]"
+			]
 		}
 	]
 }

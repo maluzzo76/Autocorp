@@ -29,6 +29,9 @@
 		"Storege_Fresh_connectionString": {
 			"value": ""
 		},
+		"EfleetDB_connectionString": {
+			"value": ""
+		},
 		"AF_DW_properties_typeProperties_functionAppUrl": {
 			"value": "https://dwservices.azurewebsites.net"
 		},

@@ -39,6 +39,10 @@
 			"type": "secureString",
 			"metadata": "Cadena protegida para \"connectionString\"de \"Storege_Fresh\""
 		},
+		"EfleetDB_connectionString": {
+			"type": "secureString",
+			"metadata": "Cadena protegida para \"connectionString\"de \"EfleetDB\""
+		},
 		"AF_DW_properties_typeProperties_functionAppUrl": {
 			"type": "string",
 			"defaultValue": "https://dwservices.azurewebsites.net"
@@ -239,6 +243,19 @@
 				"typeProperties": {
 					"connectionString": "[parameters('Storege_Fresh_connectionString')]",
 					"fileShare": "freshdesk-fileshare"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/EfleetDB')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureMySql",
+				"typeProperties": {
+					"connectionString": "[parameters('EfleetDB_connectionString')]"
 				}
 			},
 			"dependsOn": []
@@ -874,27 +891,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/FreshDB')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Fresh_Conversasiones')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ApiConversariones",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "APIs"
-				},
-				"annotations": [],
-				"type": "RestResource",
-				"typeProperties": {},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ApiConversariones')]"
 			]
 		}
 	]
