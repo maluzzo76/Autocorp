@@ -1214,279 +1214,6 @@
 				]
 			},
 			{
-				"name": "Inyectar stg Ordenes Trabajo",
-				"type": "Copy",
-				"dependsOn": [],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"source": {
-						"type": "AzureMySqlSource",
-						"query": "select \nwo.id codigo,\nname nombre,\nstate estado,\nwo.deleted_at fechaEliminacion,\nwo.created_at fechaCreacion,\nwo.updated_at fechaActualizacion,\nhansa_Code hansaCode,\nwo.work_order_type_id codigoTipoOrdenTrabajo,\nwork_order_origin_id codigoOrdenTrabajoOriginal,\nreason razon,\ninternal_code codigoInterno,\nnumber numero,\nplate patente,\ncontract_id codigoContrato,\nkm,\nis_estimated estimada,\nwork_order_expense_type_id codigoTipoGasto,\nuser_id codigoUsuario,\nfreshdesk_code codigoTicket,\nvwo.vehicle_id codigoVehiculo\nfrom work_orders wo\nleft join vehicles_work_orders vwo on vwo.work_order_id = wo.id",
-						"queryTimeout": "02:00:00"
-					},
-					"sink": {
-						"type": "AzureSqlSink",
-						"preCopyScript": "truncate table stg.OrdenesTrabajo",
-						"writeBehavior": "insert",
-						"sqlWriterUseTableLock": false,
-						"disableMetricsCollection": false
-					},
-					"enableStaging": false,
-					"translator": {
-						"type": "TabularTranslator",
-						"mappings": [
-							{
-								"source": {
-									"name": "codigo",
-									"type": "UInt64"
-								},
-								"sink": {
-									"name": "codigo",
-									"type": "Int32",
-									"physicalType": "int"
-								}
-							},
-							{
-								"source": {
-									"name": "nombre",
-									"type": "String"
-								},
-								"sink": {
-									"name": "nombre",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "estado",
-									"type": "String"
-								},
-								"sink": {
-									"name": "estado",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "fechaEliminacion",
-									"type": "DateTime"
-								},
-								"sink": {
-									"name": "fechaEliminacion",
-									"type": "DateTime",
-									"physicalType": "datetime"
-								}
-							},
-							{
-								"source": {
-									"name": "fechaCreacion",
-									"type": "DateTime"
-								},
-								"sink": {
-									"name": "fechaCreacion",
-									"type": "DateTime",
-									"physicalType": "datetime"
-								}
-							},
-							{
-								"source": {
-									"name": "fechaActualizacion",
-									"type": "DateTime"
-								},
-								"sink": {
-									"name": "fechaActualizacion",
-									"type": "DateTime",
-									"physicalType": "datetime"
-								}
-							},
-							{
-								"source": {
-									"name": "hansaCode",
-									"type": "String"
-								},
-								"sink": {
-									"name": "hansaCode",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "codigoTipoOrdenTrabajo",
-									"type": "UInt64"
-								},
-								"sink": {
-									"name": "codigoTipoOrdenTrabajo",
-									"type": "Int32",
-									"physicalType": "int"
-								}
-							},
-							{
-								"source": {
-									"name": "codigoOrdenTrabajoOriginal",
-									"type": "UInt64"
-								},
-								"sink": {
-									"name": "codigoOrdenTrabajoOriginal",
-									"type": "Int32",
-									"physicalType": "int"
-								}
-							},
-							{
-								"source": {
-									"name": "razon",
-									"type": "String"
-								},
-								"sink": {
-									"name": "razon",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "codigoInterno",
-									"type": "String"
-								},
-								"sink": {
-									"name": "codigoInterno",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "numero",
-									"type": "String"
-								},
-								"sink": {
-									"name": "numero",
-									"type": "Int32",
-									"physicalType": "int"
-								}
-							},
-							{
-								"source": {
-									"name": "patente",
-									"type": "String"
-								},
-								"sink": {
-									"name": "patente",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "codigoContrato",
-									"type": "UInt64"
-								},
-								"sink": {
-									"name": "codigoContrato",
-									"type": "Int32",
-									"physicalType": "int"
-								}
-							},
-							{
-								"source": {
-									"name": "km",
-									"type": "Int32",
-									"physicalType": "int"
-								},
-								"sink": {
-									"name": "km",
-									"type": "Decimal",
-									"physicalType": "decimal",
-									"scale": 0,
-									"precision": 18
-								}
-							},
-							{
-								"source": {
-									"name": "estimada",
-									"type": "Boolean"
-								},
-								"sink": {
-									"name": "estimada",
-									"type": "Boolean",
-									"physicalType": "bit"
-								}
-							},
-							{
-								"source": {
-									"name": "codigoTipoGasto",
-									"type": "UInt64"
-								},
-								"sink": {
-									"name": "codigoTipoGasto",
-									"type": "Int32",
-									"physicalType": "int"
-								}
-							},
-							{
-								"source": {
-									"name": "codigoUsuario",
-									"type": "UInt64"
-								},
-								"sink": {
-									"name": "codigoUsuario",
-									"type": "Int32",
-									"physicalType": "int"
-								}
-							},
-							{
-								"source": {
-									"name": "codigoTicket",
-									"type": "String"
-								},
-								"sink": {
-									"name": "codigoTicket",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "codigoVehiculo",
-									"type": "UInt64"
-								},
-								"sink": {
-									"name": "codigoVehiculo",
-									"type": "Int32",
-									"physicalType": "int"
-								}
-							}
-						],
-						"typeConversion": true,
-						"typeConversionSettings": {
-							"allowDataTruncation": true,
-							"treatBooleanAsNumber": true
-						}
-					}
-				},
-				"inputs": [
-					{
-						"referenceName": "EfleetOrdenesTrabajo",
-						"type": "DatasetReference"
-					}
-				],
-				"outputs": [
-					{
-						"referenceName": "stgOrdenesTrabajo",
-						"type": "DatasetReference"
-					}
-				]
-			},
-			{
 				"name": "Inyectar Orden Trabajo Categorias",
 				"type": "Copy",
 				"dependsOn": [],
@@ -1913,6 +1640,321 @@
 				"outputs": [
 					{
 						"referenceName": "stgOrdenesTrabajoTareas",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Inyectar Ordenes Trabajo",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Inyectar Orden Trabajo Origen",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Inyectar Orden Trabajo Tipo",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Inyectar Orden Trabajo Tipo Gasto",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Inyectar Contratos",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Inyectar Orden Trabajo Categorias",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "inyectar Clientes",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureMySqlSource",
+						"query": "select \nwo.id codigo,\nname nombre,\nstate estado,\nwo.deleted_at fechaEliminacion,\nwo.created_at fechaCreacion,\nwo.updated_at fechaActualizacion,\nhansa_Code hansaCode,\nwo.work_order_type_id codigoTipoOrdenTrabajo,\nwork_order_origin_id codigoOrdenTrabajoOriginal,\nreason razon,\ninternal_code codigoInterno,\nnumber numero,\nplate patente,\ncontract_id codigoContrato,\nkm,\nis_estimated estimada,\nwork_order_expense_type_id codigoTipoGasto,\nuser_id codigoUsuario,\nfreshdesk_code codigoTicket,\nvwo.vehicle_id codigoVehiculo\nfrom work_orders wo\nleft join vehicles_work_orders vwo on vwo.work_order_id = wo.id",
+						"queryTimeout": "02:00:00"
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"writeBehavior": "upsert",
+						"upsertSettings": {
+							"useTempDB": true,
+							"keys": [
+								"codigo"
+							]
+						},
+						"sqlWriterUseTableLock": false,
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "codigo",
+									"type": "UInt64"
+								},
+								"sink": {
+									"name": "codigo",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "nombre",
+									"type": "String"
+								},
+								"sink": {
+									"name": "nombre",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "estado",
+									"type": "String"
+								},
+								"sink": {
+									"name": "estado",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "fechaEliminacion",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "fechaEliminacion",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								}
+							},
+							{
+								"source": {
+									"name": "fechaCreacion",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "fechaCreacion",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								}
+							},
+							{
+								"source": {
+									"name": "fechaActualizacion",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "fechaActualizacion",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								}
+							},
+							{
+								"source": {
+									"name": "hansaCode",
+									"type": "String"
+								},
+								"sink": {
+									"name": "hansaCode",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "codigoTipoOrdenTrabajo",
+									"type": "UInt64"
+								},
+								"sink": {
+									"name": "codigoTipoOrdenTrabajo",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "codigoOrdenTrabajoOriginal",
+									"type": "UInt64"
+								},
+								"sink": {
+									"name": "codigoOrdenTrabajoOriginal",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "razon",
+									"type": "String"
+								},
+								"sink": {
+									"name": "razon",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "codigoInterno",
+									"type": "String"
+								},
+								"sink": {
+									"name": "codigoInterno",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "numero",
+									"type": "String"
+								},
+								"sink": {
+									"name": "numero",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "patente",
+									"type": "String"
+								},
+								"sink": {
+									"name": "patente",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "codigoContrato",
+									"type": "UInt64"
+								},
+								"sink": {
+									"name": "codigoContrato",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "km",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "km",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 0,
+									"precision": 18
+								}
+							},
+							{
+								"source": {
+									"name": "estimada",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "estimada",
+									"type": "Boolean",
+									"physicalType": "bit"
+								}
+							},
+							{
+								"source": {
+									"name": "codigoTipoGasto",
+									"type": "UInt64"
+								},
+								"sink": {
+									"name": "codigoTipoGasto",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "codigoUsuario",
+									"type": "UInt64"
+								},
+								"sink": {
+									"name": "codigoUsuario",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "codigoTicket",
+									"type": "String"
+								},
+								"sink": {
+									"name": "codigoTicket",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "codigoVehiculo",
+									"type": "UInt64"
+								},
+								"sink": {
+									"name": "codigoVehiculo",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": true
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "EfleetOrdenesTrabajo",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "dimOrdenesTrabajo",
 						"type": "DatasetReference"
 					}
 				]

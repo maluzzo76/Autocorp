@@ -1,12 +1,12 @@
 {
-	"name": "stgOrdenesTrabajo",
+	"name": "dimOrdenesTrabajo",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "SqlAutocorpDw",
 			"type": "LinkedServiceReference"
 		},
 		"folder": {
-			"name": "Staiging"
+			"name": "DW/Dimensiones"
 		},
 		"annotations": [],
 		"type": "AzureSqlTable",
@@ -109,8 +109,8 @@
 			}
 		],
 		"typeProperties": {
-			"schema": "stg",
-			"table": "OrdenesTrabajo"
+			"schema": "whs",
+			"table": "dimOrdenesTrabajo"
 		}
 	}
 }
