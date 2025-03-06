@@ -23,6 +23,10 @@
 			"type": "secureString",
 			"metadata": "Cadena protegida para \"password\"de \"ApiConversariones\""
 		},
+		"EfleetDB_connectionString": {
+			"type": "secureString",
+			"metadata": "Cadena protegida para \"connectionString\"de \"EfleetDB\""
+		},
 		"FreshDB_connectionString": {
 			"type": "secureString",
 			"metadata": "Cadena protegida para \"connectionString\"de \"FreshDB\""
@@ -38,10 +42,6 @@
 		"Storege_Fresh_connectionString": {
 			"type": "secureString",
 			"metadata": "Cadena protegida para \"connectionString\"de \"Storege_Fresh\""
-		},
-		"EfleetDB_connectionString": {
-			"type": "secureString",
-			"metadata": "Cadena protegida para \"connectionString\"de \"EfleetDB\""
 		},
 		"AF_DW_properties_typeProperties_functionAppUrl": {
 			"type": "string",
@@ -92,6 +92,1977 @@
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/001-Inyectar Dimensiones Efleet')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Intectar vehiculos",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureMySqlSource",
+								"query": "select \r\nid codigo,\r\ncontract_id contratoId,\r\npolicy_id policyId,\r\n`description` descripcion,\r\n`code` codigoDeVehiculo,\r\ncolor,\r\nchassis,\r\nplate patente,\r\n`year` anio,\r\nvtv_due_date fechaVencimientoVTV,\r\ncardoc_due_date fechaVencimientoDocument,\r\nwarranty_up_to_km garantiaHastaKm,\r\nwarranty_up_to_date fechaActualizadaGarantia,\r\nwarranty_state garantiaEstado,\r\nis_fleet_owner isPropietarioFlota,\r\nlast_km ultimoKilometraje,\r\nlast_km_origin ultimoKilometrajeOrigen,\r\nlast_km_date fechaUltimoKm,\r\nservice_last_km servicioUltimoKm,\r\nservice_origin origenServicio,\r\ncase when year(service_last_date)<1990 then null else service_last_date end ultimaFechaServicio,\r\ncondition_type tipoCondicion,\r\ncategory_client categoriaCliente,\r\ngroup_category_client grupoCategoriaCliente ,\r\nfuel_card_number numeroTarjetaCombustible,\r\ntoll_card_number numeroTarjetaPeaje,\r\nhas_circulation_documents tieneDocumentoCirculacion,\r\ninsurance_ammount montoSeguro,\r\nversion_id versionID,\r\nvehicle_state_id vehiculoEstadoID,\r\nclient_structure_id clienteEstructuraID,\r\ninsurance_id seguroID,\r\ngps_provider_id proveedorGpsId,\r\nhas_duplicated_key tieneClaveDuplicado,\r\ngps_vehicle_number numeroGPS,\r\ngps_detail detalleGPS,\r\ngps_ammount gpsMonto,\r\nvtv_last_date ultimaFechaVTV,\r\nduplicated_key_date fechaClaveDuplicada,\r\nvtv_last_city_id ultimaCiudadVTVID,\r\nplate_city_id patenteCuidadID,\r\ngps_is_visible gpsIsVisible,\r\nowner_name propietario,\r\nowner_contact_id propietarioContactoID,\r\nmaintenance_plan_id planMantenimientoID,\r\nleasing_duedate arrendamientoFechaVencimiento,\r\nrto_due_date fechaDeRetiro,\r\nvtv_km_expiration kmVencimientoVTV,\r\nfuel_provider proveedorCombustible,\r\nservice_last_task_id UltimaTareaID,\r\ninsurance_start_date fechaInicioSeguro,\r\nsend_expiration_mailing ,\r\nhansa_code codigoHansa,\r\nlast_expiration_check fechaUltimaComparacion,\r\nvtv_caba_text vtvCabaTexto,\r\ninfoauto_price precioInfoauto,\r\ninfoauto_price_date fechaPrecioInfoAuto\r\n\r\nfrom vehicles",
+								"queryTimeout": "02:00:00"
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"writeBehavior": "upsert",
+								"upsertSettings": {
+									"useTempDB": true,
+									"keys": [
+										"codigo"
+									]
+								},
+								"sqlWriterUseTableLock": false,
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "codigo",
+											"type": "UInt64"
+										},
+										"sink": {
+											"name": "codigo",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "contratoId",
+											"type": "UInt64"
+										},
+										"sink": {
+											"name": "contratoId",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "policyId",
+											"type": "UInt64"
+										},
+										"sink": {
+											"name": "policyId",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "descripcion",
+											"type": "String"
+										},
+										"sink": {
+											"name": "descripcion",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "codigoDeVehiculo",
+											"type": "String"
+										},
+										"sink": {
+											"name": "codigoDeVehiculo",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "color",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "color",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "chassis",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "chassis",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "patente",
+											"type": "String"
+										},
+										"sink": {
+											"name": "patente",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "anio",
+											"type": "Int32"
+										},
+										"sink": {
+											"name": "anio",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "fechaVencimientoVTV",
+											"type": "DateTime"
+										},
+										"sink": {
+											"name": "fechaVencimientoVTV",
+											"type": "DateTime",
+											"physicalType": "datetime"
+										}
+									},
+									{
+										"source": {
+											"name": "fechaVencimientoDocument",
+											"type": "DateTime"
+										},
+										"sink": {
+											"name": "fechaVencimientoDocumento",
+											"type": "DateTime",
+											"physicalType": "datetime"
+										}
+									},
+									{
+										"source": {
+											"name": "garantiaHastaKm",
+											"type": "Int32"
+										},
+										"sink": {
+											"name": "garantiaHastaKm",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 0,
+											"precision": 18
+										}
+									},
+									{
+										"source": {
+											"name": "fechaActualizadaGarantia",
+											"type": "DateTime"
+										},
+										"sink": {
+											"name": "fechaActualizadaGarantia",
+											"type": "DateTime",
+											"physicalType": "datetime"
+										}
+									},
+									{
+										"source": {
+											"name": "garantiaEstado",
+											"type": "Boolean"
+										},
+										"sink": {
+											"name": "garantiaVigente",
+											"type": "Boolean",
+											"physicalType": "bit"
+										}
+									},
+									{
+										"source": {
+											"name": "isPropietarioFlota",
+											"type": "Boolean"
+										},
+										"sink": {
+											"name": "isPropietarioFlota",
+											"type": "Boolean",
+											"physicalType": "bit"
+										}
+									},
+									{
+										"source": {
+											"name": "ultimoKilometraje",
+											"type": "Int32"
+										},
+										"sink": {
+											"name": "ultimoKilometraje",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 0,
+											"precision": 18
+										}
+									},
+									{
+										"source": {
+											"name": "ultimoKilometrajeOrigen",
+											"type": "String"
+										},
+										"sink": {
+											"name": "ultimoKilometrajeOrigen",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "fechaUltimoKm",
+											"type": "DateTime"
+										},
+										"sink": {
+											"name": "fechaUltimoKm",
+											"type": "DateTime",
+											"physicalType": "datetime"
+										}
+									},
+									{
+										"source": {
+											"name": "servicioUltimoKm",
+											"type": "Int32"
+										},
+										"sink": {
+											"name": "servicioUltimoKm",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 0,
+											"precision": 18
+										}
+									},
+									{
+										"source": {
+											"name": "origenServicio",
+											"type": "String"
+										},
+										"sink": {
+											"name": "origenServicio",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "ultimaFechaServicio",
+											"type": "DateTime"
+										},
+										"sink": {
+											"name": "ultimaFechaServicio",
+											"type": "DateTime",
+											"physicalType": "datetime"
+										}
+									},
+									{
+										"source": {
+											"name": "tipoCondicion",
+											"type": "String"
+										},
+										"sink": {
+											"name": "tipoCondicion",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "categoriaCliente",
+											"type": "String"
+										},
+										"sink": {
+											"name": "categoriaCliente",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "grupoCategoriaCliente",
+											"type": "String"
+										},
+										"sink": {
+											"name": "grupoCategoriaCliente",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "numeroTarjetaCombustible",
+											"type": "String"
+										},
+										"sink": {
+											"name": "numeroTarjetaCombustible",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "numeroTarjetaPeaje",
+											"type": "String"
+										},
+										"sink": {
+											"name": "numeroTarjetaPeaje",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "tieneDocumentoCirculacion",
+											"type": "Boolean"
+										},
+										"sink": {
+											"name": "tieneDocumentoCirculacion",
+											"type": "Boolean",
+											"physicalType": "bit"
+										}
+									},
+									{
+										"source": {
+											"name": "montoSeguro",
+											"type": "Double"
+										},
+										"sink": {
+											"name": "montoSeguro",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 4,
+											"precision": 18
+										}
+									},
+									{
+										"source": {
+											"name": "versionID",
+											"type": "UInt64"
+										},
+										"sink": {
+											"name": "versionId",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "vehiculoEstadoID",
+											"type": "UInt64"
+										},
+										"sink": {
+											"name": "vehiculoEstadoId",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "clienteEstructuraID",
+											"type": "UInt64"
+										},
+										"sink": {
+											"name": "clienteEstructuraId",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "seguroID",
+											"type": "UInt64"
+										},
+										"sink": {
+											"name": "seguroId",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "proveedorGpsId",
+											"type": "UInt64"
+										},
+										"sink": {
+											"name": "proveedorGpsId",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "tieneClaveDuplicado",
+											"type": "Boolean"
+										},
+										"sink": {
+											"name": "tieneClaveDuplicado",
+											"type": "Boolean",
+											"physicalType": "bit"
+										}
+									},
+									{
+										"source": {
+											"name": "numeroGPS",
+											"type": "String"
+										},
+										"sink": {
+											"name": "numeroGPS",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "detalleGPS",
+											"type": "String"
+										},
+										"sink": {
+											"name": "detalleGPS",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "gpsMonto",
+											"type": "Int32"
+										},
+										"sink": {
+											"name": "gpsMonto",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 4,
+											"precision": 18
+										}
+									},
+									{
+										"source": {
+											"name": "ultimaFechaVTV",
+											"type": "DateTime"
+										},
+										"sink": {
+											"name": "ultimaFechaVTV",
+											"type": "DateTime",
+											"physicalType": "datetime"
+										}
+									},
+									{
+										"source": {
+											"name": "fechaClaveDuplicada",
+											"type": "DateTime"
+										},
+										"sink": {
+											"name": "fechaClaveDuplicada",
+											"type": "DateTime",
+											"physicalType": "datetime"
+										}
+									},
+									{
+										"source": {
+											"name": "ultimaCiudadVTVID",
+											"type": "UInt64"
+										},
+										"sink": {
+											"name": "ultimaCiudadVTVId",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "patenteCuidadID",
+											"type": "UInt64"
+										},
+										"sink": {
+											"name": "patenteCuidadId",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "gpsIsVisible",
+											"type": "Boolean"
+										},
+										"sink": {
+											"name": "gpsIsVisible",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "propietario",
+											"type": "String"
+										},
+										"sink": {
+											"name": "propietario",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "propietarioContactoID",
+											"type": "UInt64"
+										},
+										"sink": {
+											"name": "propietarioContactoId",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "planMantenimientoID",
+											"type": "UInt64"
+										},
+										"sink": {
+											"name": "planMantenimientoId",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "arrendamientoFechaVencimiento",
+											"type": "DateTime"
+										},
+										"sink": {
+											"name": "arrendamientoFechaVencimiento",
+											"type": "DateTime",
+											"physicalType": "datetime"
+										}
+									},
+									{
+										"source": {
+											"name": "fechaDeRetiro",
+											"type": "DateTime"
+										},
+										"sink": {
+											"name": "fechaDeRetiro",
+											"type": "DateTime",
+											"physicalType": "datetime"
+										}
+									},
+									{
+										"source": {
+											"name": "kmVencimientoVTV",
+											"type": "Int32"
+										},
+										"sink": {
+											"name": "kmVencimientoVTV",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 0,
+											"precision": 18
+										}
+									},
+									{
+										"source": {
+											"name": "proveedorCombustible",
+											"type": "String"
+										},
+										"sink": {
+											"name": "proveedorCombustible",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "UltimaTareaID",
+											"type": "UInt64"
+										},
+										"sink": {
+											"name": "UltimaTareaId",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "fechaInicioSeguro",
+											"type": "DateTime"
+										},
+										"sink": {
+											"name": "fechaInicioSeguro",
+											"type": "DateTime",
+											"physicalType": "datetime"
+										}
+									},
+									{
+										"source": {
+											"name": "codigoHansa",
+											"type": "String"
+										},
+										"sink": {
+											"name": "codigoHansa",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "fechaUltimaComparacion",
+											"type": "DateTime"
+										},
+										"sink": {
+											"name": "fechaUltimaComparacion",
+											"type": "DateTime",
+											"physicalType": "datetime"
+										}
+									},
+									{
+										"source": {
+											"name": "vtvCabaTexto",
+											"type": "String"
+										},
+										"sink": {
+											"name": "vtvCabaTexto",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "precioInfoauto",
+											"type": "Decimal"
+										},
+										"sink": {
+											"name": "precioInfoauto",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 4,
+											"precision": 18
+										}
+									},
+									{
+										"source": {
+											"name": "fechaPrecioInfoAuto",
+											"type": "DateTime"
+										},
+										"sink": {
+											"name": "fechaPrecioInfoAuto",
+											"type": "DateTime",
+											"physicalType": "datetime"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": false,
+									"treatBooleanAsNumber": true
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "EfleetVehiculo",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "dimVehiculos",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "inyectar Clientes",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureMySqlSource",
+								"query": "SELECT \r\nc.id codigo,\r\nc.fantasy_name nombre,\r\nc.business_name empresa,\r\nc.contact_id,\r\ncg.name grupo,\r\nc.classification clasificacion,\r\nc.first_credit_limit primerLimiteDeCredito,\r\nc.second_credit_limit segundoLimiteDeCredito,\r\not.name tipoOperacion,\r\nit.name tipoComprobante,\r\nct.name tipoCliente,\r\ncst.name estadoCliente\r\nFROM clients c\r\nleft join client_types ct on ct.id = c.client_type_id\r\nleft join invoice_types it on it.id = c.operation_type_id\r\nleft join operation_types ot on ot.id = c.operation_type_id\r\nleft join client_state_types cst on cst.id = c.client_state_type_id\r\nleft join client_groups cg on cg.id = c.client_group_id",
+								"queryTimeout": "02:00:00"
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"writeBehavior": "upsert",
+								"upsertSettings": {
+									"useTempDB": true,
+									"keys": [
+										"codigo"
+									]
+								},
+								"sqlWriterUseTableLock": false,
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "codigo",
+											"type": "UInt64"
+										},
+										"sink": {
+											"name": "codigo",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "nombre",
+											"type": "String"
+										},
+										"sink": {
+											"name": "nombre",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "empresa",
+											"type": "String"
+										},
+										"sink": {
+											"name": "empresa",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "grupo",
+											"type": "String"
+										},
+										"sink": {
+											"name": "grupo",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "clasificacion",
+											"type": "String"
+										},
+										"sink": {
+											"name": "clasificacion",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "primerLimiteDeCredito",
+											"type": "Double"
+										},
+										"sink": {
+											"name": "primerLimiteDecredito",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 4,
+											"precision": 18
+										}
+									},
+									{
+										"source": {
+											"name": "segundoLimiteDeCredito",
+											"type": "Double"
+										},
+										"sink": {
+											"name": "segundoLimiteDeCredito",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 4,
+											"precision": 18
+										}
+									},
+									{
+										"source": {
+											"name": "tipoOperacion",
+											"type": "String"
+										},
+										"sink": {
+											"name": "tipoOperacion",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "tipoComprobante",
+											"type": "String"
+										},
+										"sink": {
+											"name": "tipoComprobante",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "tipoCliente",
+											"type": "String"
+										},
+										"sink": {
+											"name": "tipoCliente",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "estadoCliente",
+											"type": "String"
+										},
+										"sink": {
+											"name": "estadoCliente",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "EfleetClientes",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "dimClientes",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Inyectar Orden Trabajo Origen",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureMySqlSource",
+								"queryTimeout": "02:00:00"
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"writeBehavior": "upsert",
+								"upsertSettings": {
+									"useTempDB": true,
+									"keys": [
+										"codigo"
+									]
+								},
+								"sqlWriterUseTableLock": false,
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "id",
+											"type": "UInt64",
+											"physicalType": "bigint"
+										},
+										"sink": {
+											"name": "codigo",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "name",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "nombre",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "hansa_code",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "hansacode",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "EfleetOrdenTrabajoOrigen",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "dimOrdenTrabajoOrigen",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Inyectar Orden Trabajo Tipo",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureMySqlSource",
+								"queryTimeout": "02:00:00"
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "id",
+											"type": "UInt64",
+											"physicalType": "bigint"
+										},
+										"sink": {
+											"name": "codigo",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "name",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "nombre",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "hansa_code",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "hansacode",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "EfleetOrdenTrabajoTipo",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "dimOrdenTrabajoTipo",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Inyectar Orden Trabajo Tipo Gasto",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureMySqlSource",
+								"queryTimeout": "02:00:00"
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"writeBehavior": "upsert",
+								"upsertSettings": {
+									"useTempDB": true,
+									"keys": [
+										"codigo"
+									]
+								},
+								"sqlWriterUseTableLock": false,
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "id",
+											"type": "UInt64",
+											"physicalType": "bigint"
+										},
+										"sink": {
+											"name": "codigo",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "name",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "nombre",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "hansa_code",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "hansacode",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "EfleetOrdenTrabajoTipoGasto",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "dimOrdenTrabajoTipoGasto",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Inyectar Contratos",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureMySqlSource",
+								"query": "select \nc.id codigo,\nc.name nombre,\nct.name tipoContrato\nfrom contracts c\nleft join contract_types ct on ct.id = c.id",
+								"queryTimeout": "02:00:00"
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "codigo",
+											"type": "UInt64"
+										},
+										"sink": {
+											"name": "codigo",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "nombre",
+											"type": "String"
+										},
+										"sink": {
+											"name": "nombre",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "tipoContrato",
+											"type": "String"
+										},
+										"sink": {
+											"name": "tipoContrato",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "EfleetContratos",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "dimContratos",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Inyectar stg Ordenes Trabajo",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureMySqlSource",
+								"query": "select \nwo.id codigo,\nname nombre,\nstate estado,\nwo.deleted_at fechaEliminacion,\nwo.created_at fechaCreacion,\nwo.updated_at fechaActualizacion,\nhansa_Code hansaCode,\nwo.work_order_type_id codigoTipoOrdenTrabajo,\nwork_order_origin_id codigoOrdenTrabajoOriginal,\nreason razon,\ninternal_code codigoInterno,\nnumber numero,\nplate patente,\ncontract_id codigoContrato,\nkm,\nis_estimated estimada,\nwork_order_expense_type_id codigoTipoGasto,\nuser_id codigoUsuario,\nfreshdesk_code codigoTicket,\nvwo.vehicle_id codigoVehiculo\nfrom work_orders wo\nleft join vehicles_work_orders vwo on vwo.work_order_id = wo.id",
+								"queryTimeout": "02:00:00"
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "codigo",
+											"type": "UInt64"
+										},
+										"sink": {
+											"name": "codigo",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "nombre",
+											"type": "String"
+										},
+										"sink": {
+											"name": "nombre",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "estado",
+											"type": "String"
+										},
+										"sink": {
+											"name": "estado",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "fechaEliminacion",
+											"type": "DateTime"
+										},
+										"sink": {
+											"name": "fechaEliminacion",
+											"type": "DateTime",
+											"physicalType": "datetime"
+										}
+									},
+									{
+										"source": {
+											"name": "fechaCreacion",
+											"type": "DateTime"
+										},
+										"sink": {
+											"name": "fechaCreacion",
+											"type": "DateTime",
+											"physicalType": "datetime"
+										}
+									},
+									{
+										"source": {
+											"name": "fechaActualizacion",
+											"type": "DateTime"
+										},
+										"sink": {
+											"name": "fechaActualizacion",
+											"type": "DateTime",
+											"physicalType": "datetime"
+										}
+									},
+									{
+										"source": {
+											"name": "hansaCode",
+											"type": "String"
+										},
+										"sink": {
+											"name": "hansaCode",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "codigoTipoOrdenTrabajo",
+											"type": "UInt64"
+										},
+										"sink": {
+											"name": "codigoTipoOrdenTrabajo",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "codigoOrdenTrabajoOriginal",
+											"type": "UInt64"
+										},
+										"sink": {
+											"name": "codigoOrdenTrabajoOriginal",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "razon",
+											"type": "String"
+										},
+										"sink": {
+											"name": "razon",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "codigoInterno",
+											"type": "String"
+										},
+										"sink": {
+											"name": "codigoInterno",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "numero",
+											"type": "String"
+										},
+										"sink": {
+											"name": "numero",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "patente",
+											"type": "String"
+										},
+										"sink": {
+											"name": "patente",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "codigoContrato",
+											"type": "UInt64"
+										},
+										"sink": {
+											"name": "codigoContrato",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "km",
+											"type": "Int32",
+											"physicalType": "int"
+										},
+										"sink": {
+											"name": "km",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 0,
+											"precision": 18
+										}
+									},
+									{
+										"source": {
+											"name": "estimada",
+											"type": "Boolean"
+										},
+										"sink": {
+											"name": "estimada",
+											"type": "Boolean",
+											"physicalType": "bit"
+										}
+									},
+									{
+										"source": {
+											"name": "codigoTipoGasto",
+											"type": "UInt64"
+										},
+										"sink": {
+											"name": "codigoTipoGasto",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "codigoUsuario",
+											"type": "UInt64"
+										},
+										"sink": {
+											"name": "codigoUsuario",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "codigoTicket",
+											"type": "String"
+										},
+										"sink": {
+											"name": "codigoTicket",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "codigoVehiculo",
+											"type": "UInt64"
+										},
+										"sink": {
+											"name": "codigoVehiculo",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": true
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "EfleetOrdenesTrabajo",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "stgOrdenesTrabajo",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Inyectar Orden Trabajo Categorias",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureMySqlSource",
+								"query": "select \nc.id codigo,\nc.name nombre,\nc.description descripcion,\ns.name seccionNombre \nfrom categories c\nleft join sections s on s.id = c.section_id",
+								"queryTimeout": "02:00:00"
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"writeBehavior": "upsert",
+								"upsertSettings": {
+									"useTempDB": true,
+									"keys": [
+										"codigo"
+									]
+								},
+								"sqlWriterUseTableLock": false,
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "codigo",
+											"type": "UInt64"
+										},
+										"sink": {
+											"name": "codigo",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "nombre",
+											"type": "String"
+										},
+										"sink": {
+											"name": "nombre",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "descripcion",
+											"type": "String"
+										},
+										"sink": {
+											"name": "descripcion",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "seccionNombre",
+											"type": "String"
+										},
+										"sink": {
+											"name": "seccionNombre",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "EfleetOrdenTrabajoCategoria",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "dimOrdenTrabajoCategorias",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Inyectar Tareas",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureMySqlSource",
+								"query": "select \nt.id codigo,\nt.name nombre,\nt.description descripcion,\ncategory_id codigoCategoria\nfrom tasks t",
+								"queryTimeout": "02:00:00"
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "codigo",
+											"type": "UInt64"
+										},
+										"sink": {
+											"name": "codigo",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "nombre",
+											"type": "String"
+										},
+										"sink": {
+											"name": "nombre",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "descripcion",
+											"type": "String"
+										},
+										"sink": {
+											"name": "descripcion",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "codigoCategoria",
+											"type": "UInt64"
+										},
+										"sink": {
+											"name": "codigoCategoria",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "EfleetTareas",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "dimTareas",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Inyectar Ordenes Trabajo Tareas",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureMySqlSource",
+								"queryTimeout": "02:00:00"
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"writeBehavior": "upsert",
+								"upsertSettings": {
+									"useTempDB": true,
+									"keys": [
+										"codigo"
+									]
+								},
+								"sqlWriterUseTableLock": false,
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "id",
+											"type": "UInt64",
+											"physicalType": "bigint"
+										},
+										"sink": {
+											"name": "codigo",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "work_order_id",
+											"type": "UInt64",
+											"physicalType": "bigint"
+										},
+										"sink": {
+											"name": "codigoWorkOrder",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "task_id",
+											"type": "UInt64",
+											"physicalType": "bigint"
+										},
+										"sink": {
+											"name": "codigoTarea",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "workforce_price",
+											"type": "Double",
+											"physicalType": "double"
+										},
+										"sink": {
+											"name": "costoPersonal",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 4,
+											"precision": 18
+										}
+									},
+									{
+										"source": {
+											"name": "materials_price",
+											"type": "Double",
+											"physicalType": "double"
+										},
+										"sink": {
+											"name": "costoMaterial",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 4,
+											"precision": 18
+										}
+									},
+									{
+										"source": {
+											"name": "total_price",
+											"type": "Double",
+											"physicalType": "double"
+										},
+										"sink": {
+											"name": "costoTotal",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 4,
+											"precision": 18
+										}
+									},
+									{
+										"source": {
+											"name": "workforce_s_iva_price",
+											"type": "Double",
+											"physicalType": "double"
+										},
+										"sink": {
+											"name": "costoPersonalSinIva",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 4,
+											"precision": 18
+										}
+									},
+									{
+										"source": {
+											"name": "materials_s_iva_price",
+											"type": "Double",
+											"physicalType": "double"
+										},
+										"sink": {
+											"name": "costoMaterialSinIva",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 4,
+											"precision": 18
+										}
+									},
+									{
+										"source": {
+											"name": "total_s_iva_price",
+											"type": "Double",
+											"physicalType": "double"
+										},
+										"sink": {
+											"name": "costoTotalSinIva",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 4,
+											"precision": 18
+										}
+									},
+									{
+										"source": {
+											"name": "workforce_discount",
+											"type": "Double",
+											"physicalType": "double"
+										},
+										"sink": {
+											"name": "descuentoPersonal",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 4,
+											"precision": 18
+										}
+									},
+									{
+										"source": {
+											"name": "materials_discount",
+											"type": "Double",
+											"physicalType": "double"
+										},
+										"sink": {
+											"name": "decuentoMaterial",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 4,
+											"precision": 18
+										}
+									},
+									{
+										"source": {
+											"name": "total_discount",
+											"type": "Double",
+											"physicalType": "double"
+										},
+										"sink": {
+											"name": "decuentoTotal",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 4,
+											"precision": 18
+										}
+									},
+									{
+										"source": {
+											"name": "created_at",
+											"type": "DateTime",
+											"physicalType": "timestamp"
+										},
+										"sink": {
+											"name": "fechaCreacion",
+											"type": "DateTime",
+											"physicalType": "datetime"
+										}
+									},
+									{
+										"source": {
+											"name": "updated_at",
+											"type": "DateTime",
+											"physicalType": "timestamp"
+										},
+										"sink": {
+											"name": "fechaUltimaActualizacion",
+											"type": "DateTime",
+											"physicalType": "datetime"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "EfleetOrdenesTrabajoTareas",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "stgOrdenesTrabajoTareas",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "EFleet"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/EfleetVehiculo')]",
+				"[concat(variables('factoryId'), '/datasets/dimVehiculos')]",
+				"[concat(variables('factoryId'), '/datasets/EfleetClientes')]",
+				"[concat(variables('factoryId'), '/datasets/dimClientes')]",
+				"[concat(variables('factoryId'), '/datasets/EfleetOrdenTrabajoOrigen')]",
+				"[concat(variables('factoryId'), '/datasets/dimOrdenTrabajoOrigen')]",
+				"[concat(variables('factoryId'), '/datasets/EfleetOrdenTrabajoTipo')]",
+				"[concat(variables('factoryId'), '/datasets/dimOrdenTrabajoTipo')]",
+				"[concat(variables('factoryId'), '/datasets/EfleetOrdenTrabajoTipoGasto')]",
+				"[concat(variables('factoryId'), '/datasets/dimOrdenTrabajoTipoGasto')]",
+				"[concat(variables('factoryId'), '/datasets/EfleetContratos')]",
+				"[concat(variables('factoryId'), '/datasets/dimContratos')]",
+				"[concat(variables('factoryId'), '/datasets/EfleetOrdenesTrabajo')]",
+				"[concat(variables('factoryId'), '/datasets/stgOrdenesTrabajo')]",
+				"[concat(variables('factoryId'), '/datasets/EfleetOrdenTrabajoCategoria')]",
+				"[concat(variables('factoryId'), '/datasets/dimOrdenTrabajoCategorias')]",
+				"[concat(variables('factoryId'), '/datasets/EfleetTareas')]",
+				"[concat(variables('factoryId'), '/datasets/dimTareas')]",
+				"[concat(variables('factoryId'), '/datasets/EfleetOrdenesTrabajoTareas')]",
+				"[concat(variables('factoryId'), '/datasets/stgOrdenesTrabajoTareas')]"
+			]
+		},
 		{
 			"name": "[concat(parameters('factoryName'), '/001-Orquestador')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
@@ -2009,7 +3980,7 @@
 						"typeProperties": {
 							"source": {
 								"type": "AzureSqlSource",
-								"sqlReaderQuery": "select distinct\r\nt.codigo,\r\nt.fechaAlta,\r\nt.fechaModificacion,\r\nc.id companiaId,\r\ne.id estadoId,\r\ntt.id  tipoId,\r\np.id productoId,\r\ng.id grupoId,\r\no.id origenId,\r\npr.id prioridadId,\r\na.id agenteId,\r\nsla.id slaId,\r\ncase \r\n    when pr.codigo = 1 then sla.slaTargerPriority1ResolveWithin /60\r\n    when pr.codigo = 2 then sla.slaTargerPriority2ResolveWithin /60\r\n    when pr.codigo = 3 then sla.slaTargerPriority3ResolveWithin /60\r\n    when pr.codigo = 4 then sla.slaTargerPriority4ResolveWithin /60\r\nend SlaResolucion,\r\ncase \r\n    when pr.codigo = 1 then sla.slaTargetPriority1RespondWithin /60\r\n    when pr.codigo = 2 then sla.slaTargetPriority2RespondWithin /60\r\n    when pr.codigo = 3 then sla.slaTargetPriority3RespondWithin /60\r\n    when pr.codigo = 4 then sla.slaTargetPriority4RespondWithin /60\r\nend SlaRespuesta,\r\ncase \r\n    when wt.FechaPrimerRespuesta is not null then wt.FechaPrimerRespuesta\r\nelse presp.FechaPrimerRespuesta\r\nend FechaPrimerRespuesta,\r\nt.horasDiferecia,\r\nt.minutosDiferencia\r\n\r\nfrom stg.tickets t \r\nleft join whs.dimCompanias c on c.codigo = t.companiaCodigo\r\nleft join whs.dimEstados e on e.codigo = t.estadoCodigo\r\nleft join whs.dimTiposTicket tt on tt.nombre = t.tipoCodigo\r\nleft join whs.dimProductos p on p.codigo = t.productoCodigo\r\nleft join whs.dimGrupos g on g.codigo = t.grupoCodigo\r\nleft join whs.dimOrigenes o on o.codigo = t.origenCodigo\r\nleft join whs.dimPrioridades pr on pr.codigo = t.prioridadCodigo\r\nleft join whs.dimAgentes a on a.codigo = t.agenteCodigo\r\nleft join whs.dimSla sla on sla.companyid = t.companiaCodigo or sla.nombre like '%Default%' and sla.isactive = 1\r\nleft join (\r\n                select id codigo,\r\n            min(created_at) FechaPrimerRespuesta\r\n            from stg.Conversaciones \r\n            group by id\r\n            ) presp on presp.codigo = t.codigo\r\nleft join whs.factTickets wt on wt.codigo = t.codigo\r\n",
+								"sqlReaderQuery": "select distinct\r\nt.codigo,\r\nDATEADD(HOUR,-3, t.fechaAlta)fechaAlta,\r\nDATEADD(HOUR,-3,t.fechaModificacion) fechaModificacion,\r\nc.id companiaId,\r\ne.id estadoId,\r\ntt.id  tipoId,\r\np.id productoId,\r\ng.id grupoId,\r\no.id origenId,\r\npr.id prioridadId,\r\na.id agenteId,\r\nsla.id slaId,\r\ncase \r\n    when pr.codigo = 1 then sla.slaTargerPriority1ResolveWithin /60\r\n    when pr.codigo = 2 then sla.slaTargerPriority2ResolveWithin /60\r\n    when pr.codigo = 3 then sla.slaTargerPriority3ResolveWithin /60\r\n    when pr.codigo = 4 then sla.slaTargerPriority4ResolveWithin /60\r\nend SlaResolucion,\r\ncase \r\n    when pr.codigo = 1 then sla.slaTargetPriority1RespondWithin /60\r\n    when pr.codigo = 2 then sla.slaTargetPriority2RespondWithin /60\r\n    when pr.codigo = 3 then sla.slaTargetPriority3RespondWithin /60\r\n    when pr.codigo = 4 then sla.slaTargetPriority4RespondWithin /60\r\nend SlaRespuesta,\r\ncase \r\n    when wt.FechaPrimerRespuesta is not null then DATEADD(HOUR,-3, wt.FechaPrimerRespuesta)\r\nelse DATEADD(HOUR,-3, presp.FechaPrimerRespuesta)\r\nend FechaPrimerRespuesta,\r\nt.horasDiferecia,\r\nt.minutosDiferencia\r\n\r\nfrom stg.tickets t \r\nleft join whs.dimCompanias c on c.codigo = t.companiaCodigo\r\nleft join whs.dimEstados e on e.codigo = t.estadoCodigo\r\nleft join whs.dimTiposTicket tt on tt.nombre = t.tipoCodigo\r\nleft join whs.dimProductos p on p.codigo = t.productoCodigo\r\nleft join whs.dimGrupos g on g.codigo = t.grupoCodigo\r\nleft join whs.dimOrigenes o on o.codigo = t.origenCodigo\r\nleft join whs.dimPrioridades pr on pr.codigo = t.prioridadCodigo\r\nleft join whs.dimAgentes a on a.codigo = t.agenteCodigo\r\nleft join whs.dimSla sla on sla.companyid = t.companiaCodigo or sla.nombre like '%Default%' and sla.isactive = 1\r\nleft join (\r\n                select id codigo,\r\n            min(created_at) FechaPrimerRespuesta\r\n            from stg.Conversaciones \r\n            group by id\r\n            ) presp on presp.codigo = t.codigo\r\nleft join whs.factTickets wt on wt.codigo = t.codigo\r\n",
 								"queryTimeout": "02:00:00",
 								"partitionOption": "None"
 							},
@@ -2306,6 +4277,996 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/ApiAgente')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/EfleetClientes')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "EfleetDB",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Source/Efleet"
+				},
+				"annotations": [],
+				"type": "AzureMySqlTable",
+				"schema": [
+					{
+						"name": "id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "contact_id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "description",
+						"type": "text",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "deleted_at",
+						"type": "timestamp",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "created_at",
+						"type": "timestamp",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "updated_at",
+						"type": "timestamp",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "web",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "business_name",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "fantasy_name",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "group",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "classification",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "first_credit_limit",
+						"type": "double",
+						"precision": 0,
+						"scale": 2
+					},
+					{
+						"name": "second_credit_limit",
+						"type": "double",
+						"precision": 0,
+						"scale": 2
+					},
+					{
+						"name": "operation_type_id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "invoice_type_id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "client_state_type_id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "client_trade_type_id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "client_origin_type_id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "payment_deadline",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "client_iibb_type_id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "aldnet_account_number",
+						"type": "text",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "aldnet_account_code",
+						"type": "text",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "aldnet_account_test_code",
+						"type": "text",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "client_type_id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "synched",
+						"type": "tinyint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "vendor_user_id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "operator_user_id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "client_group_id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "send_campaign",
+						"type": "tinyint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "campaign_subcontact_type_id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "is_risk_client",
+						"type": "tinyint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "send_survey",
+						"type": "tinyint",
+						"precision": 0,
+						"scale": 0
+					}
+				],
+				"typeProperties": {
+					"tableName": "clients"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/EfleetDB')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/EfleetOrdenTrabajoOrigen')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "EfleetDB",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Source/Efleet"
+				},
+				"annotations": [],
+				"type": "AzureMySqlTable",
+				"schema": [
+					{
+						"name": "id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "name",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "hansa_code",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "deleted_at",
+						"type": "timestamp",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "created_at",
+						"type": "timestamp",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "updated_at",
+						"type": "timestamp",
+						"precision": 0,
+						"scale": 0
+					}
+				],
+				"typeProperties": {
+					"tableName": "work_order_origins"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/EfleetDB')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/EfleetOrdenTrabajoTipo')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "EfleetDB",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Source/Efleet"
+				},
+				"annotations": [],
+				"type": "AzureMySqlTable",
+				"schema": [
+					{
+						"name": "id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "name",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "hansa_code",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "deleted_at",
+						"type": "timestamp",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "created_at",
+						"type": "timestamp",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "updated_at",
+						"type": "timestamp",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "workflow_code",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "card_color",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "font_color",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "accept_multiple",
+						"type": "tinyint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "os_type_hansa_code",
+						"type": "text",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "allow_tasks_added",
+						"type": "tinyint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "default_work_order_origin_id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "default_work_order_task_action_id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "initial_detail",
+						"type": "tinyint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "materials_price_enable",
+						"type": "tinyint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "work_force_price_enable",
+						"type": "tinyint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "default_provider_type_id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "default_reason",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "budget_attachment_required",
+						"type": "tinyint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "default_voucher_type_id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "payment_deadline_change",
+						"type": "tinyint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "total_price_enable",
+						"type": "tinyint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "freshdesk_type",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "mobile_name",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "send_survey",
+						"type": "tinyint",
+						"precision": 0,
+						"scale": 0
+					}
+				],
+				"typeProperties": {
+					"tableName": "work_order_types"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/EfleetDB')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/EfleetVehiculo')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "EfleetDB",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Source/Efleet"
+				},
+				"annotations": [],
+				"type": "AzureMySqlTable",
+				"schema": [
+					{
+						"name": "id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "contract_id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "policy_id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "authorization_matrix_id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "plate",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "description",
+						"type": "mediumtext",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "hansa_start_date",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "hansa_end_date",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "hansa_flota",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "hansa_active",
+						"type": "tinyint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "deleted_at",
+						"type": "timestamp",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "created_at",
+						"type": "timestamp",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "updated_at",
+						"type": "timestamp",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "code",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "color",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "chassis",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "motor_number",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "year",
+						"type": "int",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "plate_date",
+						"type": "date",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "fire_extinguisher_due_date",
+						"type": "date",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "vtv_due_date",
+						"type": "date",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "cardoc_due_date",
+						"type": "date",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "warranty_up_to_km",
+						"type": "int",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "warranty_up_to_date",
+						"type": "date",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "warranty_state",
+						"type": "tinyint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "is_fleet_owner",
+						"type": "tinyint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "last_km",
+						"type": "int",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "last_km_origin",
+						"type": "enum",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "last_km_date",
+						"type": "date",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "service_last_km",
+						"type": "int",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "service_origin",
+						"type": "enum",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "service_last_date",
+						"type": "date",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "condition_type",
+						"type": "enum",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "category_client",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "group_category_client",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "fuel_card_number",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "toll_card_number",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "has_circulation_documents",
+						"type": "tinyint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "insurance_ammount",
+						"type": "double",
+						"precision": 0,
+						"scale": 2
+					},
+					{
+						"name": "version_id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "vehicle_state_id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "client_structure_id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "insurance_id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "gps_provider_id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "stereo_code",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "has_duplicated_key",
+						"type": "tinyint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "gps_vehicle_number",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "gps_detail",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "gps_ammount",
+						"type": "int",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "vtv_last_date",
+						"type": "date",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "duplicated_key_date",
+						"type": "date",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "vtv_last_city_id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "plate_city_id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "is_owner",
+						"type": "enum",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "gps_is_visible",
+						"type": "tinyint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "owner_name",
+						"type": "text",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "owner_contact_id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "maintenance_plan_id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "leasing_duedate",
+						"type": "date",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "rto_due_date",
+						"type": "date",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "vtv_km_expiration",
+						"type": "int",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "synched",
+						"type": "tinyint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "fuel_provider",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "pledgde_duedate",
+						"type": "date",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "pledgde_closure_date",
+						"type": "date",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "pledgde_number",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "buyer_purchase_date",
+						"type": "date",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "buyer_transfer_date",
+						"type": "date",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "buyer_comments",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "pledge_contact_id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "leasing_contact_id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "buyer_contact_id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "service_last_task_id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "insurance_start_date",
+						"type": "date",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "send_expiration_mailing",
+						"type": "tinyint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "last_mailing_date",
+						"type": "date",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "last_mailing_email",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "mailing_day",
+						"type": "int",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "last_mailing_status",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "version_hansa_code",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "hansa_code",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "last_expiration_check",
+						"type": "datetime",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "vtv_caba_text",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "infoauto_price",
+						"type": "decimal",
+						"precision": 10,
+						"scale": 2
+					},
+					{
+						"name": "infoauto_price_date",
+						"type": "datetime",
+						"precision": 0,
+						"scale": 0
+					}
+				],
+				"typeProperties": {
+					"tableName": "vehicles"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/EfleetDB')]"
 			]
 		},
 		{
@@ -3195,6 +6156,85 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/dimClientes')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SqlAutocorpDw",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DW/Dimensiones"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "codigo",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "nombre",
+						"type": "varchar"
+					},
+					{
+						"name": "empresa",
+						"type": "varchar"
+					},
+					{
+						"name": "grupo",
+						"type": "varchar"
+					},
+					{
+						"name": "clasificacion",
+						"type": "varchar"
+					},
+					{
+						"name": "primerLimiteDecredito",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 4
+					},
+					{
+						"name": "segundoLimiteDeCredito",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 4
+					},
+					{
+						"name": "tipoOperacion",
+						"type": "varchar"
+					},
+					{
+						"name": "tipoComprobante",
+						"type": "varchar"
+					},
+					{
+						"name": "tipoCliente",
+						"type": "varchar"
+					},
+					{
+						"name": "estadoCliente",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "whs",
+					"table": "dimClientes"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SqlAutocorpDw')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/dimCompanias')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -3274,6 +6314,87 @@
 				"typeProperties": {
 					"schema": "whs",
 					"table": "dimGrupos"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SqlAutocorpDw')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dimOrdenTrabajoOrigen')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SqlAutocorpDw",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DW/Dimensiones"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "name",
+						"type": "varchar"
+					},
+					{
+						"name": "hansacode",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "whs",
+					"table": "dimOrdenTrabajoOrgien"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SqlAutocorpDw')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dimOrdenTrabajoTipo')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SqlAutocorpDw",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DW/Dimensiones"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "codigo",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "nombre",
+						"type": "varchar"
+					},
+					{
+						"name": "hansacode",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "whs",
+					"table": "dimOrdenTrabajoTipo"
 				}
 			},
 			"dependsOn": [
@@ -3559,6 +6680,170 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/dimVehiculos')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SqlAutocorpDw",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DW/Dimensiones"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "anio",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "estadovehiculo",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "fechavencimientoVTV",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "garantíaactualizadakm",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "garantíaactualizadadia",
+						"type": "date"
+					},
+					{
+						"name": "estadogarantia",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "espropietarioflota",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "ultimokm",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "fechaultimokm",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "ultimafechaservicio",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "servicioultimokilometraje",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "categoriacliente",
+						"type": "varchar"
+					},
+					{
+						"name": "grupocategoriacliente",
+						"type": "varchar"
+					},
+					{
+						"name": "tienedocumentoscirculacion",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "seguroid",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "ultimafechavtv",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "nombrepropietario",
+						"type": "text"
+					},
+					{
+						"name": "nombrecontactoid",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "contratoarendamientoid",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "fechavencimientoarendamiento",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "fechavencimientorto",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "contactocompradorid",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "servicioultimatareaid",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "fechainicioseguro",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "fechaprecioinfoauto",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "precioinfoauto",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 4
+					}
+				],
+				"typeProperties": {
+					"schema": "whs",
+					"table": "dimVehiculos"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SqlAutocorpDw')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/factTickets')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -3834,6 +7119,19 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/EfleetDB')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureMySql",
+				"typeProperties": {
+					"connectionString": "[parameters('EfleetDB_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/FreshDB')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -3926,893 +7224,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/001-Inyectar Dimensiones Efleet')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Intectar vehiculos",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "AzureMySqlSource",
-								"query": "select \r\nid codigo,\r\ncontract_id contratoId,\r\npolicy_id policyId,\r\n`description` descripcion,\r\n`code` codigoDeVehiculo,\r\ncolor,\r\nchassis,\r\nplate patente,\r\n`year` anio,\r\nvtv_due_date fechaVencimientoVTV,\r\ncardoc_due_date fechaVencimientoDocument,\r\nwarranty_up_to_km garantiaHastaKm,\r\nwarranty_up_to_date fechaActualizadaGarantia,\r\nwarranty_state garantiaEstado,\r\nis_fleet_owner isPropietarioFlota,\r\nlast_km ultimoKilometraje,\r\nlast_km_origin ultimoKilometrajeOrigen,\r\nlast_km_date fechaUltimoKm,\r\nservice_last_km servicioUltimoKm,\r\nservice_origin origenServicio,\r\ncase when year(service_last_date)<1990 then null else service_last_date end ultimaFechaServicio,\r\ncondition_type tipoCondicion,\r\ncategory_client categoriaCliente,\r\ngroup_category_client grupoCategoriaCliente ,\r\nfuel_card_number numeroTarjetaCombustible,\r\ntoll_card_number numeroTarjetaPeaje,\r\nhas_circulation_documents tieneDocumentoCirculacion,\r\ninsurance_ammount montoSeguro,\r\nversion_id versionID,\r\nvehicle_state_id vehiculoEstadoID,\r\nclient_structure_id clienteEstructuraID,\r\ninsurance_id seguroID,\r\ngps_provider_id proveedorGpsId,\r\nhas_duplicated_key tieneClaveDuplicado,\r\ngps_vehicle_number numeroGPS,\r\ngps_detail detalleGPS,\r\ngps_ammount gpsMonto,\r\nvtv_last_date ultimaFechaVTV,\r\nduplicated_key_date fechaClaveDuplicada,\r\nvtv_last_city_id ultimaCiudadVTVID,\r\nplate_city_id patenteCuidadID,\r\ngps_is_visible gpsIsVisible,\r\nowner_name propietario,\r\nowner_contact_id propietarioContactoID,\r\nmaintenance_plan_id planMantenimientoID,\r\nleasing_duedate arrendamientoFechaVencimiento,\r\nrto_due_date fechaDeRetiro,\r\nvtv_km_expiration kmVencimientoVTV,\r\nfuel_provider proveedorCombustible,\r\nservice_last_task_id UltimaTareaID,\r\ninsurance_start_date fechaInicioSeguro,\r\nsend_expiration_mailing ,\r\nhansa_code codigoHansa,\r\nlast_expiration_check fechaUltimaComparacion,\r\nvtv_caba_text vtvCabaTexto,\r\ninfoauto_price precioInfoauto,\r\ninfoauto_price_date fechaPrecioInfoAuto\r\n\r\nfrom vehicles",
-								"queryTimeout": "02:00:00"
-							},
-							"sink": {
-								"type": "AzureSqlSink",
-								"writeBehavior": "upsert",
-								"upsertSettings": {
-									"useTempDB": true,
-									"keys": [
-										"codigo"
-									]
-								},
-								"sqlWriterUseTableLock": false,
-								"disableMetricsCollection": false
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"name": "codigo",
-											"type": "UInt64"
-										},
-										"sink": {
-											"name": "codigo",
-											"type": "Int32",
-											"physicalType": "int"
-										}
-									},
-									{
-										"source": {
-											"name": "contratoId",
-											"type": "UInt64"
-										},
-										"sink": {
-											"name": "contratoId",
-											"type": "Int32",
-											"physicalType": "int"
-										}
-									},
-									{
-										"source": {
-											"name": "policyId",
-											"type": "UInt64"
-										},
-										"sink": {
-											"name": "policyId",
-											"type": "Int32",
-											"physicalType": "int"
-										}
-									},
-									{
-										"source": {
-											"name": "descripcion",
-											"type": "String"
-										},
-										"sink": {
-											"name": "descripcion",
-											"type": "String",
-											"physicalType": "varchar"
-										}
-									},
-									{
-										"source": {
-											"name": "codigoDeVehiculo",
-											"type": "String"
-										},
-										"sink": {
-											"name": "codigoDeVehiculo",
-											"type": "String",
-											"physicalType": "varchar"
-										}
-									},
-									{
-										"source": {
-											"name": "color",
-											"type": "String",
-											"physicalType": "varchar"
-										},
-										"sink": {
-											"name": "color",
-											"type": "String",
-											"physicalType": "varchar"
-										}
-									},
-									{
-										"source": {
-											"name": "chassis",
-											"type": "String",
-											"physicalType": "varchar"
-										},
-										"sink": {
-											"name": "chassis",
-											"type": "String",
-											"physicalType": "varchar"
-										}
-									},
-									{
-										"source": {
-											"name": "patente",
-											"type": "String"
-										},
-										"sink": {
-											"name": "patente",
-											"type": "String",
-											"physicalType": "varchar"
-										}
-									},
-									{
-										"source": {
-											"name": "anio",
-											"type": "Int32"
-										},
-										"sink": {
-											"name": "anio",
-											"type": "Int32",
-											"physicalType": "int"
-										}
-									},
-									{
-										"source": {
-											"name": "fechaVencimientoVTV",
-											"type": "DateTime"
-										},
-										"sink": {
-											"name": "fechaVencimientoVTV",
-											"type": "DateTime",
-											"physicalType": "datetime"
-										}
-									},
-									{
-										"source": {
-											"name": "fechaVencimientoDocument",
-											"type": "DateTime"
-										},
-										"sink": {
-											"name": "fechaVencimientoDocumento",
-											"type": "DateTime",
-											"physicalType": "datetime"
-										}
-									},
-									{
-										"source": {
-											"name": "garantiaHastaKm",
-											"type": "Int32"
-										},
-										"sink": {
-											"name": "garantiaHastaKm",
-											"type": "Decimal",
-											"physicalType": "decimal",
-											"scale": 0,
-											"precision": 18
-										}
-									},
-									{
-										"source": {
-											"name": "fechaActualizadaGarantia",
-											"type": "DateTime"
-										},
-										"sink": {
-											"name": "fechaActualizadaGarantia",
-											"type": "DateTime",
-											"physicalType": "datetime"
-										}
-									},
-									{
-										"source": {
-											"name": "garantiaEstado",
-											"type": "Boolean"
-										},
-										"sink": {
-											"name": "garantiaVigente",
-											"type": "Boolean",
-											"physicalType": "bit"
-										}
-									},
-									{
-										"source": {
-											"name": "isPropietarioFlota",
-											"type": "Boolean"
-										},
-										"sink": {
-											"name": "isPropietarioFlota",
-											"type": "Boolean",
-											"physicalType": "bit"
-										}
-									},
-									{
-										"source": {
-											"name": "ultimoKilometraje",
-											"type": "Int32"
-										},
-										"sink": {
-											"name": "ultimoKilometraje",
-											"type": "Decimal",
-											"physicalType": "decimal",
-											"scale": 0,
-											"precision": 18
-										}
-									},
-									{
-										"source": {
-											"name": "ultimoKilometrajeOrigen",
-											"type": "String"
-										},
-										"sink": {
-											"name": "ultimoKilometrajeOrigen",
-											"type": "String",
-											"physicalType": "varchar"
-										}
-									},
-									{
-										"source": {
-											"name": "fechaUltimoKm",
-											"type": "DateTime"
-										},
-										"sink": {
-											"name": "fechaUltimoKm",
-											"type": "DateTime",
-											"physicalType": "datetime"
-										}
-									},
-									{
-										"source": {
-											"name": "servicioUltimoKm",
-											"type": "Int32"
-										},
-										"sink": {
-											"name": "servicioUltimoKm",
-											"type": "Decimal",
-											"physicalType": "decimal",
-											"scale": 0,
-											"precision": 18
-										}
-									},
-									{
-										"source": {
-											"name": "origenServicio",
-											"type": "String"
-										},
-										"sink": {
-											"name": "origenServicio",
-											"type": "String",
-											"physicalType": "varchar"
-										}
-									},
-									{
-										"source": {
-											"name": "ultimaFechaServicio",
-											"type": "DateTime"
-										},
-										"sink": {
-											"name": "ultimaFechaServicio",
-											"type": "DateTime",
-											"physicalType": "datetime"
-										}
-									},
-									{
-										"source": {
-											"name": "tipoCondicion",
-											"type": "String"
-										},
-										"sink": {
-											"name": "tipoCondicion",
-											"type": "String",
-											"physicalType": "varchar"
-										}
-									},
-									{
-										"source": {
-											"name": "categoriaCliente",
-											"type": "String"
-										},
-										"sink": {
-											"name": "categoriaCliente",
-											"type": "String",
-											"physicalType": "varchar"
-										}
-									},
-									{
-										"source": {
-											"name": "grupoCategoriaCliente",
-											"type": "String"
-										},
-										"sink": {
-											"name": "grupoCategoriaCliente",
-											"type": "String",
-											"physicalType": "varchar"
-										}
-									},
-									{
-										"source": {
-											"name": "numeroTarjetaCombustible",
-											"type": "String"
-										},
-										"sink": {
-											"name": "numeroTarjetaCombustible",
-											"type": "String",
-											"physicalType": "varchar"
-										}
-									},
-									{
-										"source": {
-											"name": "numeroTarjetaPeaje",
-											"type": "String"
-										},
-										"sink": {
-											"name": "numeroTarjetaPeaje",
-											"type": "String",
-											"physicalType": "varchar"
-										}
-									},
-									{
-										"source": {
-											"name": "tieneDocumentoCirculacion",
-											"type": "Boolean"
-										},
-										"sink": {
-											"name": "tieneDocumentoCirculacion",
-											"type": "Boolean",
-											"physicalType": "bit"
-										}
-									},
-									{
-										"source": {
-											"name": "montoSeguro",
-											"type": "Double"
-										},
-										"sink": {
-											"name": "montoSeguro",
-											"type": "Decimal",
-											"physicalType": "decimal",
-											"scale": 4,
-											"precision": 18
-										}
-									},
-									{
-										"source": {
-											"name": "versionID",
-											"type": "UInt64"
-										},
-										"sink": {
-											"name": "versionId",
-											"type": "Int32",
-											"physicalType": "int"
-										}
-									},
-									{
-										"source": {
-											"name": "vehiculoEstadoID",
-											"type": "UInt64"
-										},
-										"sink": {
-											"name": "vehiculoEstadoId",
-											"type": "Int32",
-											"physicalType": "int"
-										}
-									},
-									{
-										"source": {
-											"name": "clienteEstructuraID",
-											"type": "UInt64"
-										},
-										"sink": {
-											"name": "clienteEstructuraId",
-											"type": "Int32",
-											"physicalType": "int"
-										}
-									},
-									{
-										"source": {
-											"name": "seguroID",
-											"type": "UInt64"
-										},
-										"sink": {
-											"name": "seguroId",
-											"type": "Int32",
-											"physicalType": "int"
-										}
-									},
-									{
-										"source": {
-											"name": "proveedorGpsId",
-											"type": "UInt64"
-										},
-										"sink": {
-											"name": "proveedorGpsId",
-											"type": "Int32",
-											"physicalType": "int"
-										}
-									},
-									{
-										"source": {
-											"name": "tieneClaveDuplicado",
-											"type": "Boolean"
-										},
-										"sink": {
-											"name": "tieneClaveDuplicado",
-											"type": "Boolean",
-											"physicalType": "bit"
-										}
-									},
-									{
-										"source": {
-											"name": "numeroGPS",
-											"type": "String"
-										},
-										"sink": {
-											"name": "numeroGPS",
-											"type": "String",
-											"physicalType": "varchar"
-										}
-									},
-									{
-										"source": {
-											"name": "detalleGPS",
-											"type": "String"
-										},
-										"sink": {
-											"name": "detalleGPS",
-											"type": "String",
-											"physicalType": "varchar"
-										}
-									},
-									{
-										"source": {
-											"name": "gpsMonto",
-											"type": "Int32"
-										},
-										"sink": {
-											"name": "gpsMonto",
-											"type": "Decimal",
-											"physicalType": "decimal",
-											"scale": 4,
-											"precision": 18
-										}
-									},
-									{
-										"source": {
-											"name": "ultimaFechaVTV",
-											"type": "DateTime"
-										},
-										"sink": {
-											"name": "ultimaFechaVTV",
-											"type": "DateTime",
-											"physicalType": "datetime"
-										}
-									},
-									{
-										"source": {
-											"name": "fechaClaveDuplicada",
-											"type": "DateTime"
-										},
-										"sink": {
-											"name": "fechaClaveDuplicada",
-											"type": "DateTime",
-											"physicalType": "datetime"
-										}
-									},
-									{
-										"source": {
-											"name": "ultimaCiudadVTVID",
-											"type": "UInt64"
-										},
-										"sink": {
-											"name": "ultimaCiudadVTVId",
-											"type": "Int32",
-											"physicalType": "int"
-										}
-									},
-									{
-										"source": {
-											"name": "patenteCuidadID",
-											"type": "UInt64"
-										},
-										"sink": {
-											"name": "patenteCuidadId",
-											"type": "Int32",
-											"physicalType": "int"
-										}
-									},
-									{
-										"source": {
-											"name": "gpsIsVisible",
-											"type": "Boolean"
-										},
-										"sink": {
-											"name": "gpsIsVisible",
-											"type": "Int32",
-											"physicalType": "int"
-										}
-									},
-									{
-										"source": {
-											"name": "propietario",
-											"type": "String"
-										},
-										"sink": {
-											"name": "propietario",
-											"type": "String",
-											"physicalType": "varchar"
-										}
-									},
-									{
-										"source": {
-											"name": "propietarioContactoID",
-											"type": "UInt64"
-										},
-										"sink": {
-											"name": "propietarioContactoId",
-											"type": "Int32",
-											"physicalType": "int"
-										}
-									},
-									{
-										"source": {
-											"name": "planMantenimientoID",
-											"type": "UInt64"
-										},
-										"sink": {
-											"name": "planMantenimientoId",
-											"type": "Int32",
-											"physicalType": "int"
-										}
-									},
-									{
-										"source": {
-											"name": "arrendamientoFechaVencimiento",
-											"type": "DateTime"
-										},
-										"sink": {
-											"name": "arrendamientoFechaVencimiento",
-											"type": "DateTime",
-											"physicalType": "datetime"
-										}
-									},
-									{
-										"source": {
-											"name": "fechaDeRetiro",
-											"type": "DateTime"
-										},
-										"sink": {
-											"name": "fechaDeRetiro",
-											"type": "DateTime",
-											"physicalType": "datetime"
-										}
-									},
-									{
-										"source": {
-											"name": "kmVencimientoVTV",
-											"type": "Int32"
-										},
-										"sink": {
-											"name": "kmVencimientoVTV",
-											"type": "Decimal",
-											"physicalType": "decimal",
-											"scale": 0,
-											"precision": 18
-										}
-									},
-									{
-										"source": {
-											"name": "proveedorCombustible",
-											"type": "String"
-										},
-										"sink": {
-											"name": "proveedorCombustible",
-											"type": "String",
-											"physicalType": "varchar"
-										}
-									},
-									{
-										"source": {
-											"name": "UltimaTareaID",
-											"type": "UInt64"
-										},
-										"sink": {
-											"name": "UltimaTareaId",
-											"type": "Int32",
-											"physicalType": "int"
-										}
-									},
-									{
-										"source": {
-											"name": "fechaInicioSeguro",
-											"type": "DateTime"
-										},
-										"sink": {
-											"name": "fechaInicioSeguro",
-											"type": "DateTime",
-											"physicalType": "datetime"
-										}
-									},
-									{
-										"source": {
-											"name": "codigoHansa",
-											"type": "String"
-										},
-										"sink": {
-											"name": "codigoHansa",
-											"type": "String",
-											"physicalType": "varchar"
-										}
-									},
-									{
-										"source": {
-											"name": "fechaUltimaComparacion",
-											"type": "DateTime"
-										},
-										"sink": {
-											"name": "fechaUltimaComparacion",
-											"type": "DateTime",
-											"physicalType": "datetime"
-										}
-									},
-									{
-										"source": {
-											"name": "vtvCabaTexto",
-											"type": "String"
-										},
-										"sink": {
-											"name": "vtvCabaTexto",
-											"type": "String",
-											"physicalType": "varchar"
-										}
-									},
-									{
-										"source": {
-											"name": "precioInfoauto",
-											"type": "Decimal"
-										},
-										"sink": {
-											"name": "precioInfoauto",
-											"type": "Decimal",
-											"physicalType": "decimal",
-											"scale": 4,
-											"precision": 18
-										}
-									},
-									{
-										"source": {
-											"name": "fechaPrecioInfoAuto",
-											"type": "DateTime"
-										},
-										"sink": {
-											"name": "fechaPrecioInfoAuto",
-											"type": "DateTime",
-											"physicalType": "datetime"
-										}
-									}
-								],
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": false,
-									"treatBooleanAsNumber": true
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "EfleetVehiculo",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "dimVehiculos",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"folder": {
-					"name": "EFleet"
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/EfleetVehiculo')]",
-				"[concat(variables('factoryId'), '/datasets/dimVehiculos')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/dimVehiculos')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SqlAutocorpDw",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "DW/Dimensiones"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "id",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "anio",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "estadovehiculo",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "fechavencimientoVTV",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "garantíaactualizadakm",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "garantíaactualizadadia",
-						"type": "date"
-					},
-					{
-						"name": "estadogarantia",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "espropietarioflota",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "ultimokm",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "fechaultimokm",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "ultimafechaservicio",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "servicioultimokilometraje",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "categoriacliente",
-						"type": "varchar"
-					},
-					{
-						"name": "grupocategoriacliente",
-						"type": "varchar"
-					},
-					{
-						"name": "tienedocumentoscirculacion",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "seguroid",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "ultimafechavtv",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "nombrepropietario",
-						"type": "text"
-					},
-					{
-						"name": "nombrecontactoid",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "contratoarendamientoid",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "fechavencimientoarendamiento",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "fechavencimientorto",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "contactocompradorid",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "servicioultimatareaid",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "fechainicioseguro",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "fechaprecioinfoauto",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "precioinfoauto",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 4
-					}
-				],
-				"typeProperties": {
-					"schema": "whs",
-					"table": "dimVehiculos"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/SqlAutocorpDw')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/EfleetDB')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureMySql",
-				"typeProperties": {
-					"connectionString": "[parameters('EfleetDB_connectionString')]"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/EfleetVehiculo')]",
+			"name": "[concat(parameters('factoryName'), '/EfleetOrdenTrabajoTipoGasto')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -4833,32 +7245,153 @@
 						"scale": 0
 					},
 					{
-						"name": "contract_id",
-						"type": "bigint",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "policy_id",
-						"type": "bigint",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "authorization_matrix_id",
-						"type": "bigint",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "plate",
+						"name": "name",
 						"type": "varchar",
 						"precision": 0,
 						"scale": 0
 					},
 					{
-						"name": "description",
-						"type": "mediumtext",
+						"name": "hansa_code",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "deleted_at",
+						"type": "timestamp",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "created_at",
+						"type": "timestamp",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "updated_at",
+						"type": "timestamp",
+						"precision": 0,
+						"scale": 0
+					}
+				],
+				"typeProperties": {
+					"tableName": "work_order_expense_types"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/EfleetDB')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dimOrdenTrabajoTipoGasto')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SqlAutocorpDw",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DW/Dimensiones"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "codigo",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "nombre",
+						"type": "varchar"
+					},
+					{
+						"name": "hansacode",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "whs",
+					"table": "dimOrdenTabajoTipoGasto"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SqlAutocorpDw')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/EfleetContratos')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "EfleetDB",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Source/Efleet"
+				},
+				"annotations": [],
+				"type": "AzureMySqlTable",
+				"schema": [
+					{
+						"name": "id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "name",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "contract_type_id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "contract_origin_id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "hansa_ID",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "hansa_service_num",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "hansa_cu_num",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "hansa_created",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "hansa_created_user",
+						"type": "varchar",
 						"precision": 0,
 						"scale": 0
 					},
@@ -4875,14 +7408,68 @@
 						"scale": 0
 					},
 					{
-						"name": "hansa_flota",
+						"name": "client_approval_username",
 						"type": "varchar",
 						"precision": 0,
 						"scale": 0
 					},
 					{
-						"name": "hansa_active",
-						"type": "tinyint",
+						"name": "client_approval_date",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "client_estimated_fleet",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "client_first_limit",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "client_second_limit",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "autocorp_approval_username",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "autocorp_approval_date",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "autocorp_commercial_username",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "autocorp_implementation_username",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "autocorp_post_sale_username",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "comments",
+						"type": "text",
 						"precision": 0,
 						"scale": 0
 					},
@@ -4905,290 +7492,466 @@
 						"scale": 0
 					},
 					{
-						"name": "code",
-						"type": "varchar",
+						"name": "contact_id",
+						"type": "bigint",
 						"precision": 0,
 						"scale": 0
 					},
 					{
-						"name": "color",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "chassis",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "motor_number",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "year",
-						"type": "int",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "plate_date",
-						"type": "date",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "fire_extinguisher_due_date",
-						"type": "date",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "vtv_due_date",
-						"type": "date",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "cardoc_due_date",
-						"type": "date",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "warranty_up_to_km",
-						"type": "int",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "warranty_up_to_date",
-						"type": "date",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "warranty_state",
+						"name": "synched",
 						"type": "tinyint",
 						"precision": 0,
 						"scale": 0
-					},
+					}
+				],
+				"typeProperties": {
+					"tableName": "contracts"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/EfleetDB')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dimContratos')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SqlAutocorpDw",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DW/Dimensiones"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
 					{
-						"name": "is_fleet_owner",
-						"type": "tinyint",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "last_km",
+						"name": "id",
 						"type": "int",
-						"precision": 0,
-						"scale": 0
+						"precision": 10
 					},
 					{
-						"name": "last_km_origin",
-						"type": "enum",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "last_km_date",
-						"type": "date",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "service_last_km",
+						"name": "codigo",
 						"type": "int",
-						"precision": 0,
-						"scale": 0
+						"precision": 10
 					},
 					{
-						"name": "service_origin",
-						"type": "enum",
-						"precision": 0,
-						"scale": 0
+						"name": "nombre",
+						"type": "varchar"
 					},
 					{
-						"name": "service_last_date",
-						"type": "date",
-						"precision": 0,
-						"scale": 0
-					},
+						"name": "tipoContrato",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "whs",
+					"table": "dimContratos"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SqlAutocorpDw')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/stgOrdenesTrabajo')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SqlAutocorpDw",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Staiging"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
 					{
-						"name": "condition_type",
-						"type": "enum",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "category_client",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "group_category_client",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "fuel_card_number",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "toll_card_number",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "has_circulation_documents",
-						"type": "tinyint",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "insurance_ammount",
-						"type": "double",
-						"precision": 0,
-						"scale": 2
-					},
-					{
-						"name": "version_id",
-						"type": "bigint",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "vehicle_state_id",
-						"type": "bigint",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "client_structure_id",
-						"type": "bigint",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "insurance_id",
-						"type": "bigint",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "gps_provider_id",
-						"type": "bigint",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "stereo_code",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "has_duplicated_key",
-						"type": "tinyint",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "gps_vehicle_number",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "gps_detail",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "gps_ammount",
+						"name": "codigo",
 						"type": "int",
-						"precision": 0,
+						"precision": 10
+					},
+					{
+						"name": "nombre",
+						"type": "varchar"
+					},
+					{
+						"name": "estado",
+						"type": "varchar"
+					},
+					{
+						"name": "fechaEliminacion",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "fechaCreacion",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "fechaActualizacion",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "hansaCode",
+						"type": "varchar"
+					},
+					{
+						"name": "codigoTipoOrdenTrabajo",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "codigoOrdenTrabajoOriginal",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "razon",
+						"type": "varchar"
+					},
+					{
+						"name": "codigoInterno",
+						"type": "varchar"
+					},
+					{
+						"name": "numero",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "patente",
+						"type": "varchar"
+					},
+					{
+						"name": "codigoContrato",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "km",
+						"type": "decimal",
+						"precision": 18,
 						"scale": 0
 					},
 					{
-						"name": "vtv_last_date",
-						"type": "date",
-						"precision": 0,
-						"scale": 0
+						"name": "estimada",
+						"type": "bit"
 					},
 					{
-						"name": "duplicated_key_date",
-						"type": "date",
-						"precision": 0,
-						"scale": 0
+						"name": "codigoTipoGasto",
+						"type": "int",
+						"precision": 10
 					},
 					{
-						"name": "vtv_last_city_id",
+						"name": "codigoUsuario",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "codigoTicket",
+						"type": "varchar"
+					},
+					{
+						"name": "codigoVehiculo",
+						"type": "int",
+						"precision": 10
+					}
+				],
+				"typeProperties": {
+					"schema": "stg",
+					"table": "OrdenesTrabajo"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SqlAutocorpDw')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/EfleetOrdenesTrabajo')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "EfleetDB",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Source/Efleet"
+				},
+				"annotations": [],
+				"type": "AzureMySqlTable",
+				"schema": [
+					{
+						"name": "id",
 						"type": "bigint",
 						"precision": 0,
 						"scale": 0
 					},
 					{
-						"name": "plate_city_id",
+						"name": "name",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "state",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "deleted_at",
+						"type": "timestamp",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "created_at",
+						"type": "timestamp",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "updated_at",
+						"type": "timestamp",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "hansa_code",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "work_order_type_id",
 						"type": "bigint",
 						"precision": 0,
 						"scale": 0
 					},
 					{
-						"name": "is_owner",
-						"type": "enum",
+						"name": "work_order_origin_id",
+						"type": "bigint",
 						"precision": 0,
 						"scale": 0
 					},
 					{
-						"name": "gps_is_visible",
-						"type": "tinyint",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "owner_name",
+						"name": "reason",
 						"type": "text",
 						"precision": 0,
 						"scale": 0
 					},
 					{
-						"name": "owner_contact_id",
+						"name": "internal_code",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "number",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "plate",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "contract_id",
 						"type": "bigint",
 						"precision": 0,
 						"scale": 0
 					},
 					{
-						"name": "maintenance_plan_id",
-						"type": "bigint",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "leasing_duedate",
-						"type": "date",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "rto_due_date",
-						"type": "date",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "vtv_km_expiration",
+						"name": "km",
 						"type": "int",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "is_estimated",
+						"type": "tinyint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "driver_id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "contact_id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "contact_name",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "contact_email",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "contact_phone",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "work_order_expense_type_id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "user_id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "shift_date",
+						"type": "datetime",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "location_lat",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "location_lng",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "hansa_activity_code",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "workforce_price",
+						"type": "double",
+						"precision": 0,
+						"scale": 2
+					},
+					{
+						"name": "materials_price",
+						"type": "double",
+						"precision": 0,
+						"scale": 2
+					},
+					{
+						"name": "total_price",
+						"type": "double",
+						"precision": 0,
+						"scale": 2
+					},
+					{
+						"name": "workforce_s_iva_price",
+						"type": "double",
+						"precision": 0,
+						"scale": 2
+					},
+					{
+						"name": "materials_s_iva_price",
+						"type": "double",
+						"precision": 0,
+						"scale": 2
+					},
+					{
+						"name": "total_s_iva_price",
+						"type": "double",
+						"precision": 0,
+						"scale": 2
+					},
+					{
+						"name": "workforce_discount",
+						"type": "double",
+						"precision": 0,
+						"scale": 2
+					},
+					{
+						"name": "materials_discount",
+						"type": "double",
+						"precision": 0,
+						"scale": 2
+					},
+					{
+						"name": "total_discount",
+						"type": "double",
+						"precision": 0,
+						"scale": 2
+					},
+					{
+						"name": "os_hansa_code",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "os_activity_code",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "location_province",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "location_state",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "location_address",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "is_approved",
+						"type": "tinyint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "internal_code_type",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "booking_id",
+						"type": "bigint",
 						"precision": 0,
 						"scale": 0
 					},
@@ -5199,109 +7962,302 @@
 						"scale": 0
 					},
 					{
-						"name": "fuel_provider",
+						"name": "custom_address",
 						"type": "varchar",
 						"precision": 0,
 						"scale": 0
 					},
 					{
-						"name": "pledgde_duedate",
-						"type": "date",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "pledgde_closure_date",
-						"type": "date",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "pledgde_number",
+						"name": "custom_address_lat",
 						"type": "varchar",
 						"precision": 0,
 						"scale": 0
 					},
 					{
-						"name": "buyer_purchase_date",
-						"type": "date",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "buyer_transfer_date",
-						"type": "date",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "buyer_comments",
+						"name": "custom_address_lng",
 						"type": "varchar",
 						"precision": 0,
 						"scale": 0
 					},
 					{
-						"name": "pledge_contact_id",
-						"type": "bigint",
+						"name": "freshdesk_code",
+						"type": "varchar",
 						"precision": 0,
 						"scale": 0
 					},
 					{
-						"name": "leasing_contact_id",
-						"type": "bigint",
+						"name": "q_shift_sent",
+						"type": "varchar",
 						"precision": 0,
 						"scale": 0
 					},
 					{
-						"name": "buyer_contact_id",
-						"type": "bigint",
+						"name": "shift_additional_notes",
+						"type": "varchar",
 						"precision": 0,
 						"scale": 0
 					},
 					{
-						"name": "service_last_task_id",
-						"type": "bigint",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "insurance_start_date",
-						"type": "date",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "send_expiration_mailing",
+						"name": "freshdesk_code_validated",
 						"type": "tinyint",
 						"precision": 0,
 						"scale": 0
 					},
 					{
-						"name": "last_mailing_date",
-						"type": "date",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "last_mailing_email",
+						"name": "external_created_by",
 						"type": "varchar",
 						"precision": 0,
 						"scale": 0
 					},
 					{
-						"name": "mailing_day",
+						"name": "shift_mail_sent",
+						"type": "tinyint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "booking_franchise",
+						"type": "double",
+						"precision": 0,
+						"scale": 2
+					},
+					{
+						"name": "insurance_franchise",
+						"type": "double",
+						"precision": 0,
+						"scale": 2
+					},
+					{
+						"name": "desired_shift_day",
 						"type": "int",
 						"precision": 0,
 						"scale": 0
 					},
 					{
-						"name": "last_mailing_status",
+						"name": "desired_shift_hour",
 						"type": "varchar",
 						"precision": 0,
 						"scale": 0
 					},
 					{
-						"name": "version_hansa_code",
+						"name": "last_user_id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "freshdesk_created_at",
+						"type": "date",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "survey_sent",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "close_date",
+						"type": "datetime",
+						"precision": 0,
+						"scale": 0
+					}
+				],
+				"typeProperties": {
+					"tableName": "work_orders"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/EfleetDB')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/EfleetOrdenTrabajoCategoria')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "EfleetDB",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Source/Efleet"
+				},
+				"annotations": [],
+				"type": "AzureMySqlTable",
+				"schema": [
+					{
+						"name": "id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "section_id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "name",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "description",
+						"type": "mediumtext",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "deleted_at",
+						"type": "timestamp",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "created_at",
+						"type": "timestamp",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "updated_at",
+						"type": "timestamp",
+						"precision": 0,
+						"scale": 0
+					}
+				],
+				"typeProperties": {
+					"tableName": "categories"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/EfleetDB')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dimOrdenTrabajoCategorias')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SqlAutocorpDw",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DW/Dimensiones"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "codigo",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "nombre",
+						"type": "varchar"
+					},
+					{
+						"name": "descripcion",
+						"type": "varchar"
+					},
+					{
+						"name": "seccionNombre",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "whs",
+					"table": "dimOrdenTrabajoCategorias"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SqlAutocorpDw')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dimTareas')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SqlAutocorpDw",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DW/Dimensiones"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "codigo",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "nombre",
+						"type": "varchar"
+					},
+					{
+						"name": "descripcion",
+						"type": "varchar"
+					},
+					{
+						"name": "codigoCategoria",
+						"type": "int",
+						"precision": 10
+					}
+				],
+				"typeProperties": {
+					"schema": "whs",
+					"table": "dimTareas"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SqlAutocorpDw')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/EfleetTareas')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "EfleetDB",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Source/Efleet"
+				},
+				"annotations": [],
+				"type": "AzureMySqlTable",
+				"schema": [
+					{
+						"name": "id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "parent_id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "category_id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "name",
 						"type": "varchar",
 						"precision": 0,
 						"scale": 0
@@ -5313,32 +8269,333 @@
 						"scale": 0
 					},
 					{
-						"name": "last_expiration_check",
-						"type": "datetime",
+						"name": "description",
+						"type": "mediumtext",
 						"precision": 0,
 						"scale": 0
 					},
 					{
-						"name": "vtv_caba_text",
+						"name": "deleted_at",
+						"type": "timestamp",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "created_at",
+						"type": "timestamp",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "updated_at",
+						"type": "timestamp",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "related_task_id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "iva_sell_id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "iva_buy_id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "comments",
 						"type": "varchar",
 						"precision": 0,
 						"scale": 0
 					},
 					{
-						"name": "infoauto_price",
-						"type": "decimal",
-						"precision": 10,
-						"scale": 2
+						"name": "materials_account_cost",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
 					},
 					{
-						"name": "infoauto_price_date",
-						"type": "datetime",
+						"name": "workforce_account_cost",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "total_account_cost",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "searchable",
+						"type": "tinyint",
 						"precision": 0,
 						"scale": 0
 					}
 				],
 				"typeProperties": {
-					"tableName": "vehicles"
+					"tableName": "tasks"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/EfleetDB')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/stgOrdenesTrabajoTareas')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SqlAutocorpDw",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Staiging"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "codigo",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "codigoWorkOrder",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Tarea",
+						"type": "varchar"
+					},
+					{
+						"name": "categoria",
+						"type": "varchar"
+					},
+					{
+						"name": "costoPersonal",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 4
+					},
+					{
+						"name": "costoMaterial",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 4
+					},
+					{
+						"name": "costoTotal",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 4
+					},
+					{
+						"name": "costoPersonalSinIva",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 4
+					},
+					{
+						"name": "costoMaterialSinIva",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 4
+					},
+					{
+						"name": "costoTotalSinIva",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 4
+					},
+					{
+						"name": "descuentoPersonal",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 4
+					},
+					{
+						"name": "decuentoMaterial",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 4
+					},
+					{
+						"name": "decuentoTotal",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 4
+					},
+					{
+						"name": "fechaCreacion",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "fechaUltimaActualizacion",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					}
+				],
+				"typeProperties": {
+					"schema": "stg",
+					"table": "OrdenTrabajoTareas"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SqlAutocorpDw')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/EfleetOrdenesTrabajoTareas')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "EfleetDB",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Source/Efleet"
+				},
+				"annotations": [],
+				"type": "AzureMySqlTable",
+				"schema": [
+					{
+						"name": "id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "work_order_id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "task_id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "work_order_task_action_id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "workforce_price",
+						"type": "double",
+						"precision": 0,
+						"scale": 2
+					},
+					{
+						"name": "materials_price",
+						"type": "double",
+						"precision": 0,
+						"scale": 2
+					},
+					{
+						"name": "total_price",
+						"type": "double",
+						"precision": 0,
+						"scale": 2
+					},
+					{
+						"name": "workforce_s_iva_price",
+						"type": "double",
+						"precision": 0,
+						"scale": 2
+					},
+					{
+						"name": "materials_s_iva_price",
+						"type": "double",
+						"precision": 0,
+						"scale": 2
+					},
+					{
+						"name": "total_s_iva_price",
+						"type": "double",
+						"precision": 0,
+						"scale": 2
+					},
+					{
+						"name": "workforce_discount",
+						"type": "double",
+						"precision": 0,
+						"scale": 2
+					},
+					{
+						"name": "materials_discount",
+						"type": "double",
+						"precision": 0,
+						"scale": 2
+					},
+					{
+						"name": "total_discount",
+						"type": "double",
+						"precision": 0,
+						"scale": 2
+					},
+					{
+						"name": "comments",
+						"type": "text",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "deleted_at",
+						"type": "timestamp",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "created_at",
+						"type": "timestamp",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "updated_at",
+						"type": "timestamp",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "rebill",
+						"type": "double",
+						"precision": 0,
+						"scale": 2
+					},
+					{
+						"name": "iva_sell_id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "iva_buy_id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					}
+				],
+				"typeProperties": {
+					"tableName": "work_order_tasks"
 				}
 			},
 			"dependsOn": [

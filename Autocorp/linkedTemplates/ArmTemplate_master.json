@@ -23,6 +23,10 @@
 			"type": "secureString",
 			"metadata": "Cadena protegida para \"password\"de \"ApiConversariones\""
 		},
+		"EfleetDB_connectionString": {
+			"type": "secureString",
+			"metadata": "Cadena protegida para \"connectionString\"de \"EfleetDB\""
+		},
 		"FreshDB_connectionString": {
 			"type": "secureString",
 			"metadata": "Cadena protegida para \"connectionString\"de \"FreshDB\""
@@ -38,10 +42,6 @@
 		"Storege_Fresh_connectionString": {
 			"type": "secureString",
 			"metadata": "Cadena protegida para \"connectionString\"de \"Storege_Fresh\""
-		},
-		"EfleetDB_connectionString": {
-			"type": "secureString",
-			"metadata": "Cadena protegida para \"connectionString\"de \"EfleetDB\""
 		},
 		"AF_DW_properties_typeProperties_functionAppUrl": {
 			"type": "string",
@@ -126,6 +126,9 @@
 					"ApiConversariones_password": {
 						"value": "[parameters('ApiConversariones_password')]"
 					},
+					"EfleetDB_connectionString": {
+						"value": "[parameters('EfleetDB_connectionString')]"
+					},
 					"FreshDB_connectionString": {
 						"value": "[parameters('FreshDB_connectionString')]"
 					},
@@ -137,9 +140,6 @@
 					},
 					"Storege_Fresh_connectionString": {
 						"value": "[parameters('Storege_Fresh_connectionString')]"
-					},
-					"EfleetDB_connectionString": {
-						"value": "[parameters('EfleetDB_connectionString')]"
 					},
 					"AF_DW_properties_typeProperties_functionAppUrl": {
 						"value": "[parameters('AF_DW_properties_typeProperties_functionAppUrl')]"
@@ -216,6 +216,26 @@
 			},
 			"dependsOn": [
 				"[resourceId('Microsoft.Resources/deployments', 'Autocorp_ArmTemplate_1')]"
+			]
+		},
+		{
+			"name": "Autocorp_ArmTemplate_3",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_3.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'Autocorp_ArmTemplate_2')]"
 			]
 		}
 	]

@@ -17,6 +17,9 @@
 		"ApiConversariones_password": {
 			"value": ""
 		},
+		"EfleetDB_connectionString": {
+			"value": ""
+		},
 		"FreshDB_connectionString": {
 			"value": ""
 		},
@@ -27,9 +30,6 @@
 			"value": ""
 		},
 		"Storege_Fresh_connectionString": {
-			"value": ""
-		},
-		"EfleetDB_connectionString": {
 			"value": ""
 		},
 		"AF_DW_properties_typeProperties_functionAppUrl": {

@@ -1,0 +1,975 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Nombre de instancia de Data Factory",
+			"defaultValue": "Autocorp"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/006-Inyectar_Echos')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Inyectar_Dw_FactTickets",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": "select distinct\r\nt.codigo,\r\nDATEADD(HOUR,-3, t.fechaAlta)fechaAlta,\r\nDATEADD(HOUR,-3,t.fechaModificacion) fechaModificacion,\r\nc.id companiaId,\r\ne.id estadoId,\r\ntt.id  tipoId,\r\np.id productoId,\r\ng.id grupoId,\r\no.id origenId,\r\npr.id prioridadId,\r\na.id agenteId,\r\nsla.id slaId,\r\ncase \r\n    when pr.codigo = 1 then sla.slaTargerPriority1ResolveWithin /60\r\n    when pr.codigo = 2 then sla.slaTargerPriority2ResolveWithin /60\r\n    when pr.codigo = 3 then sla.slaTargerPriority3ResolveWithin /60\r\n    when pr.codigo = 4 then sla.slaTargerPriority4ResolveWithin /60\r\nend SlaResolucion,\r\ncase \r\n    when pr.codigo = 1 then sla.slaTargetPriority1RespondWithin /60\r\n    when pr.codigo = 2 then sla.slaTargetPriority2RespondWithin /60\r\n    when pr.codigo = 3 then sla.slaTargetPriority3RespondWithin /60\r\n    when pr.codigo = 4 then sla.slaTargetPriority4RespondWithin /60\r\nend SlaRespuesta,\r\ncase \r\n    when wt.FechaPrimerRespuesta is not null then DATEADD(HOUR,-3, wt.FechaPrimerRespuesta)\r\nelse DATEADD(HOUR,-3, presp.FechaPrimerRespuesta)\r\nend FechaPrimerRespuesta,\r\nt.horasDiferecia,\r\nt.minutosDiferencia\r\n\r\nfrom stg.tickets t \r\nleft join whs.dimCompanias c on c.codigo = t.companiaCodigo\r\nleft join whs.dimEstados e on e.codigo = t.estadoCodigo\r\nleft join whs.dimTiposTicket tt on tt.nombre = t.tipoCodigo\r\nleft join whs.dimProductos p on p.codigo = t.productoCodigo\r\nleft join whs.dimGrupos g on g.codigo = t.grupoCodigo\r\nleft join whs.dimOrigenes o on o.codigo = t.origenCodigo\r\nleft join whs.dimPrioridades pr on pr.codigo = t.prioridadCodigo\r\nleft join whs.dimAgentes a on a.codigo = t.agenteCodigo\r\nleft join whs.dimSla sla on sla.companyid = t.companiaCodigo or sla.nombre like '%Default%' and sla.isactive = 1\r\nleft join (\r\n                select id codigo,\r\n            min(created_at) FechaPrimerRespuesta\r\n            from stg.Conversaciones \r\n            group by id\r\n            ) presp on presp.codigo = t.codigo\r\nleft join whs.factTickets wt on wt.codigo = t.codigo\r\n",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"writeBehavior": "upsert",
+								"upsertSettings": {
+									"useTempDB": true,
+									"keys": [
+										"codigo"
+									]
+								},
+								"sqlWriterUseTableLock": false,
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "codigo",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "codigo",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "fechaAlta",
+											"type": "DateTime",
+											"physicalType": "datetime"
+										},
+										"sink": {
+											"name": "fechaAlta",
+											"type": "DateTime",
+											"physicalType": "datetime"
+										}
+									},
+									{
+										"source": {
+											"name": "fechaModificacion",
+											"type": "DateTime",
+											"physicalType": "datetime"
+										},
+										"sink": {
+											"name": "fechaModificacion",
+											"type": "DateTime",
+											"physicalType": "datetime"
+										}
+									},
+									{
+										"source": {
+											"name": "horasDiferecia",
+											"type": "Int32",
+											"physicalType": "int"
+										},
+										"sink": {
+											"name": "horasDiferecia",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "minutosDiferencia",
+											"type": "Int32",
+											"physicalType": "int"
+										},
+										"sink": {
+											"name": "minutosDiferencia",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "companiaId",
+											"type": "Int32",
+											"physicalType": "int"
+										},
+										"sink": {
+											"name": "companiaId",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "estadoId",
+											"type": "Int32",
+											"physicalType": "int"
+										},
+										"sink": {
+											"name": "estadoId",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "tipoId",
+											"type": "Int32",
+											"physicalType": "int"
+										},
+										"sink": {
+											"name": "tipoId",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "productoId",
+											"type": "Int32",
+											"physicalType": "int"
+										},
+										"sink": {
+											"name": "productoId",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "grupoId",
+											"type": "Int32",
+											"physicalType": "int"
+										},
+										"sink": {
+											"name": "grupoId",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "origenId",
+											"type": "Int32",
+											"physicalType": "int"
+										},
+										"sink": {
+											"name": "origenId",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "prioridadId",
+											"type": "Int32",
+											"physicalType": "int"
+										},
+										"sink": {
+											"name": "prioridadId",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "agenteId",
+											"type": "Int32",
+											"physicalType": "int"
+										},
+										"sink": {
+											"name": "agenteId",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "slaId",
+											"type": "Int32",
+											"physicalType": "int"
+										},
+										"sink": {
+											"name": "slaId",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "SlaResolucion",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 7,
+											"precision": 21
+										},
+										"sink": {
+											"name": "SlaResolucion",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 4,
+											"precision": 18
+										}
+									},
+									{
+										"source": {
+											"name": "SlaRespuesta",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 7,
+											"precision": 21
+										},
+										"sink": {
+											"name": "SlaRespuesta",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 4,
+											"precision": 18
+										}
+									},
+									{
+										"source": {
+											"name": "FechaPrimerRespuesta",
+											"type": "DateTime",
+											"physicalType": "datetime"
+										},
+										"sink": {
+											"name": "FechaPrimerRespuesta",
+											"type": "DateTime",
+											"physicalType": "datetime"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "stgTickets",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "factTickets",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"variables": {
+					"nombre": {
+						"type": "String"
+					},
+					"IdParameter": {
+						"type": "String"
+					}
+				},
+				"folder": {
+					"name": "FreshDesk"
+				},
+				"annotations": [],
+				"lastPublishTime": "2025-01-14T15:43:20Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/001-Orquestador')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Inyectar_Data_Fresh",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "Iyectar Tickets Api Fresh To Stg",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "003-Inyectar_Dimensiones_Fresh_To_DW",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "Inyectar_SLA",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "Inyectar_Data_Fresh",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "004-Inyecar_Hechos_Fresh_To_Staiging",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "Inyectar_FactTickets",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "Inyectar_SLA",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "006-Inyectar_Echos",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "Inyecta_Conversaciones_DW",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "Inyectar_FactTickets",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "005-Inyectar_Fresh_Conversaciones_To_Dw",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "Importar Tickets Excel Consolidado",
+						"type": "Copy",
+						"state": "Inactive",
+						"onInactiveMarkAs": "Succeeded",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "ExcelSource",
+								"storeSettings": {
+									"type": "AzureFileStorageReadSettings",
+									"recursive": false,
+									"enablePartitionDiscovery": false
+								}
+							},
+							"sink": {
+								"type": "AzureMySqlSink",
+								"writeBatchSize": 10000,
+								"writeBatchTimeout": "00:00:30",
+								"preCopyScript": "delete from freshdesk_tickets"
+							},
+							"enableStaging": false,
+							"enableSkipIncompatibleRow": true,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "cc_emails",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "cc_emails",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "fwd_emails",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "fwd_emails",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "reply_cc_emails",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "reply_cc_emails",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "ticket_cc_emails",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "ticket_cc_emails",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "ticket_bcc_emails",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "ticket_bcc_emails",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "fr_escalated",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "fr_escalated",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "spam",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "spam",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "email_config_id",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "email_config_id",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "group_id",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "group_id",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "priority",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "priority",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "requester_id",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "requester_id",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "responder_id",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "responder_id",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "source",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "source",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "company_id",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "company_id",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "status",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "status",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "subject",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "subject",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "association_type",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "association_type",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "support_email",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "support_email",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "to_emails",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "to_emails",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "product_id",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "product_id",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "id",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "id",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "type",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "type",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "due_by",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "due_by",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "fr_due_by",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "fr_due_by",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "is_escalated",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "is_escalated",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "created_at",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "created_at",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "updated_at",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "updated_at",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "associated_tickets_count",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "associated_tickets_count",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "tags",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "tags",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "nr_due_by",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "nr_due_by",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "nr_escalated",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "nr_escalated",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "form_id",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "form_id",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "cf_patente",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "cf_patente",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "cf_id_efleet",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "cf_id_efleet",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "cf_generar_ot_efleet",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "cf_generar_ot_efleet",
+											"type": "String",
+											"physicalType": "text"
+										}
+									},
+									{
+										"source": {
+											"name": "cf_kilometraje",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "cf_kilometraje",
+											"type": "String",
+											"physicalType": "text"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "TicketsCnsolidados_xslx",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "FreshTickets",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Iyectar Tickets Api Fresh To Stg",
+						"type": "ExecutePipeline",
+						"dependsOn": [],
+						"policy": {
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "002-Importar_Tickets_Fresh_to_Stg",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"variables": {
+					"ProcessID": {
+						"type": "String"
+					},
+					"nombre": {
+						"type": "String"
+					},
+					"vId": {
+						"type": "String"
+					},
+					"IdParameter": {
+						"type": "String"
+					}
+				},
+				"annotations": [],
+				"lastPublishTime": "2025-01-14T15:43:21Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/006-Inyectar_Echos')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Diario 5am for 4 hours')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "001-Orquestador",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Hour",
+						"interval": 4,
+						"startTime": "2025-01-04T05:08:00",
+						"timeZone": "Argentina Standard Time"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/001-Orquestador')]"
+			]
+		}
+	]
+}
