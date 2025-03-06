@@ -46,7 +46,7 @@
 								},
 								"sink": {
 									"name": "codigo",
-									"type": "String"
+									"type": "Int32"
 								}
 							},
 							{
