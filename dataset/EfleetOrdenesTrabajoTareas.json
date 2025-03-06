@@ -1,0 +1,139 @@
+{
+	"name": "EfleetOrdenesTrabajoTareas",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "EfleetDB",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Source/Efleet"
+		},
+		"annotations": [],
+		"type": "AzureMySqlTable",
+		"schema": [
+			{
+				"name": "id",
+				"type": "bigint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "work_order_id",
+				"type": "bigint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "task_id",
+				"type": "bigint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "work_order_task_action_id",
+				"type": "bigint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "workforce_price",
+				"type": "double",
+				"precision": 0,
+				"scale": 2
+			},
+			{
+				"name": "materials_price",
+				"type": "double",
+				"precision": 0,
+				"scale": 2
+			},
+			{
+				"name": "total_price",
+				"type": "double",
+				"precision": 0,
+				"scale": 2
+			},
+			{
+				"name": "workforce_s_iva_price",
+				"type": "double",
+				"precision": 0,
+				"scale": 2
+			},
+			{
+				"name": "materials_s_iva_price",
+				"type": "double",
+				"precision": 0,
+				"scale": 2
+			},
+			{
+				"name": "total_s_iva_price",
+				"type": "double",
+				"precision": 0,
+				"scale": 2
+			},
+			{
+				"name": "workforce_discount",
+				"type": "double",
+				"precision": 0,
+				"scale": 2
+			},
+			{
+				"name": "materials_discount",
+				"type": "double",
+				"precision": 0,
+				"scale": 2
+			},
+			{
+				"name": "total_discount",
+				"type": "double",
+				"precision": 0,
+				"scale": 2
+			},
+			{
+				"name": "comments",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "deleted_at",
+				"type": "timestamp",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "created_at",
+				"type": "timestamp",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "updated_at",
+				"type": "timestamp",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "rebill",
+				"type": "double",
+				"precision": 0,
+				"scale": 2
+			},
+			{
+				"name": "iva_sell_id",
+				"type": "bigint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "iva_buy_id",
+				"type": "bigint",
+				"precision": 0,
+				"scale": 0
+			}
+		],
+		"typeProperties": {
+			"tableName": "work_order_tasks"
+		}
+	}
+}
