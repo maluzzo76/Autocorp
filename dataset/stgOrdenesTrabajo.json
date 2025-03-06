@@ -1,0 +1,116 @@
+{
+	"name": "stgOrdenesTrabajo",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SqlAutocorpDw",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Staiging"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "codigo",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "nombre",
+				"type": "varchar"
+			},
+			{
+				"name": "estado",
+				"type": "varchar"
+			},
+			{
+				"name": "fechaEliminacion",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "fechaCreacion",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "fechaActualizacion",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "hansaCode",
+				"type": "varchar"
+			},
+			{
+				"name": "codigoTipoOrdenTrabajo",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "codigoOrdenTrabajoOriginal",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "razon",
+				"type": "varchar"
+			},
+			{
+				"name": "codigoInterno",
+				"type": "varchar"
+			},
+			{
+				"name": "numero",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "patente",
+				"type": "varchar"
+			},
+			{
+				"name": "codigoContrato",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "km",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 0
+			},
+			{
+				"name": "estimada",
+				"type": "bit"
+			},
+			{
+				"name": "codigoTipoGasto",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "codigoUsuario",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "codigoTicket",
+				"type": "varchar"
+			},
+			{
+				"name": "codigoVehiculo",
+				"type": "int",
+				"precision": 10
+			}
+		],
+		"typeProperties": {
+			"schema": "stg",
+			"table": "OrdenesTrabajo"
+		}
+	}
+}

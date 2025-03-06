@@ -1,0 +1,181 @@
+{
+	"name": "EfleetContratos",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "EfleetDB",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Source/Efleet"
+		},
+		"annotations": [],
+		"type": "AzureMySqlTable",
+		"schema": [
+			{
+				"name": "id",
+				"type": "bigint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "name",
+				"type": "varchar",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "contract_type_id",
+				"type": "bigint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "contract_origin_id",
+				"type": "bigint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "hansa_ID",
+				"type": "varchar",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "hansa_service_num",
+				"type": "varchar",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "hansa_cu_num",
+				"type": "varchar",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "hansa_created",
+				"type": "varchar",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "hansa_created_user",
+				"type": "varchar",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "hansa_start_date",
+				"type": "varchar",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "hansa_end_date",
+				"type": "varchar",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "client_approval_username",
+				"type": "varchar",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "client_approval_date",
+				"type": "varchar",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "client_estimated_fleet",
+				"type": "bigint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "client_first_limit",
+				"type": "bigint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "client_second_limit",
+				"type": "bigint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "autocorp_approval_username",
+				"type": "varchar",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "autocorp_approval_date",
+				"type": "varchar",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "autocorp_commercial_username",
+				"type": "varchar",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "autocorp_implementation_username",
+				"type": "varchar",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "autocorp_post_sale_username",
+				"type": "varchar",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "comments",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "deleted_at",
+				"type": "timestamp",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "created_at",
+				"type": "timestamp",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "updated_at",
+				"type": "timestamp",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "contact_id",
+				"type": "bigint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "synched",
+				"type": "tinyint",
+				"precision": 0,
+				"scale": 0
+			}
+		],
+		"typeProperties": {
+			"tableName": "contracts"
+		}
+	}
+}
