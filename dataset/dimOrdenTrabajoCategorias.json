@@ -1,0 +1,37 @@
+{
+	"name": "dimOrdenTrabajoCategorias",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SqlAutocorpDw",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "DW/Dimensiones"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "codigo",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "nombre",
+				"type": "varchar"
+			},
+			{
+				"name": "descripcion",
+				"type": "varchar"
+			},
+			{
+				"name": "seccionNombre",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "whs",
+			"table": "dimOrdenTrabajoCategorias"
+		}
+	}
+}
