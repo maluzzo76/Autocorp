@@ -596,6 +596,58 @@
 					},
 					"waitOnCompletion": true
 				}
+			},
+			{
+				"name": "Inyectar Efleet Dimensiones",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "Iyectar Tickets Api Fresh To Stg",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "001-Inyectar Dimensiones Efleet",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "Inyectar Efleet FactEfleet",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "Inyectar Efleet Dimensiones",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Inyectar_FactTickets",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "002-Inyectar Echos Efleet",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
 			}
 		],
 		"variables": {
