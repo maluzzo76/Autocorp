@@ -13,6 +13,227 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/004-Inyecar_Hechos_Fresh_To_Staiging')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Inyectar_SLA_API",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "RestSource",
+								"httpRequestTimeout": "00:01:40",
+								"requestInterval": "00.00:00:00.010",
+								"requestMethod": "GET",
+								"paginationRules": {
+									"supportRFC5988": "true"
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"writeBehavior": "upsert",
+								"upsertSettings": {
+									"useTempDB": true,
+									"keys": [
+										"codigo"
+									]
+								},
+								"sqlWriterUseTableLock": false,
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"path": "$['id']"
+										},
+										"sink": {
+											"name": "codigo",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['name']"
+										},
+										"sink": {
+											"name": "nombre",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['description']"
+										},
+										"sink": {
+											"name": "descipcion",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['active']"
+										},
+										"sink": {
+											"name": "isactive",
+											"type": "Boolean"
+										}
+									},
+									{
+										"source": {
+											"path": "$['sla_target']['priority_4']['respond_within']"
+										},
+										"sink": {
+											"name": "slaTargetPriority4RespondWithin",
+											"type": "Decimal"
+										}
+									},
+									{
+										"source": {
+											"path": "$['sla_target']['priority_4']['resolve_within']"
+										},
+										"sink": {
+											"name": "slaTargerPriority4ResolveWithin",
+											"type": "Decimal"
+										}
+									},
+									{
+										"source": {
+											"path": "$['sla_target']['priority_3']['respond_within']"
+										},
+										"sink": {
+											"name": "slaTargetPriority3RespondWithin",
+											"type": "Decimal"
+										}
+									},
+									{
+										"source": {
+											"path": "$['sla_target']['priority_3']['resolve_within']"
+										},
+										"sink": {
+											"name": "slaTargerPriority3ResolveWithin",
+											"type": "Decimal"
+										}
+									},
+									{
+										"source": {
+											"path": "$['sla_target']['priority_2']['respond_within']"
+										},
+										"sink": {
+											"name": "slaTargetPriority2RespondWithin",
+											"type": "Decimal"
+										}
+									},
+									{
+										"source": {
+											"path": "$['sla_target']['priority_2']['resolve_within']"
+										},
+										"sink": {
+											"name": "slaTargerPriority2ResolveWithin",
+											"type": "Decimal"
+										}
+									},
+									{
+										"source": {
+											"path": "$['sla_target']['priority_1']['respond_within']"
+										},
+										"sink": {
+											"name": "slaTargetPriority1RespondWithin",
+											"type": "Decimal"
+										}
+									},
+									{
+										"source": {
+											"path": "$['sla_target']['priority_1']['resolve_within']"
+										},
+										"sink": {
+											"name": "slaTargerPriority1ResolveWithin",
+											"type": "Decimal"
+										}
+									},
+									{
+										"source": {
+											"path": "$['escalation']['reminder_resolution']['agent_ids'][0]"
+										},
+										"sink": {
+											"name": "escalationReminderResolutionAgentids",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['escalation']['resolution']['level_1']['agent_ids'][0]"
+										},
+										"sink": {
+											"name": "escalationResolutionLevel1AgentId",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['applicable_to']['company_ids'][0]"
+										},
+										"sink": {
+											"name": "companyid",
+											"type": "String"
+										}
+									}
+								],
+								"collectionReference": ""
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "Fresh_SLA",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "dimSla",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"variables": {
+					"Ids": {
+						"type": "Array",
+						"defaultValue": [
+							"[['a','b','c']"
+						]
+					},
+					"vId": {
+						"type": "String"
+					}
+				},
+				"folder": {
+					"name": "FreshDesk"
+				},
+				"annotations": [],
+				"lastPublishTime": "2025-01-14T18:54:25Z"
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/005-Inyectar_Fresh_Conversaciones_To_Dw')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -186,7 +407,7 @@
 						"typeProperties": {
 							"source": {
 								"type": "AzureSqlSource",
-								"sqlReaderQuery": "select distinct\r\nt.codigo,\r\nDATEADD(HOUR,-3, t.fechaAlta)fechaAlta,\r\nDATEADD(HOUR,-3,t.fechaModificacion) fechaModificacion,\r\nc.id companiaId,\r\ne.id estadoId,\r\ntt.id  tipoId,\r\np.id productoId,\r\ng.id grupoId,\r\no.id origenId,\r\npr.id prioridadId,\r\na.id agenteId,\r\nsla.id slaId,\r\ncase \r\n    when pr.codigo = 1 then sla.slaTargerPriority1ResolveWithin /60\r\n    when pr.codigo = 2 then sla.slaTargerPriority2ResolveWithin /60\r\n    when pr.codigo = 3 then sla.slaTargerPriority3ResolveWithin /60\r\n    when pr.codigo = 4 then sla.slaTargerPriority4ResolveWithin /60\r\nend SlaResolucion,\r\ncase \r\n    when pr.codigo = 1 then sla.slaTargetPriority1RespondWithin /60\r\n    when pr.codigo = 2 then sla.slaTargetPriority2RespondWithin /60\r\n    when pr.codigo = 3 then sla.slaTargetPriority3RespondWithin /60\r\n    when pr.codigo = 4 then sla.slaTargetPriority4RespondWithin /60\r\nend SlaRespuesta,\r\ncase \r\n    when wt.FechaPrimerRespuesta is not null then DATEADD(HOUR,-3, wt.FechaPrimerRespuesta)\r\nelse DATEADD(HOUR,-3, presp.FechaPrimerRespuesta)\r\nend FechaPrimerRespuesta,\r\nt.horasDiferecia,\r\nt.minutosDiferencia\r\n\r\nfrom stg.tickets t \r\nleft join whs.dimCompanias c on c.codigo = t.companiaCodigo\r\nleft join whs.dimEstados e on e.codigo = t.estadoCodigo\r\nleft join whs.dimTiposTicket tt on tt.nombre = t.tipoCodigo\r\nleft join whs.dimProductos p on p.codigo = t.productoCodigo\r\nleft join whs.dimGrupos g on g.codigo = t.grupoCodigo\r\nleft join whs.dimOrigenes o on o.codigo = t.origenCodigo\r\nleft join whs.dimPrioridades pr on pr.codigo = t.prioridadCodigo\r\nleft join whs.dimAgentes a on a.codigo = t.agenteCodigo\r\nleft join whs.dimSla sla on sla.companyid = t.companiaCodigo or sla.nombre like '%Default%' and sla.isactive = 1\r\nleft join (\r\n                select id codigo,\r\n            min(created_at) FechaPrimerRespuesta\r\n            from stg.Conversaciones \r\n            group by id\r\n            ) presp on presp.codigo = t.codigo\r\nleft join whs.factTickets wt on wt.codigo = t.codigo\r\n",
+								"sqlReaderQuery": "select distinct\r\nt.codigo,\r\nDATEADD(HOUR,-3, t.fechaAlta)fechaAlta,\r\nDATEADD(HOUR,-3,t.fechaModificacion) fechaModificacion,\r\nc.id companiaId,\r\ne.id estadoId,\r\ntt.id  tipoId,\r\np.id productoId,\r\ng.id grupoId,\r\no.id origenId,\r\npr.id prioridadId,\r\na.id agenteId,\r\nsla.id slaId,\r\ncase \r\n    when pr.codigo = 1 then sla.slaTargerPriority1ResolveWithin /60\r\n    when pr.codigo = 2 then sla.slaTargerPriority2ResolveWithin /60\r\n    when pr.codigo = 3 then sla.slaTargerPriority3ResolveWithin /60\r\n    when pr.codigo = 4 then sla.slaTargerPriority4ResolveWithin /60\r\nend SlaResolucion,\r\ncase \r\n    when pr.codigo = 1 then sla.slaTargetPriority1RespondWithin /60\r\n    when pr.codigo = 2 then sla.slaTargetPriority2RespondWithin /60\r\n    when pr.codigo = 3 then sla.slaTargetPriority3RespondWithin /60\r\n    when pr.codigo = 4 then sla.slaTargetPriority4RespondWithin /60\r\nend SlaRespuesta,\r\ncase \r\n    when wt.FechaPrimerRespuesta is not null then DATEADD(HOUR,-3, wt.FechaPrimerRespuesta)\r\nelse DATEADD(HOUR,-3, presp.FechaPrimerRespuesta)\r\nend FechaPrimerRespuesta,\r\nt.horasDiferecia,\r\nt.minutosDiferencia\r\n\r\nfrom stg.tickets t \r\nleft join whs.dimCompanias c on c.codigo = t.companiaCodigo\r\nleft join whs.dimEstados e on e.codigo = t.estadoCodigo\r\nleft join whs.dimTiposTicket tt on tt.nombre = t.tipoCodigo\r\nleft join whs.dimProductos p on p.codigo = t.productoCodigo\r\nleft join whs.dimGrupos g on g.codigo = t.grupoCodigo\r\nleft join whs.dimOrigenes o on o.codigo = t.origenCodigo\r\nleft join whs.dimPrioridades pr on pr.codigo = t.prioridadCodigo\r\nleft join whs.dimAgentes a on a.codigo = t.agenteCodigo\r\nleft join whs.dimSla sla on ((sla.companyid = t.companiaCodigo) or (sla.nombre like '%Default%')) and sla.isactive = 1\r\nleft join (\r\n                select id codigo,\r\n            min(created_at) FechaPrimerRespuesta\r\n            from stg.Conversaciones \r\n            group by id\r\n            ) presp on presp.codigo = t.codigo\r\nleft join whs.factTickets wt on wt.codigo = t.codigo\r\n",
 								"queryTimeout": "02:00:00",
 								"partitionOption": "None"
 							},
@@ -458,285 +679,6 @@
 				},
 				"annotations": [],
 				"lastPublishTime": "2025-01-14T15:43:20Z"
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/002-Inyectar Echos Efleet')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Inyectar FactOrdenesTrabajo",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "AzureSqlSource",
-								"sqlReaderQuery": "select \nt.codigo,\not.id workOrderId,\nta.id tareaId,\ncostoPersonal,\ncostoMaterial,\ncostoTotal,\ncostoPersonalSinIva,\ncostoMaterialSinIva,\ncostoTotalSinIva,\ndescuentoPersonal,\ndecuentoMaterial,\ndecuentoTotal,\nt.fechaCreacion,\nfechaUltimaActualizacion\n\nfrom stg.OrdenTrabajoTareas t\nleft join whs.dimOrdenesTrabajo ot on ot.codigo = t.codigoWorkOrder\nleft join whs.dimTareas ta on ta.codigo = t.codigoTarea",
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"sink": {
-								"type": "AzureSqlSink",
-								"writeBehavior": "upsert",
-								"upsertSettings": {
-									"useTempDB": true,
-									"keys": [
-										"codigo"
-									]
-								},
-								"sqlWriterUseTableLock": false,
-								"disableMetricsCollection": false
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"name": "codigo",
-											"type": "Int32",
-											"physicalType": "int"
-										},
-										"sink": {
-											"name": "codigo",
-											"type": "Int32",
-											"physicalType": "int"
-										}
-									},
-									{
-										"source": {
-											"name": "workOrderId",
-											"type": "Int32",
-											"physicalType": "int"
-										},
-										"sink": {
-											"name": "workOrderId",
-											"type": "Int32",
-											"physicalType": "int"
-										}
-									},
-									{
-										"source": {
-											"name": "tareaId",
-											"type": "Int32",
-											"physicalType": "int"
-										},
-										"sink": {
-											"name": "TareaId",
-											"type": "Int32",
-											"physicalType": "int"
-										}
-									},
-									{
-										"source": {
-											"name": "costoPersonal",
-											"type": "Decimal",
-											"physicalType": "decimal",
-											"scale": 4,
-											"precision": 18
-										},
-										"sink": {
-											"name": "costoPersonal",
-											"type": "Decimal",
-											"physicalType": "decimal",
-											"scale": 4,
-											"precision": 18
-										}
-									},
-									{
-										"source": {
-											"name": "costoMaterial",
-											"type": "Decimal",
-											"physicalType": "decimal",
-											"scale": 4,
-											"precision": 18
-										},
-										"sink": {
-											"name": "costoMaterial",
-											"type": "Decimal",
-											"physicalType": "decimal",
-											"scale": 4,
-											"precision": 18
-										}
-									},
-									{
-										"source": {
-											"name": "costoTotal",
-											"type": "Decimal",
-											"physicalType": "decimal",
-											"scale": 4,
-											"precision": 18
-										},
-										"sink": {
-											"name": "costoTotal",
-											"type": "Decimal",
-											"physicalType": "decimal",
-											"scale": 4,
-											"precision": 18
-										}
-									},
-									{
-										"source": {
-											"name": "costoPersonalSinIva",
-											"type": "Decimal",
-											"physicalType": "decimal",
-											"scale": 4,
-											"precision": 18
-										},
-										"sink": {
-											"name": "costoPersonalSinIva",
-											"type": "Decimal",
-											"physicalType": "decimal",
-											"scale": 4,
-											"precision": 18
-										}
-									},
-									{
-										"source": {
-											"name": "costoMaterialSinIva",
-											"type": "Decimal",
-											"physicalType": "decimal",
-											"scale": 4,
-											"precision": 18
-										},
-										"sink": {
-											"name": "costoMaterialSinIva",
-											"type": "Decimal",
-											"physicalType": "decimal",
-											"scale": 4,
-											"precision": 18
-										}
-									},
-									{
-										"source": {
-											"name": "costoTotalSinIva",
-											"type": "Decimal",
-											"physicalType": "decimal",
-											"scale": 4,
-											"precision": 18
-										},
-										"sink": {
-											"name": "costoTotalSinIva",
-											"type": "Decimal",
-											"physicalType": "decimal",
-											"scale": 4,
-											"precision": 18
-										}
-									},
-									{
-										"source": {
-											"name": "descuentoPersonal",
-											"type": "Decimal",
-											"physicalType": "decimal",
-											"scale": 4,
-											"precision": 18
-										},
-										"sink": {
-											"name": "descuentoPersonal",
-											"type": "Decimal",
-											"physicalType": "decimal",
-											"scale": 4,
-											"precision": 18
-										}
-									},
-									{
-										"source": {
-											"name": "decuentoMaterial",
-											"type": "Decimal",
-											"physicalType": "decimal",
-											"scale": 4,
-											"precision": 18
-										},
-										"sink": {
-											"name": "decuentoMaterial",
-											"type": "Decimal",
-											"physicalType": "decimal",
-											"scale": 4,
-											"precision": 18
-										}
-									},
-									{
-										"source": {
-											"name": "decuentoTotal",
-											"type": "Decimal",
-											"physicalType": "decimal",
-											"scale": 4,
-											"precision": 18
-										},
-										"sink": {
-											"name": "decuentoTotal",
-											"type": "Decimal",
-											"physicalType": "decimal",
-											"scale": 4,
-											"precision": 18
-										}
-									},
-									{
-										"source": {
-											"name": "fechaCreacion",
-											"type": "DateTime",
-											"physicalType": "datetime"
-										},
-										"sink": {
-											"name": "fechaCreacion",
-											"type": "DateTime",
-											"physicalType": "datetime"
-										}
-									},
-									{
-										"source": {
-											"name": "fechaUltimaActualizacion",
-											"type": "DateTime",
-											"physicalType": "datetime"
-										},
-										"sink": {
-											"name": "fechaUltimaActualizacion",
-											"type": "DateTime",
-											"physicalType": "datetime"
-										}
-									}
-								],
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "stgOrdenesTrabajoTareas",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "factOrdenesTrabajo",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"folder": {
-					"name": "EFleet"
-				},
-				"annotations": []
 			},
 			"dependsOn": []
 		},
@@ -1424,9 +1366,9 @@
 				"lastPublishTime": "2025-01-14T15:43:21Z"
 			},
 			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/004-Inyecar_Hechos_Fresh_To_Staiging')]",
 				"[concat(variables('factoryId'), '/pipelines/006-Inyectar_Echos')]",
-				"[concat(variables('factoryId'), '/pipelines/005-Inyectar_Fresh_Conversaciones_To_Dw')]",
-				"[concat(variables('factoryId'), '/pipelines/002-Inyectar Echos Efleet')]"
+				"[concat(variables('factoryId'), '/pipelines/005-Inyectar_Fresh_Conversaciones_To_Dw')]"
 			]
 		},
 		{

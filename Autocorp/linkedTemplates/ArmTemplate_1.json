@@ -13,6 +13,774 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/EfleetVehiculo')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "EfleetDB",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Source/Efleet"
+				},
+				"annotations": [],
+				"type": "AzureMySqlTable",
+				"schema": [
+					{
+						"name": "id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "contract_id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "policy_id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "authorization_matrix_id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "plate",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "description",
+						"type": "mediumtext",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "hansa_start_date",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "hansa_end_date",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "hansa_flota",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "hansa_active",
+						"type": "tinyint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "deleted_at",
+						"type": "timestamp",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "created_at",
+						"type": "timestamp",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "updated_at",
+						"type": "timestamp",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "code",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "color",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "chassis",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "motor_number",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "year",
+						"type": "int",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "plate_date",
+						"type": "date",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "fire_extinguisher_due_date",
+						"type": "date",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "vtv_due_date",
+						"type": "date",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "cardoc_due_date",
+						"type": "date",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "warranty_up_to_km",
+						"type": "int",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "warranty_up_to_date",
+						"type": "date",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "warranty_state",
+						"type": "tinyint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "is_fleet_owner",
+						"type": "tinyint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "last_km",
+						"type": "int",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "last_km_origin",
+						"type": "enum",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "last_km_date",
+						"type": "date",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "service_last_km",
+						"type": "int",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "service_origin",
+						"type": "enum",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "service_last_date",
+						"type": "date",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "condition_type",
+						"type": "enum",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "category_client",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "group_category_client",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "fuel_card_number",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "toll_card_number",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "has_circulation_documents",
+						"type": "tinyint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "insurance_ammount",
+						"type": "double",
+						"precision": 0,
+						"scale": 2
+					},
+					{
+						"name": "version_id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "vehicle_state_id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "client_structure_id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "insurance_id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "gps_provider_id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "stereo_code",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "has_duplicated_key",
+						"type": "tinyint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "gps_vehicle_number",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "gps_detail",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "gps_ammount",
+						"type": "int",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "vtv_last_date",
+						"type": "date",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "duplicated_key_date",
+						"type": "date",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "vtv_last_city_id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "plate_city_id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "is_owner",
+						"type": "enum",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "gps_is_visible",
+						"type": "tinyint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "owner_name",
+						"type": "text",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "owner_contact_id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "maintenance_plan_id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "leasing_duedate",
+						"type": "date",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "rto_due_date",
+						"type": "date",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "vtv_km_expiration",
+						"type": "int",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "synched",
+						"type": "tinyint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "fuel_provider",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "pledgde_duedate",
+						"type": "date",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "pledgde_closure_date",
+						"type": "date",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "pledgde_number",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "buyer_purchase_date",
+						"type": "date",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "buyer_transfer_date",
+						"type": "date",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "buyer_comments",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "pledge_contact_id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "leasing_contact_id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "buyer_contact_id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "service_last_task_id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "insurance_start_date",
+						"type": "date",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "send_expiration_mailing",
+						"type": "tinyint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "last_mailing_date",
+						"type": "date",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "last_mailing_email",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "mailing_day",
+						"type": "int",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "last_mailing_status",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "version_hansa_code",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "hansa_code",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "last_expiration_check",
+						"type": "datetime",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "vtv_caba_text",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "infoauto_price",
+						"type": "decimal",
+						"precision": 10,
+						"scale": 2
+					},
+					{
+						"name": "infoauto_price_date",
+						"type": "datetime",
+						"precision": 0,
+						"scale": 0
+					}
+				],
+				"typeProperties": {
+					"tableName": "vehicles"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/FreshAgentes')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "FreshDB",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Source/Fresh"
+				},
+				"annotations": [],
+				"type": "AzureMySqlTable",
+				"schema": [
+					{
+						"name": "name",
+						"type": "text",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "id",
+						"type": "double",
+						"precision": 0,
+						"scale": 31
+					}
+				],
+				"typeProperties": {
+					"tableName": "agent_table"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/FreshCompanias')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "FreshDB",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Source/Fresh"
+				},
+				"annotations": [],
+				"type": "AzureMySqlTable",
+				"schema": [
+					{
+						"name": "id",
+						"type": "double",
+						"precision": 0,
+						"scale": 31
+					},
+					{
+						"name": "name",
+						"type": "text",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "description",
+						"type": "text",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "note",
+						"type": "text",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "domains",
+						"type": "text",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "created_at",
+						"type": "text",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "updated_at",
+						"type": "text",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "health_score",
+						"type": "text",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "account_tier",
+						"type": "text",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "renewal_date",
+						"type": "text",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "industry",
+						"type": "text",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "custom_fields.estado_crediticio",
+						"type": "text",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "custom_fields.cuit",
+						"type": "double",
+						"precision": 0,
+						"scale": 31
+					}
+				],
+				"typeProperties": {
+					"tableName": "freshdesk_companies"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/FreshEstados')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "FreshDB",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Source/Fresh"
+				},
+				"annotations": [],
+				"type": "AzureMySqlTable",
+				"schema": [
+					{
+						"name": "id",
+						"type": "int",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "name",
+						"type": "text",
+						"precision": 0,
+						"scale": 0
+					}
+				],
+				"typeProperties": {
+					"tableName": "status_table"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/FreshGrupos')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "FreshDB",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Source/Fresh"
+				},
+				"annotations": [],
+				"type": "AzureMySqlTable",
+				"schema": [
+					{
+						"name": "name",
+						"type": "text",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "id",
+						"type": "double",
+						"precision": 0,
+						"scale": 31
+					}
+				],
+				"typeProperties": {
+					"tableName": "group_table"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/FreshOrigenes')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "FreshDB",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Source/Fresh"
+				},
+				"annotations": [],
+				"type": "AzureMySqlTable",
+				"schema": [
+					{
+						"name": "name",
+						"type": "text",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "id",
+						"type": "int",
+						"precision": 0,
+						"scale": 0
+					}
+				],
+				"typeProperties": {
+					"tableName": "source_table"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/FreshPrioridades')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -734,6 +1502,47 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/dimContratos')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SqlAutocorpDw",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DW/Dimensiones"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "codigo",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "nombre",
+						"type": "varchar"
+					},
+					{
+						"name": "tipoContrato",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "whs",
+					"table": "dimContratos"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/dimEstados')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -787,351 +1596,6 @@
 				"typeProperties": {
 					"schema": "whs",
 					"table": "dimGrupos"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/dimOrdenTrabajoOrigen')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SqlAutocorpDw",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "DW/Dimensiones"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "id",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "name",
-						"type": "varchar"
-					},
-					{
-						"name": "hansacode",
-						"type": "varchar"
-					}
-				],
-				"typeProperties": {
-					"schema": "whs",
-					"table": "dimOrdenTrabajoOrgien"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/dimOrdenTrabajoTipo')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SqlAutocorpDw",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "DW/Dimensiones"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "id",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "codigo",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "nombre",
-						"type": "varchar"
-					},
-					{
-						"name": "hansacode",
-						"type": "varchar"
-					}
-				],
-				"typeProperties": {
-					"schema": "whs",
-					"table": "dimOrdenTrabajoTipo"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/dimOrigenes')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SqlAutocorpDw",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "DW/Dimensiones"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "id",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "codigo",
-						"type": "varchar"
-					},
-					{
-						"name": "nombre",
-						"type": "varchar"
-					}
-				],
-				"typeProperties": {
-					"schema": "whs",
-					"table": "dimOrigenes"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/dimPrioridades')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SqlAutocorpDw",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "DW/Dimensiones"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "id",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "codigo",
-						"type": "varchar"
-					},
-					{
-						"name": "nombre",
-						"type": "varchar"
-					}
-				],
-				"typeProperties": {
-					"schema": "whs",
-					"table": "dimPrioridades"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/dimProductos')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SqlAutocorpDw",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "DW/Dimensiones"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "id",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "nombre",
-						"type": "varchar"
-					}
-				],
-				"typeProperties": {
-					"schema": "whs",
-					"table": "dimProductos"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/dimSla')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SqlAutocorpDw",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "DW/Dimensiones"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "codigo",
-						"type": "varchar"
-					},
-					{
-						"name": "nombre",
-						"type": "varchar"
-					},
-					{
-						"name": "descipcion",
-						"type": "varchar"
-					},
-					{
-						"name": "isactive",
-						"type": "bit"
-					},
-					{
-						"name": "isdefault",
-						"type": "bit"
-					},
-					{
-						"name": "posicion",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "fechaAlta",
-						"type": "varchar"
-					},
-					{
-						"name": "fechaModificacion",
-						"type": "varchar"
-					},
-					{
-						"name": "companyid",
-						"type": "varchar"
-					},
-					{
-						"name": "slaTargetPriority1RespondWithin",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 4
-					},
-					{
-						"name": "slaTargerPriority1ResolveWithin",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 4
-					},
-					{
-						"name": "slaTargetPriority2RespondWithin",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 4
-					},
-					{
-						"name": "slaTargerPriority2ResolveWithin",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 4
-					},
-					{
-						"name": "slaTargetPriority3RespondWithin",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 4
-					},
-					{
-						"name": "slaTargerPriority3ResolveWithin",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 4
-					},
-					{
-						"name": "slaTargetPriority4RespondWithin",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 4
-					},
-					{
-						"name": "slaTargerPriority4ResolveWithin",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 4
-					},
-					{
-						"name": "escalationReminderResolutionEscalationTime",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 4
-					},
-					{
-						"name": "escalationReminderResolutionAgentids",
-						"type": "varchar"
-					},
-					{
-						"name": "escalationResolutionLevel1EscalationTime",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 4
-					},
-					{
-						"name": "escalationResolutionLevel1AgentId",
-						"type": "varchar"
-					}
-				],
-				"typeProperties": {
-					"schema": "whs",
-					"table": "dimSla"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/dimTiposTickets')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SqlAutocorpDw",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "DW/Dimensiones"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "id",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "codigo",
-						"type": "varchar"
-					},
-					{
-						"name": "nombre",
-						"type": "varchar"
-					}
-				],
-				"typeProperties": {
-					"schema": "whs",
-					"table": "dimTiposTicket"
 				}
 			},
 			"dependsOn": []

@@ -13,6 +13,592 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/dimOrdenTrabajoCategorias')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SqlAutocorpDw",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DW/Dimensiones"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "codigo",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "nombre",
+						"type": "varchar"
+					},
+					{
+						"name": "descripcion",
+						"type": "varchar"
+					},
+					{
+						"name": "seccionNombre",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "whs",
+					"table": "dimOrdenTrabajoCategorias"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dimOrdenTrabajoOrigen')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SqlAutocorpDw",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DW/Dimensiones"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "name",
+						"type": "varchar"
+					},
+					{
+						"name": "hansacode",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "whs",
+					"table": "dimOrdenTrabajoOrgien"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dimOrdenTrabajoTipo')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SqlAutocorpDw",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DW/Dimensiones"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "codigo",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "nombre",
+						"type": "varchar"
+					},
+					{
+						"name": "hansacode",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "whs",
+					"table": "dimOrdenTrabajoTipo"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dimOrdenTrabajoTipoGasto')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SqlAutocorpDw",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DW/Dimensiones"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "codigo",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "nombre",
+						"type": "varchar"
+					},
+					{
+						"name": "hansacode",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "whs",
+					"table": "dimOrdenTabajoTipoGasto"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dimOrdenesTrabajo')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SqlAutocorpDw",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DW/Dimensiones"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "codigo",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "nombre",
+						"type": "varchar"
+					},
+					{
+						"name": "estado",
+						"type": "varchar"
+					},
+					{
+						"name": "fechaEliminacion",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "fechaCreacion",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "fechaActualizacion",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "hansaCode",
+						"type": "varchar"
+					},
+					{
+						"name": "codigoTipoOrdenTrabajo",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "codigoOrdenTrabajoOriginal",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "razon",
+						"type": "varchar"
+					},
+					{
+						"name": "codigoInterno",
+						"type": "varchar"
+					},
+					{
+						"name": "numero",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "patente",
+						"type": "varchar"
+					},
+					{
+						"name": "codigoContrato",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "km",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 0
+					},
+					{
+						"name": "estimada",
+						"type": "bit"
+					},
+					{
+						"name": "codigoTipoGasto",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "codigoUsuario",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "codigoTicket",
+						"type": "varchar"
+					},
+					{
+						"name": "codigoVehiculo",
+						"type": "int",
+						"precision": 10
+					}
+				],
+				"typeProperties": {
+					"schema": "whs",
+					"table": "dimOrdenesTrabajo"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dimOrigenes')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SqlAutocorpDw",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DW/Dimensiones"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "codigo",
+						"type": "varchar"
+					},
+					{
+						"name": "nombre",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "whs",
+					"table": "dimOrigenes"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dimPrioridades')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SqlAutocorpDw",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DW/Dimensiones"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "codigo",
+						"type": "varchar"
+					},
+					{
+						"name": "nombre",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "whs",
+					"table": "dimPrioridades"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dimProductos')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SqlAutocorpDw",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DW/Dimensiones"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "nombre",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "whs",
+					"table": "dimProductos"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dimSla')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SqlAutocorpDw",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DW/Dimensiones"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "codigo",
+						"type": "varchar"
+					},
+					{
+						"name": "nombre",
+						"type": "varchar"
+					},
+					{
+						"name": "descipcion",
+						"type": "varchar"
+					},
+					{
+						"name": "isactive",
+						"type": "bit"
+					},
+					{
+						"name": "isdefault",
+						"type": "bit"
+					},
+					{
+						"name": "posicion",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "fechaAlta",
+						"type": "varchar"
+					},
+					{
+						"name": "fechaModificacion",
+						"type": "varchar"
+					},
+					{
+						"name": "companyid",
+						"type": "varchar"
+					},
+					{
+						"name": "slaTargetPriority1RespondWithin",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 4
+					},
+					{
+						"name": "slaTargerPriority1ResolveWithin",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 4
+					},
+					{
+						"name": "slaTargetPriority2RespondWithin",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 4
+					},
+					{
+						"name": "slaTargerPriority2ResolveWithin",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 4
+					},
+					{
+						"name": "slaTargetPriority3RespondWithin",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 4
+					},
+					{
+						"name": "slaTargerPriority3ResolveWithin",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 4
+					},
+					{
+						"name": "slaTargetPriority4RespondWithin",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 4
+					},
+					{
+						"name": "slaTargerPriority4ResolveWithin",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 4
+					},
+					{
+						"name": "escalationReminderResolutionEscalationTime",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 4
+					},
+					{
+						"name": "escalationReminderResolutionAgentids",
+						"type": "varchar"
+					},
+					{
+						"name": "escalationResolutionLevel1EscalationTime",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 4
+					},
+					{
+						"name": "escalationResolutionLevel1AgentId",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "whs",
+					"table": "dimSla"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dimTareas')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SqlAutocorpDw",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DW/Dimensiones"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "codigo",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "nombre",
+						"type": "varchar"
+					},
+					{
+						"name": "descripcion",
+						"type": "varchar"
+					},
+					{
+						"name": "codigoCategoria",
+						"type": "int",
+						"precision": 10
+					}
+				],
+				"typeProperties": {
+					"schema": "whs",
+					"table": "dimTareas"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dimTiposTickets')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SqlAutocorpDw",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DW/Dimensiones"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "codigo",
+						"type": "varchar"
+					},
+					{
+						"name": "nombre",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "whs",
+					"table": "dimTiposTicket"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/dimVehiculos')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -175,6 +761,110 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/factOrdenesTrabajo')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SqlAutocorpDw",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DW/Echos"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "codigo",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "workOrderId",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "TareaId",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "costoPersonal",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 4
+					},
+					{
+						"name": "costoMaterial",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 4
+					},
+					{
+						"name": "costoTotal",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 4
+					},
+					{
+						"name": "costoPersonalSinIva",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 4
+					},
+					{
+						"name": "costoMaterialSinIva",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 4
+					},
+					{
+						"name": "costoTotalSinIva",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 4
+					},
+					{
+						"name": "descuentoPersonal",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 4
+					},
+					{
+						"name": "decuentoMaterial",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 4
+					},
+					{
+						"name": "decuentoTotal",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 4
+					},
+					{
+						"name": "fechaCreacion",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "fechaUltimaActualizacion",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					}
+				],
+				"typeProperties": {
+					"schema": "whs",
+					"table": "factOrdenesTrabajo"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/factTickets')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -259,1201 +949,6 @@
 				"typeProperties": {
 					"schema": "whs",
 					"table": "factTickets"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/stgTickets')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SqlAutocorpDw",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "Staiging"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "codigo",
-						"type": "varchar"
-					},
-					{
-						"name": "fechaAlta",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "fechaModificacion",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "horasDiferecia",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "minutosDiferencia",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "companiaCodigo",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "estadoCodigo",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "tipoCodigo",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "productoCodigo",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "grupoCodigo",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "origenCodigo",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "prioridadCodigo",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "agenteCodigo",
-						"type": "int",
-						"precision": 10
-					}
-				],
-				"typeProperties": {
-					"schema": "stg",
-					"table": "Tickets"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/EfleetOrdenTrabajoTipoGasto')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "EfleetDB",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "Source/Efleet"
-				},
-				"annotations": [],
-				"type": "AzureMySqlTable",
-				"schema": [
-					{
-						"name": "id",
-						"type": "bigint",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "name",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "hansa_code",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "deleted_at",
-						"type": "timestamp",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "created_at",
-						"type": "timestamp",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "updated_at",
-						"type": "timestamp",
-						"precision": 0,
-						"scale": 0
-					}
-				],
-				"typeProperties": {
-					"tableName": "work_order_expense_types"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/dimOrdenTrabajoTipoGasto')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SqlAutocorpDw",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "DW/Dimensiones"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "id",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "codigo",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "nombre",
-						"type": "varchar"
-					},
-					{
-						"name": "hansacode",
-						"type": "varchar"
-					}
-				],
-				"typeProperties": {
-					"schema": "whs",
-					"table": "dimOrdenTabajoTipoGasto"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/EfleetContratos')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "EfleetDB",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "Source/Efleet"
-				},
-				"annotations": [],
-				"type": "AzureMySqlTable",
-				"schema": [
-					{
-						"name": "id",
-						"type": "bigint",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "name",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "contract_type_id",
-						"type": "bigint",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "contract_origin_id",
-						"type": "bigint",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "hansa_ID",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "hansa_service_num",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "hansa_cu_num",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "hansa_created",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "hansa_created_user",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "hansa_start_date",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "hansa_end_date",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "client_approval_username",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "client_approval_date",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "client_estimated_fleet",
-						"type": "bigint",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "client_first_limit",
-						"type": "bigint",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "client_second_limit",
-						"type": "bigint",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "autocorp_approval_username",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "autocorp_approval_date",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "autocorp_commercial_username",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "autocorp_implementation_username",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "autocorp_post_sale_username",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "comments",
-						"type": "text",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "deleted_at",
-						"type": "timestamp",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "created_at",
-						"type": "timestamp",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "updated_at",
-						"type": "timestamp",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "contact_id",
-						"type": "bigint",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "synched",
-						"type": "tinyint",
-						"precision": 0,
-						"scale": 0
-					}
-				],
-				"typeProperties": {
-					"tableName": "contracts"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/dimContratos')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SqlAutocorpDw",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "DW/Dimensiones"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "id",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "codigo",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "nombre",
-						"type": "varchar"
-					},
-					{
-						"name": "tipoContrato",
-						"type": "varchar"
-					}
-				],
-				"typeProperties": {
-					"schema": "whs",
-					"table": "dimContratos"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/dimOrdenesTrabajo')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SqlAutocorpDw",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "DW/Dimensiones"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "codigo",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "nombre",
-						"type": "varchar"
-					},
-					{
-						"name": "estado",
-						"type": "varchar"
-					},
-					{
-						"name": "fechaEliminacion",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "fechaCreacion",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "fechaActualizacion",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "hansaCode",
-						"type": "varchar"
-					},
-					{
-						"name": "codigoTipoOrdenTrabajo",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "codigoOrdenTrabajoOriginal",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "razon",
-						"type": "varchar"
-					},
-					{
-						"name": "codigoInterno",
-						"type": "varchar"
-					},
-					{
-						"name": "numero",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "patente",
-						"type": "varchar"
-					},
-					{
-						"name": "codigoContrato",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "km",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 0
-					},
-					{
-						"name": "estimada",
-						"type": "bit"
-					},
-					{
-						"name": "codigoTipoGasto",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "codigoUsuario",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "codigoTicket",
-						"type": "varchar"
-					},
-					{
-						"name": "codigoVehiculo",
-						"type": "int",
-						"precision": 10
-					}
-				],
-				"typeProperties": {
-					"schema": "whs",
-					"table": "dimOrdenesTrabajo"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/EfleetOrdenesTrabajo')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "EfleetDB",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "Source/Efleet"
-				},
-				"annotations": [],
-				"type": "AzureMySqlTable",
-				"schema": [
-					{
-						"name": "id",
-						"type": "bigint",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "name",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "state",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "deleted_at",
-						"type": "timestamp",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "created_at",
-						"type": "timestamp",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "updated_at",
-						"type": "timestamp",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "hansa_code",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "work_order_type_id",
-						"type": "bigint",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "work_order_origin_id",
-						"type": "bigint",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "reason",
-						"type": "text",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "internal_code",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "number",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "plate",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "contract_id",
-						"type": "bigint",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "km",
-						"type": "int",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "is_estimated",
-						"type": "tinyint",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "driver_id",
-						"type": "bigint",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "contact_id",
-						"type": "bigint",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "contact_name",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "contact_email",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "contact_phone",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "work_order_expense_type_id",
-						"type": "bigint",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "user_id",
-						"type": "bigint",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "shift_date",
-						"type": "datetime",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "location_lat",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "location_lng",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "hansa_activity_code",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "workforce_price",
-						"type": "double",
-						"precision": 0,
-						"scale": 2
-					},
-					{
-						"name": "materials_price",
-						"type": "double",
-						"precision": 0,
-						"scale": 2
-					},
-					{
-						"name": "total_price",
-						"type": "double",
-						"precision": 0,
-						"scale": 2
-					},
-					{
-						"name": "workforce_s_iva_price",
-						"type": "double",
-						"precision": 0,
-						"scale": 2
-					},
-					{
-						"name": "materials_s_iva_price",
-						"type": "double",
-						"precision": 0,
-						"scale": 2
-					},
-					{
-						"name": "total_s_iva_price",
-						"type": "double",
-						"precision": 0,
-						"scale": 2
-					},
-					{
-						"name": "workforce_discount",
-						"type": "double",
-						"precision": 0,
-						"scale": 2
-					},
-					{
-						"name": "materials_discount",
-						"type": "double",
-						"precision": 0,
-						"scale": 2
-					},
-					{
-						"name": "total_discount",
-						"type": "double",
-						"precision": 0,
-						"scale": 2
-					},
-					{
-						"name": "os_hansa_code",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "os_activity_code",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "location_province",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "location_state",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "location_address",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "is_approved",
-						"type": "tinyint",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "internal_code_type",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "booking_id",
-						"type": "bigint",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "synched",
-						"type": "tinyint",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "custom_address",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "custom_address_lat",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "custom_address_lng",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "freshdesk_code",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "q_shift_sent",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "shift_additional_notes",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "freshdesk_code_validated",
-						"type": "tinyint",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "external_created_by",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "shift_mail_sent",
-						"type": "tinyint",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "booking_franchise",
-						"type": "double",
-						"precision": 0,
-						"scale": 2
-					},
-					{
-						"name": "insurance_franchise",
-						"type": "double",
-						"precision": 0,
-						"scale": 2
-					},
-					{
-						"name": "desired_shift_day",
-						"type": "int",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "desired_shift_hour",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "last_user_id",
-						"type": "bigint",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "freshdesk_created_at",
-						"type": "date",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "survey_sent",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "close_date",
-						"type": "datetime",
-						"precision": 0,
-						"scale": 0
-					}
-				],
-				"typeProperties": {
-					"tableName": "work_orders"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/EfleetOrdenTrabajoCategoria')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "EfleetDB",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "Source/Efleet"
-				},
-				"annotations": [],
-				"type": "AzureMySqlTable",
-				"schema": [
-					{
-						"name": "id",
-						"type": "bigint",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "section_id",
-						"type": "bigint",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "name",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "description",
-						"type": "mediumtext",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "deleted_at",
-						"type": "timestamp",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "created_at",
-						"type": "timestamp",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "updated_at",
-						"type": "timestamp",
-						"precision": 0,
-						"scale": 0
-					}
-				],
-				"typeProperties": {
-					"tableName": "categories"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/dimOrdenTrabajoCategorias')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SqlAutocorpDw",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "DW/Dimensiones"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "codigo",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "nombre",
-						"type": "varchar"
-					},
-					{
-						"name": "descripcion",
-						"type": "varchar"
-					},
-					{
-						"name": "seccionNombre",
-						"type": "varchar"
-					}
-				],
-				"typeProperties": {
-					"schema": "whs",
-					"table": "dimOrdenTrabajoCategorias"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/dimTareas')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SqlAutocorpDw",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "DW/Dimensiones"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "codigo",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "nombre",
-						"type": "varchar"
-					},
-					{
-						"name": "descripcion",
-						"type": "varchar"
-					},
-					{
-						"name": "codigoCategoria",
-						"type": "int",
-						"precision": 10
-					}
-				],
-				"typeProperties": {
-					"schema": "whs",
-					"table": "dimTareas"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/EfleetTareas')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "EfleetDB",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "Source/Efleet"
-				},
-				"annotations": [],
-				"type": "AzureMySqlTable",
-				"schema": [
-					{
-						"name": "id",
-						"type": "bigint",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "parent_id",
-						"type": "bigint",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "category_id",
-						"type": "bigint",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "name",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "hansa_code",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "description",
-						"type": "mediumtext",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "deleted_at",
-						"type": "timestamp",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "created_at",
-						"type": "timestamp",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "updated_at",
-						"type": "timestamp",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "related_task_id",
-						"type": "bigint",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "iva_sell_id",
-						"type": "bigint",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "iva_buy_id",
-						"type": "bigint",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "comments",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "materials_account_cost",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "workforce_account_cost",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "total_account_cost",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "searchable",
-						"type": "tinyint",
-						"precision": 0,
-						"scale": 0
-					}
-				],
-				"typeProperties": {
-					"tableName": "tasks"
 				}
 			},
 			"dependsOn": []
@@ -1566,149 +1061,7 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/EfleetOrdenesTrabajoTareas')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "EfleetDB",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "Source/Efleet"
-				},
-				"annotations": [],
-				"type": "AzureMySqlTable",
-				"schema": [
-					{
-						"name": "id",
-						"type": "bigint",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "work_order_id",
-						"type": "bigint",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "task_id",
-						"type": "bigint",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "work_order_task_action_id",
-						"type": "bigint",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "workforce_price",
-						"type": "double",
-						"precision": 0,
-						"scale": 2
-					},
-					{
-						"name": "materials_price",
-						"type": "double",
-						"precision": 0,
-						"scale": 2
-					},
-					{
-						"name": "total_price",
-						"type": "double",
-						"precision": 0,
-						"scale": 2
-					},
-					{
-						"name": "workforce_s_iva_price",
-						"type": "double",
-						"precision": 0,
-						"scale": 2
-					},
-					{
-						"name": "materials_s_iva_price",
-						"type": "double",
-						"precision": 0,
-						"scale": 2
-					},
-					{
-						"name": "total_s_iva_price",
-						"type": "double",
-						"precision": 0,
-						"scale": 2
-					},
-					{
-						"name": "workforce_discount",
-						"type": "double",
-						"precision": 0,
-						"scale": 2
-					},
-					{
-						"name": "materials_discount",
-						"type": "double",
-						"precision": 0,
-						"scale": 2
-					},
-					{
-						"name": "total_discount",
-						"type": "double",
-						"precision": 0,
-						"scale": 2
-					},
-					{
-						"name": "comments",
-						"type": "text",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "deleted_at",
-						"type": "timestamp",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "created_at",
-						"type": "timestamp",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "updated_at",
-						"type": "timestamp",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "rebill",
-						"type": "double",
-						"precision": 0,
-						"scale": 2
-					},
-					{
-						"name": "iva_sell_id",
-						"type": "bigint",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "iva_buy_id",
-						"type": "bigint",
-						"precision": 0,
-						"scale": 0
-					}
-				],
-				"typeProperties": {
-					"tableName": "work_order_tasks"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/factOrdenesTrabajo')]",
+			"name": "[concat(parameters('factoryName'), '/stgTickets')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -1717,96 +1070,81 @@
 					"type": "LinkedServiceReference"
 				},
 				"folder": {
-					"name": "DW/Echos"
+					"name": "Staiging"
 				},
 				"annotations": [],
 				"type": "AzureSqlTable",
 				"schema": [
 					{
 						"name": "codigo",
-						"type": "int",
-						"precision": 10
+						"type": "varchar"
 					},
 					{
-						"name": "workOrderId",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "TareaId",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "costoPersonal",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 4
-					},
-					{
-						"name": "costoMaterial",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 4
-					},
-					{
-						"name": "costoTotal",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 4
-					},
-					{
-						"name": "costoPersonalSinIva",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 4
-					},
-					{
-						"name": "costoMaterialSinIva",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 4
-					},
-					{
-						"name": "costoTotalSinIva",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 4
-					},
-					{
-						"name": "descuentoPersonal",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 4
-					},
-					{
-						"name": "decuentoMaterial",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 4
-					},
-					{
-						"name": "decuentoTotal",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 4
-					},
-					{
-						"name": "fechaCreacion",
+						"name": "fechaAlta",
 						"type": "datetime",
 						"precision": 23,
 						"scale": 3
 					},
 					{
-						"name": "fechaUltimaActualizacion",
+						"name": "fechaModificacion",
 						"type": "datetime",
 						"precision": 23,
 						"scale": 3
+					},
+					{
+						"name": "horasDiferecia",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "minutosDiferencia",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "companiaCodigo",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "estadoCodigo",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "tipoCodigo",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "productoCodigo",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "grupoCodigo",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "origenCodigo",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "prioridadCodigo",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "agenteCodigo",
+						"type": "int",
+						"precision": 10
 					}
 				],
 				"typeProperties": {
-					"schema": "whs",
-					"table": "factOrdenesTrabajo"
+					"schema": "stg",
+					"table": "Tickets"
 				}
 			},
 			"dependsOn": []
@@ -3823,17 +3161,12 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/dimVehiculos')]",
-				"[concat(variables('factoryId'), '/datasets/EfleetOrdenTrabajoTipoGasto')]",
+				"[concat(variables('factoryId'), '/datasets/dimOrdenTrabajoOrigen')]",
+				"[concat(variables('factoryId'), '/datasets/dimOrdenTrabajoTipo')]",
 				"[concat(variables('factoryId'), '/datasets/dimOrdenTrabajoTipoGasto')]",
-				"[concat(variables('factoryId'), '/datasets/EfleetContratos')]",
-				"[concat(variables('factoryId'), '/datasets/dimContratos')]",
-				"[concat(variables('factoryId'), '/datasets/EfleetOrdenTrabajoCategoria')]",
 				"[concat(variables('factoryId'), '/datasets/dimOrdenTrabajoCategorias')]",
-				"[concat(variables('factoryId'), '/datasets/EfleetTareas')]",
 				"[concat(variables('factoryId'), '/datasets/dimTareas')]",
-				"[concat(variables('factoryId'), '/datasets/EfleetOrdenesTrabajoTareas')]",
 				"[concat(variables('factoryId'), '/datasets/stgOrdenesTrabajoTareas')]",
-				"[concat(variables('factoryId'), '/datasets/EfleetOrdenesTrabajo')]",
 				"[concat(variables('factoryId'), '/datasets/dimOrdenesTrabajo')]"
 			]
 		},
@@ -4024,6 +3357,288 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/stgTickets')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/002-Inyectar Echos Efleet')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Inyectar FactOrdenesTrabajo",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": "select \nt.codigo,\not.id workOrderId,\nta.id tareaId,\ncostoPersonal,\ncostoMaterial,\ncostoTotal,\ncostoPersonalSinIva,\ncostoMaterialSinIva,\ncostoTotalSinIva,\ndescuentoPersonal,\ndecuentoMaterial,\ndecuentoTotal,\nt.fechaCreacion,\nfechaUltimaActualizacion\n\nfrom stg.OrdenTrabajoTareas t\nleft join whs.dimOrdenesTrabajo ot on ot.codigo = t.codigoWorkOrder\nleft join whs.dimTareas ta on ta.codigo = t.codigoTarea",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"writeBehavior": "upsert",
+								"upsertSettings": {
+									"useTempDB": true,
+									"keys": [
+										"codigo"
+									]
+								},
+								"sqlWriterUseTableLock": false,
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "codigo",
+											"type": "Int32",
+											"physicalType": "int"
+										},
+										"sink": {
+											"name": "codigo",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "workOrderId",
+											"type": "Int32",
+											"physicalType": "int"
+										},
+										"sink": {
+											"name": "workOrderId",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "tareaId",
+											"type": "Int32",
+											"physicalType": "int"
+										},
+										"sink": {
+											"name": "TareaId",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "costoPersonal",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 4,
+											"precision": 18
+										},
+										"sink": {
+											"name": "costoPersonal",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 4,
+											"precision": 18
+										}
+									},
+									{
+										"source": {
+											"name": "costoMaterial",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 4,
+											"precision": 18
+										},
+										"sink": {
+											"name": "costoMaterial",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 4,
+											"precision": 18
+										}
+									},
+									{
+										"source": {
+											"name": "costoTotal",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 4,
+											"precision": 18
+										},
+										"sink": {
+											"name": "costoTotal",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 4,
+											"precision": 18
+										}
+									},
+									{
+										"source": {
+											"name": "costoPersonalSinIva",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 4,
+											"precision": 18
+										},
+										"sink": {
+											"name": "costoPersonalSinIva",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 4,
+											"precision": 18
+										}
+									},
+									{
+										"source": {
+											"name": "costoMaterialSinIva",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 4,
+											"precision": 18
+										},
+										"sink": {
+											"name": "costoMaterialSinIva",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 4,
+											"precision": 18
+										}
+									},
+									{
+										"source": {
+											"name": "costoTotalSinIva",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 4,
+											"precision": 18
+										},
+										"sink": {
+											"name": "costoTotalSinIva",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 4,
+											"precision": 18
+										}
+									},
+									{
+										"source": {
+											"name": "descuentoPersonal",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 4,
+											"precision": 18
+										},
+										"sink": {
+											"name": "descuentoPersonal",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 4,
+											"precision": 18
+										}
+									},
+									{
+										"source": {
+											"name": "decuentoMaterial",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 4,
+											"precision": 18
+										},
+										"sink": {
+											"name": "decuentoMaterial",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 4,
+											"precision": 18
+										}
+									},
+									{
+										"source": {
+											"name": "decuentoTotal",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 4,
+											"precision": 18
+										},
+										"sink": {
+											"name": "decuentoTotal",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 4,
+											"precision": 18
+										}
+									},
+									{
+										"source": {
+											"name": "fechaCreacion",
+											"type": "DateTime",
+											"physicalType": "datetime"
+										},
+										"sink": {
+											"name": "fechaCreacion",
+											"type": "DateTime",
+											"physicalType": "datetime"
+										}
+									},
+									{
+										"source": {
+											"name": "fechaUltimaActualizacion",
+											"type": "DateTime",
+											"physicalType": "datetime"
+										},
+										"sink": {
+											"name": "fechaUltimaActualizacion",
+											"type": "DateTime",
+											"physicalType": "datetime"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "stgOrdenesTrabajoTareas",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "factOrdenesTrabajo",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "EFleet"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/stgOrdenesTrabajoTareas')]",
+				"[concat(variables('factoryId'), '/datasets/factOrdenesTrabajo')]"
 			]
 		},
 		{
@@ -4693,228 +4308,12 @@
 				"annotations": [],
 				"lastPublishTime": "2025-01-13T18:22:27Z"
 			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/004-Inyecar_Hechos_Fresh_To_Staiging')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Inyectar_SLA_API",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "RestSource",
-								"httpRequestTimeout": "00:01:40",
-								"requestInterval": "00.00:00:00.010",
-								"requestMethod": "GET",
-								"paginationRules": {
-									"supportRFC5988": "true"
-								}
-							},
-							"sink": {
-								"type": "AzureSqlSink",
-								"writeBehavior": "upsert",
-								"upsertSettings": {
-									"useTempDB": true,
-									"keys": [
-										"codigo"
-									]
-								},
-								"sqlWriterUseTableLock": false,
-								"disableMetricsCollection": false
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"path": "$['id']"
-										},
-										"sink": {
-											"name": "codigo",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['name']"
-										},
-										"sink": {
-											"name": "nombre",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['description']"
-										},
-										"sink": {
-											"name": "descipcion",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['active']"
-										},
-										"sink": {
-											"name": "isactive",
-											"type": "Boolean"
-										}
-									},
-									{
-										"source": {
-											"path": "$['sla_target']['priority_4']['respond_within']"
-										},
-										"sink": {
-											"name": "slaTargetPriority4RespondWithin",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['sla_target']['priority_4']['resolve_within']"
-										},
-										"sink": {
-											"name": "slaTargerPriority4ResolveWithin",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['sla_target']['priority_3']['respond_within']"
-										},
-										"sink": {
-											"name": "slaTargetPriority3RespondWithin",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['sla_target']['priority_3']['resolve_within']"
-										},
-										"sink": {
-											"name": "slaTargerPriority3ResolveWithin",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['sla_target']['priority_2']['respond_within']"
-										},
-										"sink": {
-											"name": "slaTargetPriority2RespondWithin",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['sla_target']['priority_2']['resolve_within']"
-										},
-										"sink": {
-											"name": "slaTargerPriority2ResolveWithin",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['sla_target']['priority_1']['respond_within']"
-										},
-										"sink": {
-											"name": "slaTargetPriority1RespondWithin",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['sla_target']['priority_1']['resolve_within']"
-										},
-										"sink": {
-											"name": "slaTargerPriority1ResolveWithin",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['escalation']['reminder_resolution']['agent_ids'][0]"
-										},
-										"sink": {
-											"name": "escalationReminderResolutionAgentids",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['escalation']['resolution']['level_1']['agent_ids'][0]"
-										},
-										"sink": {
-											"name": "escalationResolutionLevel1AgentId",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['applicable_to']['company_ids'][0]"
-										},
-										"sink": {
-											"name": "companyid",
-											"type": "String"
-										}
-									}
-								],
-								"collectionReference": ""
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "Fresh_SLA",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "dimSla",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"variables": {
-					"Ids": {
-						"type": "Array",
-						"defaultValue": [
-							"[['a','b','c']"
-						]
-					},
-					"vId": {
-						"type": "String"
-					}
-				},
-				"folder": {
-					"name": "FreshDesk"
-				},
-				"annotations": [],
-				"lastPublishTime": "2025-01-14T18:54:25Z"
-			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/dimOrigenes')]",
+				"[concat(variables('factoryId'), '/datasets/dimProductos')]",
+				"[concat(variables('factoryId'), '/datasets/dimPrioridades')]",
+				"[concat(variables('factoryId'), '/datasets/dimTiposTickets')]"
+			]
 		}
 	]
 }
