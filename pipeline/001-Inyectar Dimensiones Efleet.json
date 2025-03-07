@@ -17,7 +17,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureMySqlSource",
-						"query": "select \r\nid codigo,\r\ncontract_id contratoId,\r\npolicy_id policyId,\r\n`description` descripcion,\r\n`code` codigoDeVehiculo,\r\ncolor,\r\nchassis,\r\nplate patente,\r\n`year` anio,\r\nvtv_due_date fechaVencimientoVTV,\r\ncardoc_due_date fechaVencimientoDocument,\r\nwarranty_up_to_km garantiaHastaKm,\r\nwarranty_up_to_date fechaActualizadaGarantia,\r\nwarranty_state garantiaEstado,\r\nis_fleet_owner isPropietarioFlota,\r\nlast_km ultimoKilometraje,\r\nlast_km_origin ultimoKilometrajeOrigen,\r\nlast_km_date fechaUltimoKm,\r\nservice_last_km servicioUltimoKm,\r\nservice_origin origenServicio,\r\ncase when year(service_last_date)<1990 then null else service_last_date end ultimaFechaServicio,\r\ncondition_type tipoCondicion,\r\ncategory_client categoriaCliente,\r\ngroup_category_client grupoCategoriaCliente ,\r\nfuel_card_number numeroTarjetaCombustible,\r\ntoll_card_number numeroTarjetaPeaje,\r\nhas_circulation_documents tieneDocumentoCirculacion,\r\ninsurance_ammount montoSeguro,\r\nversion_id versionID,\r\nvehicle_state_id vehiculoEstadoID,\r\nclient_structure_id clienteEstructuraID,\r\ninsurance_id seguroID,\r\ngps_provider_id proveedorGpsId,\r\nhas_duplicated_key tieneClaveDuplicado,\r\ngps_vehicle_number numeroGPS,\r\ngps_detail detalleGPS,\r\ngps_ammount gpsMonto,\r\nvtv_last_date ultimaFechaVTV,\r\nduplicated_key_date fechaClaveDuplicada,\r\nvtv_last_city_id ultimaCiudadVTVID,\r\nplate_city_id patenteCuidadID,\r\ngps_is_visible gpsIsVisible,\r\nowner_name propietario,\r\nowner_contact_id propietarioContactoID,\r\nmaintenance_plan_id planMantenimientoID,\r\nleasing_duedate arrendamientoFechaVencimiento,\r\nrto_due_date fechaDeRetiro,\r\nvtv_km_expiration kmVencimientoVTV,\r\nfuel_provider proveedorCombustible,\r\nservice_last_task_id UltimaTareaID,\r\ninsurance_start_date fechaInicioSeguro,\r\nsend_expiration_mailing ,\r\nhansa_code codigoHansa,\r\nlast_expiration_check fechaUltimaComparacion,\r\nvtv_caba_text vtvCabaTexto,\r\ninfoauto_price precioInfoauto,\r\ninfoauto_price_date fechaPrecioInfoAuto\r\n\r\nfrom vehicles",
+						"query": "select \r\nvehicles.id codigo,\r\ncontract_id contratoId,\r\npolicy_id policyId,\r\n`description` descripcion,\r\n`code` codigoDeVehiculo,\r\ncolor,\r\nchassis,\r\nplate patente,\r\n`year` anio,\r\nvtv_due_date fechaVencimientoVTV,\r\ncardoc_due_date fechaVencimientoDocument,\r\nwarranty_up_to_km garantiaHastaKm,\r\nwarranty_up_to_date fechaActualizadaGarantia,\r\nwarranty_state garantiaEstado,\r\nis_fleet_owner isPropietarioFlota,\r\nlast_km ultimoKilometraje,\r\nlast_km_origin ultimoKilometrajeOrigen,\r\nlast_km_date fechaUltimoKm,\r\nservice_last_km servicioUltimoKm,\r\nservice_origin origenServicio,\r\ncase when year(service_last_date)<1990 then null else service_last_date end ultimaFechaServicio,\r\ncondition_type tipoCondicion,\r\ncategory_client categoriaCliente,\r\ngroup_category_client grupoCategoriaCliente ,\r\nfuel_card_number numeroTarjetaCombustible,\r\ntoll_card_number numeroTarjetaPeaje,\r\nhas_circulation_documents tieneDocumentoCirculacion,\r\ninsurance_ammount montoSeguro,\r\nversion_id versionID,\r\nvehicle_state_id vehiculoEstadoID,\r\nclient_structure_id clienteEstructuraID,\r\ninsurance_id seguroID,\r\ngps_provider_id proveedorGpsId,\r\nhas_duplicated_key tieneClaveDuplicado,\r\ngps_vehicle_number numeroGPS,\r\ngps_detail detalleGPS,\r\ngps_ammount gpsMonto,\r\nvtv_last_date ultimaFechaVTV,\r\nduplicated_key_date fechaClaveDuplicada,\r\nvtv_last_city_id ultimaCiudadVTVID,\r\nplate_city_id patenteCuidadID,\r\ngps_is_visible gpsIsVisible,\r\nowner_name propietario,\r\nowner_contact_id propietarioContactoID,\r\nmaintenance_plan_id planMantenimientoID,\r\nleasing_duedate arrendamientoFechaVencimiento,\r\nrto_due_date fechaDeRetiro,\r\nvtv_km_expiration kmVencimientoVTV,\r\nfuel_provider proveedorCombustible,\r\nservice_last_task_id UltimaTareaID,\r\ninsurance_start_date fechaInicioSeguro,\r\nsend_expiration_mailing ,\r\nvehicles.hansa_code codigoHansa,\r\nlast_expiration_check fechaUltimaComparacion,\r\nvtv_caba_text vtvCabaTexto,\r\ninfoauto_price precioInfoauto,\r\ninfoauto_price_date fechaPrecioInfoAuto,\r\nvs.name estado\r\n\r\nfrom vehicles\r\nleft outer join vehicle_states vs on vs.id = vehicles.vehicle_state_id",
 						"queryTimeout": "02:00:00"
 					},
 					"sink": {
@@ -666,6 +666,17 @@
 									"name": "fechaPrecioInfoAuto",
 									"type": "DateTime",
 									"physicalType": "datetime"
+								}
+							},
+							{
+								"source": {
+									"name": "estado",
+									"type": "String"
+								},
+								"sink": {
+									"name": "estado",
+									"type": "String",
+									"physicalType": "varchar"
 								}
 							}
 						],
