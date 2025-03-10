@@ -936,7 +936,7 @@
 						"upsertSettings": {
 							"useTempDB": true,
 							"keys": [
-								"codigo"
+								"ordenTrabajoCodigo"
 							]
 						},
 						"sqlWriterUseTableLock": false,
