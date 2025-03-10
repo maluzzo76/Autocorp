@@ -145,7 +145,7 @@
 								"sink": {
 									"name": "fechaVencimientoVTV",
 									"type": "DateTime",
-									"physicalType": "datetime"
+									"physicalType": "datetime2"
 								}
 							},
 							{
@@ -156,7 +156,7 @@
 								"sink": {
 									"name": "fechaVencimientoDocumento",
 									"type": "DateTime",
-									"physicalType": "datetime"
+									"physicalType": "datetime2"
 								}
 							},
 							{
@@ -180,7 +180,7 @@
 								"sink": {
 									"name": "fechaActualizadaGarantia",
 									"type": "DateTime",
-									"physicalType": "datetime"
+									"physicalType": "datetime2"
 								}
 							},
 							{
@@ -237,7 +237,7 @@
 								"sink": {
 									"name": "fechaUltimoKm",
 									"type": "DateTime",
-									"physicalType": "datetime"
+									"physicalType": "datetime2"
 								}
 							},
 							{
@@ -272,7 +272,7 @@
 								"sink": {
 									"name": "ultimaFechaServicio",
 									"type": "DateTime",
-									"physicalType": "datetime"
+									"physicalType": "datetime2"
 								}
 							},
 							{
@@ -463,7 +463,7 @@
 								"sink": {
 									"name": "ultimaFechaVTV",
 									"type": "DateTime",
-									"physicalType": "datetime"
+									"physicalType": "datetime2"
 								}
 							},
 							{
@@ -474,7 +474,7 @@
 								"sink": {
 									"name": "fechaClaveDuplicada",
 									"type": "DateTime",
-									"physicalType": "datetime"
+									"physicalType": "datetime2"
 								}
 							},
 							{
@@ -551,7 +551,7 @@
 								"sink": {
 									"name": "arrendamientoFechaVencimiento",
 									"type": "DateTime",
-									"physicalType": "datetime"
+									"physicalType": "datetime2"
 								}
 							},
 							{
@@ -562,7 +562,7 @@
 								"sink": {
 									"name": "fechaDeRetiro",
 									"type": "DateTime",
-									"physicalType": "datetime"
+									"physicalType": "datetime2"
 								}
 							},
 							{
@@ -608,7 +608,7 @@
 								"sink": {
 									"name": "fechaInicioSeguro",
 									"type": "DateTime",
-									"physicalType": "datetime"
+									"physicalType": "datetime2"
 								}
 							},
 							{
@@ -630,7 +630,7 @@
 								"sink": {
 									"name": "fechaUltimaComparacion",
 									"type": "DateTime",
-									"physicalType": "datetime"
+									"physicalType": "datetime2"
 								}
 							},
 							{
@@ -665,7 +665,7 @@
 								"sink": {
 									"name": "fechaPrecioInfoAuto",
 									"type": "DateTime",
-									"physicalType": "datetime"
+									"physicalType": "datetime2"
 								}
 							},
 							{
@@ -713,187 +713,7 @@
 				]
 			},
 			{
-				"name": "inyectar Clientes",
-				"type": "Copy",
-				"dependsOn": [],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"source": {
-						"type": "AzureMySqlSource",
-						"query": "SELECT \r\nc.id codigo,\r\nc.fantasy_name nombre,\r\nc.business_name empresa,\r\nc.contact_id,\r\ncg.name grupo,\r\nc.classification clasificacion,\r\nc.first_credit_limit primerLimiteDeCredito,\r\nc.second_credit_limit segundoLimiteDeCredito,\r\not.name tipoOperacion,\r\nit.name tipoComprobante,\r\nct.name tipoCliente,\r\ncst.name estadoCliente\r\nFROM clients c\r\nleft join client_types ct on ct.id = c.client_type_id\r\nleft join invoice_types it on it.id = c.operation_type_id\r\nleft join operation_types ot on ot.id = c.operation_type_id\r\nleft join client_state_types cst on cst.id = c.client_state_type_id\r\nleft join client_groups cg on cg.id = c.client_group_id",
-						"queryTimeout": "02:00:00"
-					},
-					"sink": {
-						"type": "AzureSqlSink",
-						"writeBehavior": "upsert",
-						"upsertSettings": {
-							"useTempDB": true,
-							"keys": [
-								"codigo"
-							]
-						},
-						"sqlWriterUseTableLock": false,
-						"disableMetricsCollection": false
-					},
-					"enableStaging": false,
-					"translator": {
-						"type": "TabularTranslator",
-						"mappings": [
-							{
-								"source": {
-									"name": "codigo",
-									"type": "UInt64"
-								},
-								"sink": {
-									"name": "codigo",
-									"type": "Int32",
-									"physicalType": "int"
-								}
-							},
-							{
-								"source": {
-									"name": "nombre",
-									"type": "String"
-								},
-								"sink": {
-									"name": "nombre",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "empresa",
-									"type": "String"
-								},
-								"sink": {
-									"name": "empresa",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "grupo",
-									"type": "String"
-								},
-								"sink": {
-									"name": "grupo",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "clasificacion",
-									"type": "String"
-								},
-								"sink": {
-									"name": "clasificacion",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "primerLimiteDeCredito",
-									"type": "Double"
-								},
-								"sink": {
-									"name": "primerLimiteDecredito",
-									"type": "Decimal",
-									"physicalType": "decimal",
-									"scale": 4,
-									"precision": 18
-								}
-							},
-							{
-								"source": {
-									"name": "segundoLimiteDeCredito",
-									"type": "Double"
-								},
-								"sink": {
-									"name": "segundoLimiteDeCredito",
-									"type": "Decimal",
-									"physicalType": "decimal",
-									"scale": 4,
-									"precision": 18
-								}
-							},
-							{
-								"source": {
-									"name": "tipoOperacion",
-									"type": "String"
-								},
-								"sink": {
-									"name": "tipoOperacion",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "tipoComprobante",
-									"type": "String"
-								},
-								"sink": {
-									"name": "tipoComprobante",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "tipoCliente",
-									"type": "String"
-								},
-								"sink": {
-									"name": "tipoCliente",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "estadoCliente",
-									"type": "String"
-								},
-								"sink": {
-									"name": "estadoCliente",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							}
-						],
-						"typeConversion": true,
-						"typeConversionSettings": {
-							"allowDataTruncation": true,
-							"treatBooleanAsNumber": false
-						}
-					}
-				},
-				"inputs": [
-					{
-						"referenceName": "EfleetClientes",
-						"type": "DatasetReference"
-					}
-				],
-				"outputs": [
-					{
-						"referenceName": "dimClientes",
-						"type": "DatasetReference"
-					}
-				]
-			},
-			{
-				"name": "Inyectar Orden Trabajo Origen",
+				"name": "Inyectar Tipos Orden de Trabajo",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -920,89 +740,6 @@
 						},
 						"sqlWriterUseTableLock": false,
 						"disableMetricsCollection": false
-					},
-					"enableStaging": false,
-					"translator": {
-						"type": "TabularTranslator",
-						"mappings": [
-							{
-								"source": {
-									"name": "id",
-									"type": "UInt64",
-									"physicalType": "bigint"
-								},
-								"sink": {
-									"name": "codigo",
-									"type": "Int32",
-									"physicalType": "int"
-								}
-							},
-							{
-								"source": {
-									"name": "name",
-									"type": "String",
-									"physicalType": "varchar"
-								},
-								"sink": {
-									"name": "nombre",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "hansa_code",
-									"type": "String",
-									"physicalType": "varchar"
-								},
-								"sink": {
-									"name": "hansacode",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							}
-						],
-						"typeConversion": true,
-						"typeConversionSettings": {
-							"allowDataTruncation": true,
-							"treatBooleanAsNumber": false
-						}
-					}
-				},
-				"inputs": [
-					{
-						"referenceName": "EfleetOrdenTrabajoOrigen",
-						"type": "DatasetReference"
-					}
-				],
-				"outputs": [
-					{
-						"referenceName": "dimOrdenTrabajoOrigen",
-						"type": "DatasetReference"
-					}
-				]
-			},
-			{
-				"name": "Inyectar Orden Trabajo Tipo",
-				"type": "Copy",
-				"dependsOn": [],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"source": {
-						"type": "AzureMySqlSource",
-						"queryTimeout": "02:00:00"
-					},
-					"sink": {
-						"type": "AzureSqlSink",
-						"writeBehavior": "insert",
-						"sqlWriterUseTableLock": false
 					},
 					"enableStaging": false,
 					"translator": {
@@ -1066,7 +803,7 @@
 				]
 			},
 			{
-				"name": "Inyectar Orden Trabajo Tipo Gasto",
+				"name": "Inyectar Tareas Orden de trabajo",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -1080,178 +817,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureMySqlSource",
-						"queryTimeout": "02:00:00"
-					},
-					"sink": {
-						"type": "AzureSqlSink",
-						"writeBehavior": "upsert",
-						"upsertSettings": {
-							"useTempDB": true,
-							"keys": [
-								"codigo"
-							]
-						},
-						"sqlWriterUseTableLock": false,
-						"disableMetricsCollection": false
-					},
-					"enableStaging": false,
-					"translator": {
-						"type": "TabularTranslator",
-						"mappings": [
-							{
-								"source": {
-									"name": "id",
-									"type": "UInt64",
-									"physicalType": "bigint"
-								},
-								"sink": {
-									"name": "codigo",
-									"type": "Int32",
-									"physicalType": "int"
-								}
-							},
-							{
-								"source": {
-									"name": "name",
-									"type": "String",
-									"physicalType": "varchar"
-								},
-								"sink": {
-									"name": "nombre",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "hansa_code",
-									"type": "String",
-									"physicalType": "varchar"
-								},
-								"sink": {
-									"name": "hansacode",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							}
-						],
-						"typeConversion": true,
-						"typeConversionSettings": {
-							"allowDataTruncation": true,
-							"treatBooleanAsNumber": false
-						}
-					}
-				},
-				"inputs": [
-					{
-						"referenceName": "EfleetOrdenTrabajoTipoGasto",
-						"type": "DatasetReference"
-					}
-				],
-				"outputs": [
-					{
-						"referenceName": "dimOrdenTrabajoTipoGasto",
-						"type": "DatasetReference"
-					}
-				]
-			},
-			{
-				"name": "Inyectar Contratos",
-				"type": "Copy",
-				"dependsOn": [],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"source": {
-						"type": "AzureMySqlSource",
-						"query": "select \nc.id codigo,\nc.name nombre,\nct.name tipoContrato\nfrom contracts c\nleft join contract_types ct on ct.id = c.id",
-						"queryTimeout": "02:00:00"
-					},
-					"sink": {
-						"type": "AzureSqlSink",
-						"writeBehavior": "insert",
-						"sqlWriterUseTableLock": false
-					},
-					"enableStaging": false,
-					"translator": {
-						"type": "TabularTranslator",
-						"mappings": [
-							{
-								"source": {
-									"name": "codigo",
-									"type": "UInt64"
-								},
-								"sink": {
-									"name": "codigo",
-									"type": "Int32",
-									"physicalType": "int"
-								}
-							},
-							{
-								"source": {
-									"name": "nombre",
-									"type": "String"
-								},
-								"sink": {
-									"name": "nombre",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "tipoContrato",
-									"type": "String"
-								},
-								"sink": {
-									"name": "tipoContrato",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							}
-						],
-						"typeConversion": true,
-						"typeConversionSettings": {
-							"allowDataTruncation": true,
-							"treatBooleanAsNumber": false
-						}
-					}
-				},
-				"inputs": [
-					{
-						"referenceName": "EfleetContratos",
-						"type": "DatasetReference"
-					}
-				],
-				"outputs": [
-					{
-						"referenceName": "dimContratos",
-						"type": "DatasetReference"
-					}
-				]
-			},
-			{
-				"name": "Inyectar Orden Trabajo Categorias",
-				"type": "Copy",
-				"dependsOn": [],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"source": {
-						"type": "AzureMySqlSource",
-						"query": "select \nc.id codigo,\nc.name nombre,\nc.description descripcion,\ns.name seccionNombre \nfrom categories c\nleft join sections s on s.id = c.section_id",
+						"query": "select \n    t.id codigo,\n    t.name nombre,\n    t.description descripcion,\n    t.hansa_code,\n    c.name nombreCategoria,\n    c.description descripcionCategoria\nfrom tasks t\nleft join categories c on c.id = t.category_id\n",
 						"queryTimeout": "02:00:00"
 					},
 					"sink": {
@@ -1305,105 +871,24 @@
 							},
 							{
 								"source": {
-									"name": "seccionNombre",
+									"name": "nombreCategoria",
 									"type": "String"
 								},
 								"sink": {
-									"name": "seccionNombre",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							}
-						],
-						"typeConversion": true,
-						"typeConversionSettings": {
-							"allowDataTruncation": true,
-							"treatBooleanAsNumber": false
-						}
-					}
-				},
-				"inputs": [
-					{
-						"referenceName": "EfleetOrdenTrabajoCategoria",
-						"type": "DatasetReference"
-					}
-				],
-				"outputs": [
-					{
-						"referenceName": "dimOrdenTrabajoCategorias",
-						"type": "DatasetReference"
-					}
-				]
-			},
-			{
-				"name": "Inyectar Tareas",
-				"type": "Copy",
-				"dependsOn": [],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"source": {
-						"type": "AzureMySqlSource",
-						"query": "select \nt.id codigo,\nt.name nombre,\nt.description descripcion,\ncategory_id codigoCategoria\nfrom tasks t",
-						"queryTimeout": "02:00:00"
-					},
-					"sink": {
-						"type": "AzureSqlSink",
-						"writeBehavior": "insert",
-						"sqlWriterUseTableLock": false
-					},
-					"enableStaging": false,
-					"translator": {
-						"type": "TabularTranslator",
-						"mappings": [
-							{
-								"source": {
-									"name": "codigo",
-									"type": "UInt64"
-								},
-								"sink": {
-									"name": "codigo",
-									"type": "Int32",
-									"physicalType": "int"
-								}
-							},
-							{
-								"source": {
-									"name": "nombre",
-									"type": "String"
-								},
-								"sink": {
-									"name": "nombre",
+									"name": "nombreCategoria",
 									"type": "String",
 									"physicalType": "varchar"
 								}
 							},
 							{
 								"source": {
-									"name": "descripcion",
+									"name": "descripcionCategoria",
 									"type": "String"
 								},
 								"sink": {
-									"name": "descripcion",
+									"name": "descripcionCategoria",
 									"type": "String",
 									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "codigoCategoria",
-									"type": "UInt64"
-								},
-								"sink": {
-									"name": "codigoCategoria",
-									"type": "Int32",
-									"physicalType": "int"
 								}
 							}
 						],
@@ -1428,7 +913,7 @@
 				]
 			},
 			{
-				"name": "Inyectar Ordenes Trabajo Tareas",
+				"name": "Inyectar Ordenes Trabajo",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -1442,6 +927,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureMySqlSource",
+						"query": "select \r\n   work_order_id,\r\n   task_id,\r\n   work_order_task_action_id, \r\n   v.id vehiculo_id,\r\n   woty.id work_order_type_id,\r\n   wo.`name` nombreOrdenTrabajo,\r\n   wo.state estadoOrdenTarbajo,\r\n   case \r\n    when woty.id !=2 then wot.total_s_iva_price\r\n    else 0\r\n   end total_s_iva_no_Sinistro,\r\n\r\n   case \r\n    when woty.id !=2 then 1\r\n    else 0\r\n   end EsSeguro,\r\n\r\n   case \r\n    when woty.id = 2 then 1\r\n    else 0\r\n   end EsSinietro,\r\n\r\n   case \r\n    when woty.id =2 then wot.total_s_iva_price\r\n    else 0\r\n   end total_s_iva_Siniestro,\r\n\r\n   wot.workforce_s_iva_price costoManoObraSinIva,\r\n   wot.materials_s_iva_price costoMaterialSinIVa,\r\n   wot.total_s_iva_Price costoTotalSinIva, \r\n   wot.workforce_price costoManoObra,\r\n   wot.materials_price costoMaterial,\r\n   wot.total_Price costoTotal,\r\n   wot.workforce_discount descuentoManoObra,\r\n   wot.materials_price descuentoMaterial,\r\n   wot.total_Price descuentoTotal,\r\n   wo.created_at fechaCreacion,\r\n   wo.updated_at fechaActualizacion\r\nfrom work_order_tasks wot \r\ninner join work_orders wo on wo.id = wot.work_order_id\r\ninner join work_order_types woty on woty.id = wo.work_order_type_id\r\ninner join vehicles v on v.plate = wo.plate",
 						"queryTimeout": "02:00:00"
 					},
 					"sink": {
@@ -1462,24 +948,12 @@
 						"mappings": [
 							{
 								"source": {
-									"name": "id",
-									"type": "UInt64",
-									"physicalType": "bigint"
-								},
-								"sink": {
-									"name": "codigo",
-									"type": "Int32",
-									"physicalType": "int"
-								}
-							},
-							{
-								"source": {
 									"name": "work_order_id",
 									"type": "UInt64",
 									"physicalType": "bigint"
 								},
 								"sink": {
-									"name": "codigoWorkOrder",
+									"name": "ordenTrabajoCodigo",
 									"type": "Int32",
 									"physicalType": "int"
 								}
@@ -1491,19 +965,74 @@
 									"physicalType": "bigint"
 								},
 								"sink": {
-									"name": "codigoTarea",
+									"name": "tareaCodigo",
 									"type": "Int32",
 									"physicalType": "int"
 								}
 							},
 							{
 								"source": {
-									"name": "workforce_price",
-									"type": "Double",
-									"physicalType": "double"
+									"name": "work_order_task_action_id",
+									"type": "UInt64",
+									"physicalType": "bigint"
 								},
 								"sink": {
-									"name": "costoPersonal",
+									"name": "tareaAccionCodigo",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "vehiculo_id",
+									"type": "UInt64"
+								},
+								"sink": {
+									"name": "vehiculoCodigo",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "work_order_type_id",
+									"type": "UInt64"
+								},
+								"sink": {
+									"name": "ordenTabajoTipoCodigo",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "nombreOrdenTrabajo",
+									"type": "String"
+								},
+								"sink": {
+									"name": "nombreOrdenTrabajo",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "estadoOrdenTarbajo",
+									"type": "String"
+								},
+								"sink": {
+									"name": "estadoOrdenTarbajo",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "total_s_iva_no_Sinistro",
+									"type": "Double"
+								},
+								"sink": {
+									"name": "totalSivaNoSiniestro",
 									"type": "Decimal",
 									"physicalType": "decimal",
 									"scale": 4,
@@ -1512,12 +1041,33 @@
 							},
 							{
 								"source": {
-									"name": "materials_price",
-									"type": "Double",
-									"physicalType": "double"
+									"name": "EsSeguro",
+									"type": "Int64"
 								},
 								"sink": {
-									"name": "costoMaterial",
+									"name": "esSeguro",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "EsSinietro",
+									"type": "Int64"
+								},
+								"sink": {
+									"name": "esSinietro",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "total_s_iva_Siniestro",
+									"type": "Double"
+								},
+								"sink": {
+									"name": "totalSivaSiniestro",
 									"type": "Decimal",
 									"physicalType": "decimal",
 									"scale": 4,
@@ -1526,12 +1076,11 @@
 							},
 							{
 								"source": {
-									"name": "total_price",
-									"type": "Double",
-									"physicalType": "double"
+									"name": "costoManoObraSinIva",
+									"type": "Double"
 								},
 								"sink": {
-									"name": "costoTotal",
+									"name": "costoManoObraSinIva",
 									"type": "Decimal",
 									"physicalType": "decimal",
 									"scale": 4,
@@ -1540,12 +1089,11 @@
 							},
 							{
 								"source": {
-									"name": "workforce_s_iva_price",
-									"type": "Double",
-									"physicalType": "double"
+									"name": "costoMaterialSinIVa",
+									"type": "Double"
 								},
 								"sink": {
-									"name": "costoPersonalSinIva",
+									"name": "costoMaterialSinIVa",
 									"type": "Decimal",
 									"physicalType": "decimal",
 									"scale": 4,
@@ -1554,23 +1102,8 @@
 							},
 							{
 								"source": {
-									"name": "materials_s_iva_price",
-									"type": "Double",
-									"physicalType": "double"
-								},
-								"sink": {
-									"name": "costoMaterialSinIva",
-									"type": "Decimal",
-									"physicalType": "decimal",
-									"scale": 4,
-									"precision": 18
-								}
-							},
-							{
-								"source": {
-									"name": "total_s_iva_price",
-									"type": "Double",
-									"physicalType": "double"
+									"name": "costoTotalSinIva",
+									"type": "Double"
 								},
 								"sink": {
 									"name": "costoTotalSinIva",
@@ -1582,12 +1115,11 @@
 							},
 							{
 								"source": {
-									"name": "workforce_discount",
-									"type": "Double",
-									"physicalType": "double"
+									"name": "costoManoObra",
+									"type": "Double"
 								},
 								"sink": {
-									"name": "descuentoPersonal",
+									"name": "costoManoObra",
 									"type": "Decimal",
 									"physicalType": "decimal",
 									"scale": 4,
@@ -1596,12 +1128,11 @@
 							},
 							{
 								"source": {
-									"name": "materials_discount",
-									"type": "Double",
-									"physicalType": "double"
+									"name": "costoMaterial",
+									"type": "Double"
 								},
 								"sink": {
-									"name": "decuentoMaterial",
+									"name": "costoMaterial",
 									"type": "Decimal",
 									"physicalType": "decimal",
 									"scale": 4,
@@ -1610,12 +1141,11 @@
 							},
 							{
 								"source": {
-									"name": "total_discount",
-									"type": "Double",
-									"physicalType": "double"
+									"name": "costoTotal",
+									"type": "Double"
 								},
 								"sink": {
-									"name": "decuentoTotal",
+									"name": "costoTotal",
 									"type": "Decimal",
 									"physicalType": "decimal",
 									"scale": 4,
@@ -1624,26 +1154,63 @@
 							},
 							{
 								"source": {
-									"name": "created_at",
-									"type": "DateTime",
-									"physicalType": "timestamp"
+									"name": "descuentoManoObra",
+									"type": "Double"
+								},
+								"sink": {
+									"name": "descuentoManoObra",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 4,
+									"precision": 18
+								}
+							},
+							{
+								"source": {
+									"name": "descuentoMaterial",
+									"type": "Double"
+								},
+								"sink": {
+									"name": "descuentoMaterial",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 4,
+									"precision": 18
+								}
+							},
+							{
+								"source": {
+									"name": "descuentoTotal",
+									"type": "Double"
+								},
+								"sink": {
+									"name": "descuentoTotal",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 4,
+									"precision": 18
+								}
+							},
+							{
+								"source": {
+									"name": "fechaCreacion",
+									"type": "DateTime"
 								},
 								"sink": {
 									"name": "fechaCreacion",
 									"type": "DateTime",
-									"physicalType": "datetime"
+									"physicalType": "datetime2"
 								}
 							},
 							{
 								"source": {
-									"name": "updated_at",
-									"type": "DateTime",
-									"physicalType": "timestamp"
+									"name": "fechaActualizacion",
+									"type": "DateTime"
 								},
 								"sink": {
-									"name": "fechaUltimaActualizacion",
+									"name": "fechaActualizacion",
 									"type": "DateTime",
-									"physicalType": "datetime"
+									"physicalType": "datetime2"
 								}
 							}
 						],
@@ -1663,339 +1230,6 @@
 				"outputs": [
 					{
 						"referenceName": "stgOrdenesTrabajoTareas",
-						"type": "DatasetReference"
-					}
-				]
-			},
-			{
-				"name": "Inyectar Ordenes Trabajo",
-				"type": "Copy",
-				"dependsOn": [
-					{
-						"activity": "Inyectar Orden Trabajo Origen",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
-					{
-						"activity": "Inyectar Orden Trabajo Tipo",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
-					{
-						"activity": "Inyectar Orden Trabajo Tipo Gasto",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
-					{
-						"activity": "Inyectar Contratos",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
-					{
-						"activity": "Inyectar Orden Trabajo Categorias",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
-					{
-						"activity": "inyectar Clientes",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
-					{
-						"activity": "Inyectar Tareas",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
-					{
-						"activity": "Inyectar Ordenes Trabajo Tareas",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
-					{
-						"activity": "Intectar vehiculos",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"source": {
-						"type": "AzureMySqlSource",
-						"query": "select \nwo.id codigo,\nname nombre,\nstate estado,\nwo.deleted_at fechaEliminacion,\nwo.created_at fechaCreacion,\nwo.updated_at fechaActualizacion,\nhansa_Code hansaCode,\nwo.work_order_type_id codigoTipoOrdenTrabajo,\nwork_order_origin_id codigoOrdenTrabajoOriginal,\nreason razon,\ninternal_code codigoInterno,\nnumber numero,\nplate patente,\ncontract_id codigoContrato,\nkm,\nis_estimated estimada,\nwork_order_expense_type_id codigoTipoGasto,\nuser_id codigoUsuario,\nfreshdesk_code codigoTicket,\nvwo.vehicle_id codigoVehiculo\nfrom work_orders wo\nleft join vehicles_work_orders vwo on vwo.work_order_id = wo.id",
-						"queryTimeout": "02:00:00"
-					},
-					"sink": {
-						"type": "AzureSqlSink",
-						"writeBehavior": "upsert",
-						"upsertSettings": {
-							"useTempDB": true,
-							"keys": [
-								"codigo"
-							]
-						},
-						"sqlWriterUseTableLock": false,
-						"disableMetricsCollection": false
-					},
-					"enableStaging": false,
-					"translator": {
-						"type": "TabularTranslator",
-						"mappings": [
-							{
-								"source": {
-									"name": "codigo",
-									"type": "UInt64"
-								},
-								"sink": {
-									"name": "codigo",
-									"type": "Int32",
-									"physicalType": "int"
-								}
-							},
-							{
-								"source": {
-									"name": "nombre",
-									"type": "String"
-								},
-								"sink": {
-									"name": "nombre",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "estado",
-									"type": "String"
-								},
-								"sink": {
-									"name": "estado",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "fechaEliminacion",
-									"type": "DateTime"
-								},
-								"sink": {
-									"name": "fechaEliminacion",
-									"type": "DateTime",
-									"physicalType": "datetime"
-								}
-							},
-							{
-								"source": {
-									"name": "fechaCreacion",
-									"type": "DateTime"
-								},
-								"sink": {
-									"name": "fechaCreacion",
-									"type": "DateTime",
-									"physicalType": "datetime"
-								}
-							},
-							{
-								"source": {
-									"name": "fechaActualizacion",
-									"type": "DateTime"
-								},
-								"sink": {
-									"name": "fechaActualizacion",
-									"type": "DateTime",
-									"physicalType": "datetime"
-								}
-							},
-							{
-								"source": {
-									"name": "hansaCode",
-									"type": "String"
-								},
-								"sink": {
-									"name": "hansaCode",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "codigoTipoOrdenTrabajo",
-									"type": "UInt64"
-								},
-								"sink": {
-									"name": "codigoTipoOrdenTrabajo",
-									"type": "Int32",
-									"physicalType": "int"
-								}
-							},
-							{
-								"source": {
-									"name": "codigoOrdenTrabajoOriginal",
-									"type": "UInt64"
-								},
-								"sink": {
-									"name": "codigoOrdenTrabajoOriginal",
-									"type": "Int32",
-									"physicalType": "int"
-								}
-							},
-							{
-								"source": {
-									"name": "razon",
-									"type": "String"
-								},
-								"sink": {
-									"name": "razon",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "codigoInterno",
-									"type": "String"
-								},
-								"sink": {
-									"name": "codigoInterno",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "numero",
-									"type": "String"
-								},
-								"sink": {
-									"name": "numero",
-									"type": "Int32",
-									"physicalType": "int"
-								}
-							},
-							{
-								"source": {
-									"name": "patente",
-									"type": "String"
-								},
-								"sink": {
-									"name": "patente",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "codigoContrato",
-									"type": "UInt64"
-								},
-								"sink": {
-									"name": "codigoContrato",
-									"type": "Int32",
-									"physicalType": "int"
-								}
-							},
-							{
-								"source": {
-									"name": "km",
-									"type": "Int32",
-									"physicalType": "int"
-								},
-								"sink": {
-									"name": "km",
-									"type": "Decimal",
-									"physicalType": "decimal",
-									"scale": 0,
-									"precision": 18
-								}
-							},
-							{
-								"source": {
-									"name": "estimada",
-									"type": "Boolean"
-								},
-								"sink": {
-									"name": "estimada",
-									"type": "Boolean",
-									"physicalType": "bit"
-								}
-							},
-							{
-								"source": {
-									"name": "codigoTipoGasto",
-									"type": "UInt64"
-								},
-								"sink": {
-									"name": "codigoTipoGasto",
-									"type": "Int32",
-									"physicalType": "int"
-								}
-							},
-							{
-								"source": {
-									"name": "codigoUsuario",
-									"type": "UInt64"
-								},
-								"sink": {
-									"name": "codigoUsuario",
-									"type": "Int32",
-									"physicalType": "int"
-								}
-							},
-							{
-								"source": {
-									"name": "codigoTicket",
-									"type": "String"
-								},
-								"sink": {
-									"name": "codigoTicket",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "codigoVehiculo",
-									"type": "UInt64"
-								},
-								"sink": {
-									"name": "codigoVehiculo",
-									"type": "Int32",
-									"physicalType": "int"
-								}
-							}
-						],
-						"typeConversion": true,
-						"typeConversionSettings": {
-							"allowDataTruncation": true,
-							"treatBooleanAsNumber": true
-						}
-					}
-				},
-				"inputs": [
-					{
-						"referenceName": "EfleetOrdenesTrabajo",
-						"type": "DatasetReference"
-					}
-				],
-				"outputs": [
-					{
-						"referenceName": "dimOrdenesTrabajo",
 						"type": "DatasetReference"
 					}
 				]
