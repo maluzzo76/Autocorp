@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Inyectar FactOrdenesTrabajo",
+				"name": "Inyectar Fact OrdenesTrabajo",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -17,7 +17,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "select \nt.codigo,\not.id workOrderId,\nta.id tareaId,\ncostoPersonal,\ncostoMaterial,\ncostoTotal,\ncostoPersonalSinIva,\ncostoMaterialSinIva,\ncostoTotalSinIva,\ndescuentoPersonal,\ndecuentoMaterial,\ndecuentoTotal,\nt.fechaCreacion,\nfechaUltimaActualizacion\n\nfrom stg.OrdenTrabajoTareas t\nleft join whs.dimOrdenesTrabajo ot on ot.codigo = t.codigoWorkOrder\nleft join whs.dimTareas ta on ta.codigo = t.codigoTarea",
+						"sqlReaderQuery": "select \n    ordenTrabajoCodigo id,\n    t.id tareaid,\n    v.id vehiculoid,\n    ordenTabajoTipoCodigo ordenTrabajoTipoid,\n    nombreOrdenTrabajo,\n    estadoOrdenTarbajo,\n    esSeguro,\n    esSinietro,\n    totalSivaNoSiniestro,    \n    totalSivaSiniestro,\n    costoManoObraSinIva,\n    costoManoObra,\n    costoMaterialSinIVa,\n    costoMaterial,\n    costoMaterialSinIVa,\n    costoTotalSinIva,\n    costoTotal,\n    descuentoMaterial,\n    descuentoManoObra,\n    descuentoTotal,\n    fechaCreacion,\n    fechaActualizacion\n\nfrom stg.OrdenesTrabajoTareas ot\nleft join whs.dimVehiculos v on v.codigo = ot.vehiculoCodigo\nleft join whs.dimOrdenTrabajoTipo ott on ott.codigo = ot.ordenTabajoTipoCodigo\nleft join whs.dimTareas t on t.id = ot.tareaCodigo",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
@@ -39,7 +39,7 @@
 						"mappings": [
 							{
 								"source": {
-									"name": "codigo",
+									"name": "id",
 									"type": "Int32",
 									"physicalType": "int"
 								},
@@ -51,38 +51,178 @@
 							},
 							{
 								"source": {
-									"name": "workOrderId",
+									"name": "tareaid",
 									"type": "Int32",
 									"physicalType": "int"
 								},
 								"sink": {
-									"name": "workOrderId",
-									"type": "Int32",
-									"physicalType": "int"
-								}
-							},
-							{
-								"source": {
 									"name": "tareaId",
 									"type": "Int32",
 									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "vehiculoid",
+									"type": "Int32",
+									"physicalType": "int"
 								},
 								"sink": {
-									"name": "TareaId",
+									"name": "vehiculoId",
 									"type": "Int32",
 									"physicalType": "int"
 								}
 							},
 							{
 								"source": {
-									"name": "costoPersonal",
+									"name": "ordenTrabajoTipoid",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "ordenTabajoTipoId",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "nombreOrdenTrabajo",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "nombreOrdenTrabajo",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "estadoOrdenTarbajo",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "estadoOrdenTarbajo",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "totalSivaNoSiniestro",
 									"type": "Decimal",
 									"physicalType": "decimal",
 									"scale": 4,
 									"precision": 18
 								},
 								"sink": {
-									"name": "costoPersonal",
+									"name": "totalSivaNoSiniestro",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 4,
+									"precision": 18
+								}
+							},
+							{
+								"source": {
+									"name": "esSeguro",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "esSeguro",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "esSinietro",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "esSinietro",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "totalSivaSiniestro",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 4,
+									"precision": 18
+								},
+								"sink": {
+									"name": "totalSivaSiniestro",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 4,
+									"precision": 18
+								}
+							},
+							{
+								"source": {
+									"name": "costoManoObraSinIva",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 4,
+									"precision": 18
+								},
+								"sink": {
+									"name": "costoManoObraSinIva",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 4,
+									"precision": 18
+								}
+							},
+							{
+								"source": {
+									"name": "costoMaterialSinIVa",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 4,
+									"precision": 18
+								},
+								"sink": {
+									"name": "costoMaterialSinIVa",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 4,
+									"precision": 18
+								}
+							},
+							{
+								"source": {
+									"name": "costoTotalSinIva",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 4,
+									"precision": 18
+								},
+								"sink": {
+									"name": "costoTotalSinIva",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 4,
+									"precision": 18
+								}
+							},
+							{
+								"source": {
+									"name": "costoManoObra",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 4,
+									"precision": 18
+								},
+								"sink": {
+									"name": "costoManoObra",
 									"type": "Decimal",
 									"physicalType": "decimal",
 									"scale": 4,
@@ -123,14 +263,14 @@
 							},
 							{
 								"source": {
-									"name": "costoPersonalSinIva",
+									"name": "descuentoManoObra",
 									"type": "Decimal",
 									"physicalType": "decimal",
 									"scale": 4,
 									"precision": 18
 								},
 								"sink": {
-									"name": "costoPersonalSinIva",
+									"name": "descuentoManoObra",
 									"type": "Decimal",
 									"physicalType": "decimal",
 									"scale": 4,
@@ -139,14 +279,14 @@
 							},
 							{
 								"source": {
-									"name": "costoMaterialSinIva",
+									"name": "descuentoMaterial",
 									"type": "Decimal",
 									"physicalType": "decimal",
 									"scale": 4,
 									"precision": 18
 								},
 								"sink": {
-									"name": "costoMaterialSinIva",
+									"name": "descuentoMaterial",
 									"type": "Decimal",
 									"physicalType": "decimal",
 									"scale": 4,
@@ -155,62 +295,14 @@
 							},
 							{
 								"source": {
-									"name": "costoTotalSinIva",
+									"name": "descuentoTotal",
 									"type": "Decimal",
 									"physicalType": "decimal",
 									"scale": 4,
 									"precision": 18
 								},
 								"sink": {
-									"name": "costoTotalSinIva",
-									"type": "Decimal",
-									"physicalType": "decimal",
-									"scale": 4,
-									"precision": 18
-								}
-							},
-							{
-								"source": {
-									"name": "descuentoPersonal",
-									"type": "Decimal",
-									"physicalType": "decimal",
-									"scale": 4,
-									"precision": 18
-								},
-								"sink": {
-									"name": "descuentoPersonal",
-									"type": "Decimal",
-									"physicalType": "decimal",
-									"scale": 4,
-									"precision": 18
-								}
-							},
-							{
-								"source": {
-									"name": "decuentoMaterial",
-									"type": "Decimal",
-									"physicalType": "decimal",
-									"scale": 4,
-									"precision": 18
-								},
-								"sink": {
-									"name": "decuentoMaterial",
-									"type": "Decimal",
-									"physicalType": "decimal",
-									"scale": 4,
-									"precision": 18
-								}
-							},
-							{
-								"source": {
-									"name": "decuentoTotal",
-									"type": "Decimal",
-									"physicalType": "decimal",
-									"scale": 4,
-									"precision": 18
-								},
-								"sink": {
-									"name": "decuentoTotal",
+									"name": "descuentoTotal",
 									"type": "Decimal",
 									"physicalType": "decimal",
 									"scale": 4,
@@ -221,24 +313,24 @@
 								"source": {
 									"name": "fechaCreacion",
 									"type": "DateTime",
-									"physicalType": "datetime"
+									"physicalType": "datetime2"
 								},
 								"sink": {
 									"name": "fechaCreacion",
 									"type": "DateTime",
-									"physicalType": "datetime"
+									"physicalType": "datetime2"
 								}
 							},
 							{
 								"source": {
-									"name": "fechaUltimaActualizacion",
+									"name": "fechaActualizacion",
 									"type": "DateTime",
-									"physicalType": "datetime"
+									"physicalType": "datetime2"
 								},
 								"sink": {
-									"name": "fechaUltimaActualizacion",
+									"name": "fechaActualizacion",
 									"type": "DateTime",
-									"physicalType": "datetime"
+									"physicalType": "datetime2"
 								}
 							}
 						],
