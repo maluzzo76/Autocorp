@@ -1,0 +1,11 @@
+{
+	"name": "AF_InyectarTickets",
+	"properties": {
+		"annotations": [],
+		"type": "AzureFunction",
+		"typeProperties": {
+			"functionAppUrl": "https://inyectartickets.azurewebsites.net",
+			"authentication": "Anonymous"
+		}
+	}
+}
