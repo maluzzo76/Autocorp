@@ -43,6 +43,10 @@
 			"type": "secureString",
 			"metadata": "Cadena protegida para \"connectionString\"de \"Storege_Fresh\""
 		},
+		"AF_InyectarTickets_functionKey": {
+			"type": "secureString",
+			"metadata": "Cadena protegida para \"functionKey\"de \"AF_InyectarTickets\""
+		},
 		"AF_DW_properties_typeProperties_functionAppUrl": {
 			"type": "string",
 			"defaultValue": "https://dwservices.azurewebsites.net"
@@ -86,6 +90,10 @@
 		"SqlAutocorpDw_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "autocorp"
+		},
+		"AF_InyectarTickets_properties_typeProperties_functionAppUrl": {
+			"type": "string",
+			"defaultValue": "https://inyectartickets.azurewebsites.net"
 		},
 		"containerUri": {
 			"type": "string",
@@ -141,6 +149,9 @@
 					"Storege_Fresh_connectionString": {
 						"value": "[parameters('Storege_Fresh_connectionString')]"
 					},
+					"AF_InyectarTickets_functionKey": {
+						"value": "[parameters('AF_InyectarTickets_functionKey')]"
+					},
 					"AF_DW_properties_typeProperties_functionAppUrl": {
 						"value": "[parameters('AF_DW_properties_typeProperties_functionAppUrl')]"
 					},
@@ -173,6 +184,9 @@
 					},
 					"SqlAutocorpDw_properties_typeProperties_userName": {
 						"value": "[parameters('SqlAutocorpDw_properties_typeProperties_userName')]"
+					},
+					"AF_InyectarTickets_properties_typeProperties_functionAppUrl": {
+						"value": "[parameters('AF_InyectarTickets_properties_typeProperties_functionAppUrl')]"
 					}
 				}
 			},

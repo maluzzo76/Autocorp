@@ -32,6 +32,9 @@
 		"Storege_Fresh_connectionString": {
 			"value": ""
 		},
+		"AF_InyectarTickets_functionKey": {
+			"value": ""
+		},
 		"AF_DW_properties_typeProperties_functionAppUrl": {
 			"value": "https://dwservices.azurewebsites.net"
 		},
@@ -64,6 +67,9 @@
 		},
 		"SqlAutocorpDw_properties_typeProperties_userName": {
 			"value": "autocorp"
+		},
+		"AF_InyectarTickets_properties_typeProperties_functionAppUrl": {
+			"value": "https://inyectartickets.azurewebsites.net"
 		},
 		"containerUri": {
 			"value": ""

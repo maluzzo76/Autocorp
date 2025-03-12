@@ -43,6 +43,10 @@
 			"type": "secureString",
 			"metadata": "Cadena protegida para \"connectionString\"de \"Storege_Fresh\""
 		},
+		"AF_InyectarTickets_functionKey": {
+			"type": "secureString",
+			"metadata": "Cadena protegida para \"functionKey\"de \"AF_InyectarTickets\""
+		},
 		"AF_DW_properties_typeProperties_functionAppUrl": {
 			"type": "string",
 			"defaultValue": "https://dwservices.azurewebsites.net"
@@ -86,6 +90,10 @@
 		"SqlAutocorpDw_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "autocorp"
+		},
+		"AF_InyectarTickets_properties_typeProperties_functionAppUrl": {
+			"type": "string",
+			"defaultValue": "https://inyectartickets.azurewebsites.net"
 		}
 	},
 	"variables": {
@@ -2062,6 +2070,8 @@
 					{
 						"name": "Intectar Tickes stg",
 						"type": "Copy",
+						"state": "Inactive",
+						"onInactiveMarkAs": "Succeeded",
 						"dependsOn": [],
 						"policy": {
 							"timeout": "0.12:00:00",
@@ -2215,6 +2225,31 @@
 								"parameters": {}
 							}
 						]
+					},
+					{
+						"name": "Importar Tickets",
+						"type": "AzureFunctionActivity",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"functionName": {
+								"value": "@concat('ImportarTickets')",
+								"type": "Expression"
+							},
+							"headers": {},
+							"method": "GET"
+						},
+						"linkedServiceName": {
+							"referenceName": "AF_DW",
+							"type": "LinkedServiceReference"
+						}
 					}
 				],
 				"policy": {
@@ -2240,7 +2275,8 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/Fresh_Tickets')]",
-				"[concat(variables('factoryId'), '/datasets/stgTickets')]"
+				"[concat(variables('factoryId'), '/datasets/stgTickets')]",
+				"[concat(variables('factoryId'), '/linkedServices/AF_DW')]"
 			]
 		},
 		{
@@ -8432,6 +8468,24 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/001-Orquestador')]"
 			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AF_InyectarTickets')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureFunction",
+				"typeProperties": {
+					"functionAppUrl": "[parameters('AF_InyectarTickets_properties_typeProperties_functionAppUrl')]",
+					"authentication": "Anonymous",
+					"functionKey": {
+						"type": "SecureString",
+						"value": "[parameters('AF_InyectarTickets_functionKey')]"
+					}
+				}
+			},
+			"dependsOn": []
 		}
 	]
 }
