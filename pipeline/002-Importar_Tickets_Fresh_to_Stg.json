@@ -5,6 +5,8 @@
 			{
 				"name": "Intectar Tickes stg",
 				"type": "Copy",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -156,6 +158,30 @@
 						"type": "DatasetReference"
 					}
 				]
+			},
+			{
+				"name": "Importar Tickets",
+				"type": "AzureFunctionActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"functionName": {
+						"value": "@concat('ImportarTickets')",
+						"type": "Expression"
+					},
+					"method": "GET"
+				},
+				"linkedServiceName": {
+					"referenceName": "AF_DW",
+					"type": "LinkedServiceReference"
+				}
 			}
 		],
 		"variables": {
