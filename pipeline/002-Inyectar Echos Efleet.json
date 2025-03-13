@@ -17,7 +17,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "select \n    ordenTrabajoCodigo id,\n    t.id tareaid,\n    v.id vehiculoid,\n    ordenTabajoTipoCodigo ordenTrabajoTipoid,\n    nombreOrdenTrabajo,\n    estadoOrdenTarbajo,\n    esSeguro,\n    esSinietro,\n    totalSivaNoSiniestro,    \n    totalSivaSiniestro,\n    costoManoObraSinIva,\n    costoManoObra,\n    costoMaterialSinIVa,\n    costoMaterial,\n    costoMaterialSinIVa,\n    costoTotalSinIva,\n    costoTotal,\n    descuentoMaterial,\n    descuentoManoObra,\n    descuentoTotal,\n    fechaCreacion,\n    fechaActualizacion\n\nfrom stg.OrdenesTrabajoTareas ot\nleft join whs.dimVehiculos v on v.codigo = ot.vehiculoCodigo\nleft join whs.dimOrdenTrabajoTipo ott on ott.codigo = ot.ordenTabajoTipoCodigo\nleft join whs.dimTareas t on t.id = ot.tareaCodigo",
+						"sqlReaderQuery": "select \n    ordenTrabajoCodigo id,\n    t.id tareaid,\n    v.id vehiculoid,\n    ordenTabajoTipoCodigo ordenTrabajoTipoid,\n    nombreOrdenTrabajo,\n    estadoOrdenTarbajo,\n    esSeguro,\n    esSinietro,\n    totalSivaNoSiniestro,    \n    totalSivaSiniestro,\n    costoManoObraSinIva,\n    costoManoObra,\n    costoMaterialSinIVa,\n    costoMaterial,\n    costoMaterialSinIVa,\n    costoTotalSinIva,\n    costoTotal,\n    descuentoMaterial,\n    descuentoManoObra,\n    descuentoTotal,\n    fechaCreacion,\n    fechaActualizacion\n\nfrom stg.OrdenesTrabajoTareas ot\nleft join whs.dimVehiculos v on v.codigo = ot.vehiculoCodigo\nleft join whs.dimOrdenTrabajoTipo ott on ott.codigo = ot.ordenTabajoTipoCodigo\nleft join whs.dimTareas t on t.id = ot.tareaCodigo\nwhere ordenTabajoTipoCodigo is not null",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
