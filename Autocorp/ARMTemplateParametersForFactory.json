@@ -8,6 +8,9 @@
 		"AF_DW_functionKey": {
 			"value": ""
 		},
+		"AF_InyectarTickets_functionKey": {
+			"value": ""
+		},
 		"APIFresh_password": {
 			"value": ""
 		},
@@ -32,11 +35,11 @@
 		"Storege_Fresh_connectionString": {
 			"value": ""
 		},
-		"AF_InyectarTickets_functionKey": {
-			"value": ""
-		},
 		"AF_DW_properties_typeProperties_functionAppUrl": {
 			"value": "https://dwservices.azurewebsites.net"
+		},
+		"AF_InyectarTickets_properties_typeProperties_functionAppUrl": {
+			"value": "https://inyectartickets.azurewebsites.net"
 		},
 		"APIFresh_properties_typeProperties_url": {
 			"value": "https://autocorpar.freshdesk.com/api/v2/sla_policies"
@@ -67,9 +70,6 @@
 		},
 		"SqlAutocorpDw_properties_typeProperties_userName": {
 			"value": "autocorp"
-		},
-		"AF_InyectarTickets_properties_typeProperties_functionAppUrl": {
-			"value": "https://inyectartickets.azurewebsites.net"
 		}
 	}
 }

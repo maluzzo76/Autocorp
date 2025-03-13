@@ -11,6 +11,10 @@
 			"type": "secureString",
 			"metadata": "Cadena protegida para \"functionKey\"de \"AF_DW\""
 		},
+		"AF_InyectarTickets_functionKey": {
+			"type": "secureString",
+			"metadata": "Cadena protegida para \"functionKey\"de \"AF_InyectarTickets\""
+		},
 		"APIFresh_password": {
 			"type": "secureString",
 			"metadata": "Cadena protegida para \"password\"de \"APIFresh\""
@@ -43,13 +47,13 @@
 			"type": "secureString",
 			"metadata": "Cadena protegida para \"connectionString\"de \"Storege_Fresh\""
 		},
-		"AF_InyectarTickets_functionKey": {
-			"type": "secureString",
-			"metadata": "Cadena protegida para \"functionKey\"de \"AF_InyectarTickets\""
-		},
 		"AF_DW_properties_typeProperties_functionAppUrl": {
 			"type": "string",
 			"defaultValue": "https://dwservices.azurewebsites.net"
+		},
+		"AF_InyectarTickets_properties_typeProperties_functionAppUrl": {
+			"type": "string",
+			"defaultValue": "https://inyectartickets.azurewebsites.net"
 		},
 		"APIFresh_properties_typeProperties_url": {
 			"type": "string",
@@ -90,10 +94,6 @@
 		"SqlAutocorpDw_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "autocorp"
-		},
-		"AF_InyectarTickets_properties_typeProperties_functionAppUrl": {
-			"type": "string",
-			"defaultValue": "https://inyectartickets.azurewebsites.net"
 		}
 	},
 	"variables": {
@@ -1037,7 +1037,7 @@
 						"typeProperties": {
 							"source": {
 								"type": "AzureMySqlSource",
-								"query": "select \r\n   work_order_id,\r\n   task_id,\r\n   work_order_task_action_id, \r\n   v.id vehiculo_id,\r\n   woty.id work_order_type_id,\r\n   wo.`name` nombreOrdenTrabajo,\r\n   wo.state estadoOrdenTarbajo,\r\n   case \r\n    when woty.id !=2 then wot.total_s_iva_price\r\n    else 0\r\n   end total_s_iva_no_Sinistro,\r\n\r\n   case \r\n    when woty.id !=2 then 1\r\n    else 0\r\n   end EsSeguro,\r\n\r\n   case \r\n    when woty.id = 2 then 1\r\n    else 0\r\n   end EsSinietro,\r\n\r\n   case \r\n    when woty.id =2 then wot.total_s_iva_price\r\n    else 0\r\n   end total_s_iva_Siniestro,\r\n\r\n   wot.workforce_s_iva_price costoManoObraSinIva,\r\n   wot.materials_s_iva_price costoMaterialSinIVa,\r\n   wot.total_s_iva_Price costoTotalSinIva, \r\n   wot.workforce_price costoManoObra,\r\n   wot.materials_price costoMaterial,\r\n   wot.total_Price costoTotal,\r\n   wot.workforce_discount descuentoManoObra,\r\n   wot.materials_price descuentoMaterial,\r\n   wot.total_Price descuentoTotal,\r\n   wo.created_at fechaCreacion,\r\n   wo.updated_at fechaActualizacion\r\nfrom work_order_tasks wot \r\ninner join work_orders wo on wo.id = wot.work_order_id\r\ninner join work_order_types woty on woty.id = wo.work_order_type_id\r\ninner join vehicles v on v.plate = wo.plate",
+								"query": "select \r\n   wo.id work_order_id,\r\n   task_id,\r\n   work_order_task_action_id, \r\n   v.id vehiculo_id,\r\n   woty.id work_order_type_id,\r\n   wo.`name` nombreOrdenTrabajo,\r\n   wo.state estadoOrdenTarbajo,\r\n   case \r\n    when woty.id !=2 then wot.total_s_iva_price\r\n    else 0\r\n   end total_s_iva_no_Sinistro,\r\n\r\n   case \r\n    when woty.id !=2 then 1\r\n    else 0\r\n   end EsSeguro,\r\n\r\n   case \r\n    when woty.id = 2 then 1\r\n    else 0\r\n   end EsSinietro,\r\n\r\n   case \r\n    when woty.id =2 then wot.total_s_iva_price\r\n    else 0\r\n   end total_s_iva_Siniestro,\r\n\r\n   wot.workforce_s_iva_price costoManoObraSinIva,\r\n   wot.materials_s_iva_price costoMaterialSinIVa,\r\n   wot.total_s_iva_Price costoTotalSinIva, \r\n   wot.workforce_price costoManoObra,\r\n   wot.materials_price costoMaterial,\r\n   wot.total_Price costoTotal,\r\n   wot.workforce_discount descuentoManoObra,\r\n   wot.materials_price descuentoMaterial,\r\n   wot.total_Price descuentoTotal,\r\n   wo.created_at fechaCreacion,\r\n   wo.updated_at fechaActualizacion\r\nfrom work_orders wo\r\nleft join work_order_tasks wot on wot.work_order_id = wo.id\r\ninner join work_order_types woty on woty.id = wo.work_order_type_id\r\nINNER join vehicles v on v.plate = wo.plate\r\nwhere wo.id is not null",
 								"queryTimeout": "02:00:00"
 							},
 							"sink": {
@@ -2286,8 +2286,8 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "Inyectar Fact OrdenesTrabajo",
-						"type": "Copy",
+						"name": "Inyectar Fact",
+						"type": "Script",
 						"dependsOn": [],
 						"policy": {
 							"timeout": "0.12:00:00",
@@ -2297,347 +2297,19 @@
 							"secureInput": false
 						},
 						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "AzureSqlSource",
-								"sqlReaderQuery": "select \n    ordenTrabajoCodigo id,\n    t.id tareaid,\n    v.id vehiculoid,\n    ordenTabajoTipoCodigo ordenTrabajoTipoid,\n    nombreOrdenTrabajo,\n    estadoOrdenTarbajo,\n    esSeguro,\n    esSinietro,\n    totalSivaNoSiniestro,    \n    totalSivaSiniestro,\n    costoManoObraSinIva,\n    costoManoObra,\n    costoMaterialSinIVa,\n    costoMaterial,\n    costoMaterialSinIVa,\n    costoTotalSinIva,\n    costoTotal,\n    descuentoMaterial,\n    descuentoManoObra,\n    descuentoTotal,\n    fechaCreacion,\n    fechaActualizacion\n\nfrom stg.OrdenesTrabajoTareas ot\nleft join whs.dimVehiculos v on v.codigo = ot.vehiculoCodigo\nleft join whs.dimOrdenTrabajoTipo ott on ott.codigo = ot.ordenTabajoTipoCodigo\nleft join whs.dimTareas t on t.id = ot.tareaCodigo",
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"sink": {
-								"type": "AzureSqlSink",
-								"writeBehavior": "upsert",
-								"upsertSettings": {
-									"useTempDB": true,
-									"keys": [
-										"codigo"
-									]
-								},
-								"sqlWriterUseTableLock": false,
-								"disableMetricsCollection": false
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"name": "id",
-											"type": "Int32",
-											"physicalType": "int"
-										},
-										"sink": {
-											"name": "codigo",
-											"type": "Int32",
-											"physicalType": "int"
-										}
-									},
-									{
-										"source": {
-											"name": "tareaid",
-											"type": "Int32",
-											"physicalType": "int"
-										},
-										"sink": {
-											"name": "tareaId",
-											"type": "Int32",
-											"physicalType": "int"
-										}
-									},
-									{
-										"source": {
-											"name": "vehiculoid",
-											"type": "Int32",
-											"physicalType": "int"
-										},
-										"sink": {
-											"name": "vehiculoId",
-											"type": "Int32",
-											"physicalType": "int"
-										}
-									},
-									{
-										"source": {
-											"name": "ordenTrabajoTipoid",
-											"type": "Int32",
-											"physicalType": "int"
-										},
-										"sink": {
-											"name": "ordenTabajoTipoId",
-											"type": "Int32",
-											"physicalType": "int"
-										}
-									},
-									{
-										"source": {
-											"name": "nombreOrdenTrabajo",
-											"type": "String",
-											"physicalType": "varchar"
-										},
-										"sink": {
-											"name": "nombreOrdenTrabajo",
-											"type": "String",
-											"physicalType": "varchar"
-										}
-									},
-									{
-										"source": {
-											"name": "estadoOrdenTarbajo",
-											"type": "String",
-											"physicalType": "varchar"
-										},
-										"sink": {
-											"name": "estadoOrdenTarbajo",
-											"type": "String",
-											"physicalType": "varchar"
-										}
-									},
-									{
-										"source": {
-											"name": "totalSivaNoSiniestro",
-											"type": "Decimal",
-											"physicalType": "decimal",
-											"scale": 4,
-											"precision": 18
-										},
-										"sink": {
-											"name": "totalSivaNoSiniestro",
-											"type": "Decimal",
-											"physicalType": "decimal",
-											"scale": 4,
-											"precision": 18
-										}
-									},
-									{
-										"source": {
-											"name": "esSeguro",
-											"type": "Int32",
-											"physicalType": "int"
-										},
-										"sink": {
-											"name": "esSeguro",
-											"type": "Int32",
-											"physicalType": "int"
-										}
-									},
-									{
-										"source": {
-											"name": "esSinietro",
-											"type": "Int32",
-											"physicalType": "int"
-										},
-										"sink": {
-											"name": "esSinietro",
-											"type": "Int32",
-											"physicalType": "int"
-										}
-									},
-									{
-										"source": {
-											"name": "totalSivaSiniestro",
-											"type": "Decimal",
-											"physicalType": "decimal",
-											"scale": 4,
-											"precision": 18
-										},
-										"sink": {
-											"name": "totalSivaSiniestro",
-											"type": "Decimal",
-											"physicalType": "decimal",
-											"scale": 4,
-											"precision": 18
-										}
-									},
-									{
-										"source": {
-											"name": "costoManoObraSinIva",
-											"type": "Decimal",
-											"physicalType": "decimal",
-											"scale": 4,
-											"precision": 18
-										},
-										"sink": {
-											"name": "costoManoObraSinIva",
-											"type": "Decimal",
-											"physicalType": "decimal",
-											"scale": 4,
-											"precision": 18
-										}
-									},
-									{
-										"source": {
-											"name": "costoMaterialSinIVa",
-											"type": "Decimal",
-											"physicalType": "decimal",
-											"scale": 4,
-											"precision": 18
-										},
-										"sink": {
-											"name": "costoMaterialSinIVa",
-											"type": "Decimal",
-											"physicalType": "decimal",
-											"scale": 4,
-											"precision": 18
-										}
-									},
-									{
-										"source": {
-											"name": "costoTotalSinIva",
-											"type": "Decimal",
-											"physicalType": "decimal",
-											"scale": 4,
-											"precision": 18
-										},
-										"sink": {
-											"name": "costoTotalSinIva",
-											"type": "Decimal",
-											"physicalType": "decimal",
-											"scale": 4,
-											"precision": 18
-										}
-									},
-									{
-										"source": {
-											"name": "costoManoObra",
-											"type": "Decimal",
-											"physicalType": "decimal",
-											"scale": 4,
-											"precision": 18
-										},
-										"sink": {
-											"name": "costoManoObra",
-											"type": "Decimal",
-											"physicalType": "decimal",
-											"scale": 4,
-											"precision": 18
-										}
-									},
-									{
-										"source": {
-											"name": "costoMaterial",
-											"type": "Decimal",
-											"physicalType": "decimal",
-											"scale": 4,
-											"precision": 18
-										},
-										"sink": {
-											"name": "costoMaterial",
-											"type": "Decimal",
-											"physicalType": "decimal",
-											"scale": 4,
-											"precision": 18
-										}
-									},
-									{
-										"source": {
-											"name": "costoTotal",
-											"type": "Decimal",
-											"physicalType": "decimal",
-											"scale": 4,
-											"precision": 18
-										},
-										"sink": {
-											"name": "costoTotal",
-											"type": "Decimal",
-											"physicalType": "decimal",
-											"scale": 4,
-											"precision": 18
-										}
-									},
-									{
-										"source": {
-											"name": "descuentoManoObra",
-											"type": "Decimal",
-											"physicalType": "decimal",
-											"scale": 4,
-											"precision": 18
-										},
-										"sink": {
-											"name": "descuentoManoObra",
-											"type": "Decimal",
-											"physicalType": "decimal",
-											"scale": 4,
-											"precision": 18
-										}
-									},
-									{
-										"source": {
-											"name": "descuentoMaterial",
-											"type": "Decimal",
-											"physicalType": "decimal",
-											"scale": 4,
-											"precision": 18
-										},
-										"sink": {
-											"name": "descuentoMaterial",
-											"type": "Decimal",
-											"physicalType": "decimal",
-											"scale": 4,
-											"precision": 18
-										}
-									},
-									{
-										"source": {
-											"name": "descuentoTotal",
-											"type": "Decimal",
-											"physicalType": "decimal",
-											"scale": 4,
-											"precision": 18
-										},
-										"sink": {
-											"name": "descuentoTotal",
-											"type": "Decimal",
-											"physicalType": "decimal",
-											"scale": 4,
-											"precision": 18
-										}
-									},
-									{
-										"source": {
-											"name": "fechaCreacion",
-											"type": "DateTime",
-											"physicalType": "datetime2"
-										},
-										"sink": {
-											"name": "fechaCreacion",
-											"type": "DateTime",
-											"physicalType": "datetime2"
-										}
-									},
-									{
-										"source": {
-											"name": "fechaActualizacion",
-											"type": "DateTime",
-											"physicalType": "datetime2"
-										},
-										"sink": {
-											"name": "fechaActualizacion",
-											"type": "DateTime",
-											"physicalType": "datetime2"
-										}
-									}
-								],
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
+						"linkedServiceName": {
+							"referenceName": "SqlAutocorpDw",
+							"type": "LinkedServiceReference"
 						},
-						"inputs": [
-							{
-								"referenceName": "stgOrdenesTrabajoTareas",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "factOrdenesTrabajo",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
+						"typeProperties": {
+							"scripts": [
+								{
+									"type": "Query",
+									"text": "\ntruncate table whs.factOrdenesTrabajo\ninsert into whs.factOrdenesTrabajo\nselect \n    ot.ordenTrabajoCodigo codigo,\n    t.id tareaid,\n    null tareaAccionId,\n    v.id vehiculoid,\n    ordenTabajoTipoCodigo ordenTrabajoTipoid,\n    nombreOrdenTrabajo,\n    estadoOrdenTarbajo,\n    totalSivaNoSiniestro,        \n    esSeguro,\n    esSinietro,    \n    totalSivaSiniestro,    \n    costoManoObraSinIva,\n    costoMaterialSinIVa,\n    costoTotalSinIva,\n    costoManoObra,    \n    costoMaterial,\n    costoTotal,\n    descuentoManoObra,\n    descuentoMaterial,    \n    descuentoTotal,\n    fechaCreacion,\n    fechaActualizacion\n\nfrom stg.OrdenesTrabajoTareas ot\nleft join whs.dimVehiculos v on v.codigo = ot.vehiculoCodigo\nleft join whs.dimOrdenTrabajoTipo ott on ott.codigo = ot.ordenTabajoTipoCodigo\nleft join whs.dimTareas t on t.id = ot.tareaCodigo\nwhere ordenTrabajoCodigo is not null"
+								}
+							],
+							"scriptBlockExecutionTimeout": "02:00:00"
+						}
 					}
 				],
 				"policy": {
@@ -2649,8 +2321,7 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/stgOrdenesTrabajoTareas')]",
-				"[concat(variables('factoryId'), '/datasets/factOrdenesTrabajo')]"
+				"[concat(variables('factoryId'), '/linkedServices/SqlAutocorpDw')]"
 			]
 		},
 		{
@@ -8290,6 +7961,24 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/AF_InyectarTickets')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureFunction",
+				"typeProperties": {
+					"functionAppUrl": "[parameters('AF_InyectarTickets_properties_typeProperties_functionAppUrl')]",
+					"authentication": "Anonymous",
+					"functionKey": {
+						"type": "SecureString",
+						"value": "[parameters('AF_InyectarTickets_functionKey')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/APIFresh')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -8468,24 +8157,6 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/001-Orquestador')]"
 			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AF_InyectarTickets')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureFunction",
-				"typeProperties": {
-					"functionAppUrl": "[parameters('AF_InyectarTickets_properties_typeProperties_functionAppUrl')]",
-					"authentication": "Anonymous",
-					"functionKey": {
-						"type": "SecureString",
-						"value": "[parameters('AF_InyectarTickets_functionKey')]"
-					}
-				}
-			},
-			"dependsOn": []
 		}
 	]
 }

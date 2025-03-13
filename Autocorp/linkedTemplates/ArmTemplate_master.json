@@ -11,6 +11,10 @@
 			"type": "secureString",
 			"metadata": "Cadena protegida para \"functionKey\"de \"AF_DW\""
 		},
+		"AF_InyectarTickets_functionKey": {
+			"type": "secureString",
+			"metadata": "Cadena protegida para \"functionKey\"de \"AF_InyectarTickets\""
+		},
 		"APIFresh_password": {
 			"type": "secureString",
 			"metadata": "Cadena protegida para \"password\"de \"APIFresh\""
@@ -43,13 +47,13 @@
 			"type": "secureString",
 			"metadata": "Cadena protegida para \"connectionString\"de \"Storege_Fresh\""
 		},
-		"AF_InyectarTickets_functionKey": {
-			"type": "secureString",
-			"metadata": "Cadena protegida para \"functionKey\"de \"AF_InyectarTickets\""
-		},
 		"AF_DW_properties_typeProperties_functionAppUrl": {
 			"type": "string",
 			"defaultValue": "https://dwservices.azurewebsites.net"
+		},
+		"AF_InyectarTickets_properties_typeProperties_functionAppUrl": {
+			"type": "string",
+			"defaultValue": "https://inyectartickets.azurewebsites.net"
 		},
 		"APIFresh_properties_typeProperties_url": {
 			"type": "string",
@@ -91,10 +95,6 @@
 			"type": "string",
 			"defaultValue": "autocorp"
 		},
-		"AF_InyectarTickets_properties_typeProperties_functionAppUrl": {
-			"type": "string",
-			"defaultValue": "https://inyectartickets.azurewebsites.net"
-		},
 		"containerUri": {
 			"type": "string",
 			"metadata": "URI de la cuenta de almacenamiento que contiene las plantillas de ARM vinculadas."
@@ -125,6 +125,9 @@
 					"AF_DW_functionKey": {
 						"value": "[parameters('AF_DW_functionKey')]"
 					},
+					"AF_InyectarTickets_functionKey": {
+						"value": "[parameters('AF_InyectarTickets_functionKey')]"
+					},
 					"APIFresh_password": {
 						"value": "[parameters('APIFresh_password')]"
 					},
@@ -149,11 +152,11 @@
 					"Storege_Fresh_connectionString": {
 						"value": "[parameters('Storege_Fresh_connectionString')]"
 					},
-					"AF_InyectarTickets_functionKey": {
-						"value": "[parameters('AF_InyectarTickets_functionKey')]"
-					},
 					"AF_DW_properties_typeProperties_functionAppUrl": {
 						"value": "[parameters('AF_DW_properties_typeProperties_functionAppUrl')]"
+					},
+					"AF_InyectarTickets_properties_typeProperties_functionAppUrl": {
+						"value": "[parameters('AF_InyectarTickets_properties_typeProperties_functionAppUrl')]"
 					},
 					"APIFresh_properties_typeProperties_url": {
 						"value": "[parameters('APIFresh_properties_typeProperties_url')]"
@@ -184,9 +187,6 @@
 					},
 					"SqlAutocorpDw_properties_typeProperties_userName": {
 						"value": "[parameters('SqlAutocorpDw_properties_typeProperties_userName')]"
-					},
-					"AF_InyectarTickets_properties_typeProperties_functionAppUrl": {
-						"value": "[parameters('AF_InyectarTickets_properties_typeProperties_functionAppUrl')]"
 					}
 				}
 			},

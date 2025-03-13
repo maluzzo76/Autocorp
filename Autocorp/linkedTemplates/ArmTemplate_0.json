@@ -11,6 +11,10 @@
 			"type": "secureString",
 			"metadata": "Cadena protegida para \"functionKey\"de \"AF_DW\""
 		},
+		"AF_InyectarTickets_functionKey": {
+			"type": "secureString",
+			"metadata": "Cadena protegida para \"functionKey\"de \"AF_InyectarTickets\""
+		},
 		"APIFresh_password": {
 			"type": "secureString",
 			"metadata": "Cadena protegida para \"password\"de \"APIFresh\""
@@ -43,13 +47,13 @@
 			"type": "secureString",
 			"metadata": "Cadena protegida para \"connectionString\"de \"Storege_Fresh\""
 		},
-		"AF_InyectarTickets_functionKey": {
-			"type": "secureString",
-			"metadata": "Cadena protegida para \"functionKey\"de \"AF_InyectarTickets\""
-		},
 		"AF_DW_properties_typeProperties_functionAppUrl": {
 			"type": "string",
 			"defaultValue": "https://dwservices.azurewebsites.net"
+		},
+		"AF_InyectarTickets_properties_typeProperties_functionAppUrl": {
+			"type": "string",
+			"defaultValue": "https://inyectartickets.azurewebsites.net"
 		},
 		"APIFresh_properties_typeProperties_url": {
 			"type": "string",
@@ -90,10 +94,6 @@
 		"SqlAutocorpDw_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "autocorp"
-		},
-		"AF_InyectarTickets_properties_typeProperties_functionAppUrl": {
-			"type": "string",
-			"defaultValue": "https://inyectartickets.azurewebsites.net"
 		}
 	},
 	"variables": {
@@ -113,6 +113,24 @@
 					"functionKey": {
 						"type": "SecureString",
 						"value": "[parameters('AF_DW_functionKey')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AF_InyectarTickets')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureFunction",
+				"typeProperties": {
+					"functionAppUrl": "[parameters('AF_InyectarTickets_properties_typeProperties_functionAppUrl')]",
+					"authentication": "Anonymous",
+					"functionKey": {
+						"type": "SecureString",
+						"value": "[parameters('AF_InyectarTickets_functionKey')]"
 					}
 				}
 			},
@@ -269,22 +287,49 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/AF_InyectarTickets')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"name": "[concat(parameters('factoryName'), '/002-Inyectar Echos Efleet')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"annotations": [],
-				"type": "AzureFunction",
-				"typeProperties": {
-					"functionAppUrl": "[parameters('AF_InyectarTickets_properties_typeProperties_functionAppUrl')]",
-					"authentication": "Anonymous",
-					"functionKey": {
-						"type": "SecureString",
-						"value": "[parameters('AF_InyectarTickets_functionKey')]"
+				"activities": [
+					{
+						"name": "Inyectar Fact",
+						"type": "Script",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"linkedServiceName": {
+							"referenceName": "SqlAutocorpDw",
+							"type": "LinkedServiceReference"
+						},
+						"typeProperties": {
+							"scripts": [
+								{
+									"type": "Query",
+									"text": "\ntruncate table whs.factOrdenesTrabajo\ninsert into whs.factOrdenesTrabajo\nselect \n    ot.ordenTrabajoCodigo codigo,\n    t.id tareaid,\n    null tareaAccionId,\n    v.id vehiculoid,\n    ordenTabajoTipoCodigo ordenTrabajoTipoid,\n    nombreOrdenTrabajo,\n    estadoOrdenTarbajo,\n    totalSivaNoSiniestro,        \n    esSeguro,\n    esSinietro,    \n    totalSivaSiniestro,    \n    costoManoObraSinIva,\n    costoMaterialSinIVa,\n    costoTotalSinIva,\n    costoManoObra,    \n    costoMaterial,\n    costoTotal,\n    descuentoManoObra,\n    descuentoMaterial,    \n    descuentoTotal,\n    fechaCreacion,\n    fechaActualizacion\n\nfrom stg.OrdenesTrabajoTareas ot\nleft join whs.dimVehiculos v on v.codigo = ot.vehiculoCodigo\nleft join whs.dimOrdenTrabajoTipo ott on ott.codigo = ot.ordenTabajoTipoCodigo\nleft join whs.dimTareas t on t.id = ot.tareaCodigo\nwhere ordenTrabajoCodigo is not null"
+								}
+							],
+							"scriptBlockExecutionTimeout": "02:00:00"
+						}
 					}
-				}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "EFleet"
+				},
+				"annotations": []
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SqlAutocorpDw')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/Api_Agentes')]",
@@ -1465,150 +1510,6 @@
 				],
 				"typeProperties": {
 					"tableName": "work_orders"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/EfleetDB')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/EfleetOrdenesTrabajoTareas')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "EfleetDB",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "Source/Efleet"
-				},
-				"annotations": [],
-				"type": "AzureMySqlTable",
-				"schema": [
-					{
-						"name": "id",
-						"type": "bigint",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "work_order_id",
-						"type": "bigint",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "task_id",
-						"type": "bigint",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "work_order_task_action_id",
-						"type": "bigint",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "workforce_price",
-						"type": "double",
-						"precision": 0,
-						"scale": 2
-					},
-					{
-						"name": "materials_price",
-						"type": "double",
-						"precision": 0,
-						"scale": 2
-					},
-					{
-						"name": "total_price",
-						"type": "double",
-						"precision": 0,
-						"scale": 2
-					},
-					{
-						"name": "workforce_s_iva_price",
-						"type": "double",
-						"precision": 0,
-						"scale": 2
-					},
-					{
-						"name": "materials_s_iva_price",
-						"type": "double",
-						"precision": 0,
-						"scale": 2
-					},
-					{
-						"name": "total_s_iva_price",
-						"type": "double",
-						"precision": 0,
-						"scale": 2
-					},
-					{
-						"name": "workforce_discount",
-						"type": "double",
-						"precision": 0,
-						"scale": 2
-					},
-					{
-						"name": "materials_discount",
-						"type": "double",
-						"precision": 0,
-						"scale": 2
-					},
-					{
-						"name": "total_discount",
-						"type": "double",
-						"precision": 0,
-						"scale": 2
-					},
-					{
-						"name": "comments",
-						"type": "text",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "deleted_at",
-						"type": "timestamp",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "created_at",
-						"type": "timestamp",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "updated_at",
-						"type": "timestamp",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "rebill",
-						"type": "double",
-						"precision": 0,
-						"scale": 2
-					},
-					{
-						"name": "iva_sell_id",
-						"type": "bigint",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "iva_buy_id",
-						"type": "bigint",
-						"precision": 0,
-						"scale": 0
-					}
-				],
-				"typeProperties": {
-					"tableName": "work_order_tasks"
 				}
 			},
 			"dependsOn": [
