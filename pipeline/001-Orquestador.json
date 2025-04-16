@@ -584,6 +584,8 @@
 			{
 				"name": "Iyectar Tickets Api Fresh To Stg",
 				"type": "ExecutePipeline",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"secureInput": false
