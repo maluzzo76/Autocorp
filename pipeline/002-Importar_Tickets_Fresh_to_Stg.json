@@ -160,8 +160,8 @@
 				]
 			},
 			{
-				"name": "Importar Tickets",
-				"type": "AzureFunctionActivity",
+				"name": "Listar fecha",
+				"type": "Script",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -171,16 +171,81 @@
 					"secureInput": false
 				},
 				"userProperties": [],
+				"linkedServiceName": {
+					"referenceName": "SqlAutocorpDw",
+					"type": "LinkedServiceReference"
+				},
 				"typeProperties": {
-					"functionName": {
-						"value": "@concat('ImportarTickets')",
+					"scripts": [
+						{
+							"type": "Query",
+							"text": "----------------------------------------------------------------------------------------------------------\r\n-- Genera el calendario de importacion de tickets, correspondientes a los dias previos a la fecha actual\r\n-- para seletar la cantidad de días modificar el parametro @dias\r\n----------------------------------------------------------------------------------------------------------\r\nDECLARE @FechaInicio DATE, @Dias int = 450;\r\nSET @FechaInicio = (CONVERT(DATE, DATEADD(DAY, @Dias*-1, getdate())));\r\n\r\n;WITH Fechas AS (\r\n    SELECT @FechaInicio AS Fecha\r\n    UNION ALL\r\n    SELECT DATEADD(DAY, 1, Fecha)\r\n    FROM Fechas\r\n    WHERE Fecha < CAST(GETDATE() AS DATE)\r\n)\r\nSELECT *\r\nFROM Fechas\r\norder by 1\r\nOPTION (MAXRECURSION 0);"
+						}
+					],
+					"scriptBlockExecutionTimeout": "02:00:00"
+				}
+			},
+			{
+				"name": "ImportTicketsPorFecha",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Listar fecha",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Listar fecha').output.resultSets[0].rows",
 						"type": "Expression"
 					},
-					"method": "GET"
-				},
-				"linkedServiceName": {
-					"referenceName": "AF_DW",
-					"type": "LinkedServiceReference"
+					"isSequential": false,
+					"activities": [
+						{
+							"name": "Fecha",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "Fecha",
+								"value": {
+									"value": "@string(item().Fecha)",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "Importar Tickets",
+							"type": "AzureFunctionActivity",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"functionName": {
+									"value": "@concat('ImportarTickets?fechaDesde=',item().Fecha)",
+									"type": "Expression"
+								},
+								"method": "POST"
+							},
+							"linkedServiceName": {
+								"referenceName": "AF_DW",
+								"type": "LinkedServiceReference"
+							}
+						}
+					]
 				}
 			}
 		],
@@ -194,6 +259,9 @@
 				"defaultValue": "0"
 			},
 			"Item": {
+				"type": "String"
+			},
+			"Fecha": {
 				"type": "String"
 			}
 		},
