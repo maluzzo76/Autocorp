@@ -287,6 +287,133 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/002-Importar_Tickets_Fresh_to_Stg')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Listar fecha",
+						"type": "Script",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"linkedServiceName": {
+							"referenceName": "SqlAutocorpDw",
+							"type": "LinkedServiceReference"
+						},
+						"typeProperties": {
+							"scripts": [
+								{
+									"type": "Query",
+									"text": "----------------------------------------------------------------------------------------------------------\r\n-- Genera el calendario de importacion de tickets, correspondientes a los dias previos a la fecha actual\r\n-- para seletar la cantidad de días modificar el parametro @dias\r\n----------------------------------------------------------------------------------------------------------\r\nDECLARE @FechaInicio DATE, @Dias int = 450;\r\nSET @FechaInicio = (CONVERT(DATE, DATEADD(DAY, @Dias*-1, getdate())));\r\n\r\n;WITH Fechas AS (\r\n    SELECT @FechaInicio AS Fecha\r\n    UNION ALL\r\n    SELECT DATEADD(DAY, 1, Fecha)\r\n    FROM Fechas\r\n    WHERE Fecha < CAST(GETDATE() AS DATE)\r\n)\r\nSELECT *\r\nFROM Fechas\r\norder by 1\r\nOPTION (MAXRECURSION 0);"
+								}
+							],
+							"scriptBlockExecutionTimeout": "02:00:00"
+						}
+					},
+					{
+						"name": "ImportTicketsPorFecha",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "Listar fecha",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Listar fecha').output.resultSets[0].rows",
+								"type": "Expression"
+							},
+							"isSequential": false,
+							"activities": [
+								{
+									"name": "Fecha",
+									"type": "SetVariable",
+									"dependsOn": [],
+									"policy": {
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "Fecha",
+										"value": {
+											"value": "@string(item().Fecha)",
+											"type": "Expression"
+										}
+									}
+								},
+								{
+									"name": "Importar Tickets",
+									"type": "AzureFunctionActivity",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"functionName": {
+											"value": "@concat('ImportarTickets?fechaDesde=',item().Fecha)",
+											"type": "Expression"
+										},
+										"body": {},
+										"headers": {},
+										"method": "POST"
+									},
+									"linkedServiceName": {
+										"referenceName": "AF_DW",
+										"type": "LinkedServiceReference"
+									}
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"variables": {
+					"pages": {
+						"type": "Integer",
+						"defaultValue": 1
+					},
+					"index": {
+						"type": "String",
+						"defaultValue": "0"
+					},
+					"Item": {
+						"type": "String"
+					},
+					"Fecha": {
+						"type": "String"
+					}
+				},
+				"folder": {
+					"name": "FreshDesk"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SqlAutocorpDw')]",
+				"[concat(variables('factoryId'), '/linkedServices/AF_DW')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/002-Inyectar Echos Efleet')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -321,6 +448,11 @@
 				],
 				"policy": {
 					"elapsedTimeMetric": {}
+				},
+				"variables": {
+					"Fecha": {
+						"type": "String"
+					}
 				},
 				"folder": {
 					"name": "EFleet"
@@ -1114,402 +1246,6 @@
 				],
 				"typeProperties": {
 					"tableName": "work_order_expense_types"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/EfleetDB')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/EfleetOrdenesTrabajo')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "EfleetDB",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "Source/Efleet"
-				},
-				"annotations": [],
-				"type": "AzureMySqlTable",
-				"schema": [
-					{
-						"name": "id",
-						"type": "bigint",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "name",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "state",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "deleted_at",
-						"type": "timestamp",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "created_at",
-						"type": "timestamp",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "updated_at",
-						"type": "timestamp",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "hansa_code",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "work_order_type_id",
-						"type": "bigint",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "work_order_origin_id",
-						"type": "bigint",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "reason",
-						"type": "text",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "internal_code",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "number",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "plate",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "contract_id",
-						"type": "bigint",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "km",
-						"type": "int",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "is_estimated",
-						"type": "tinyint",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "driver_id",
-						"type": "bigint",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "contact_id",
-						"type": "bigint",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "contact_name",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "contact_email",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "contact_phone",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "work_order_expense_type_id",
-						"type": "bigint",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "user_id",
-						"type": "bigint",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "shift_date",
-						"type": "datetime",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "location_lat",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "location_lng",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "hansa_activity_code",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "workforce_price",
-						"type": "double",
-						"precision": 0,
-						"scale": 2
-					},
-					{
-						"name": "materials_price",
-						"type": "double",
-						"precision": 0,
-						"scale": 2
-					},
-					{
-						"name": "total_price",
-						"type": "double",
-						"precision": 0,
-						"scale": 2
-					},
-					{
-						"name": "workforce_s_iva_price",
-						"type": "double",
-						"precision": 0,
-						"scale": 2
-					},
-					{
-						"name": "materials_s_iva_price",
-						"type": "double",
-						"precision": 0,
-						"scale": 2
-					},
-					{
-						"name": "total_s_iva_price",
-						"type": "double",
-						"precision": 0,
-						"scale": 2
-					},
-					{
-						"name": "workforce_discount",
-						"type": "double",
-						"precision": 0,
-						"scale": 2
-					},
-					{
-						"name": "materials_discount",
-						"type": "double",
-						"precision": 0,
-						"scale": 2
-					},
-					{
-						"name": "total_discount",
-						"type": "double",
-						"precision": 0,
-						"scale": 2
-					},
-					{
-						"name": "os_hansa_code",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "os_activity_code",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "location_province",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "location_state",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "location_address",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "is_approved",
-						"type": "tinyint",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "internal_code_type",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "booking_id",
-						"type": "bigint",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "synched",
-						"type": "tinyint",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "custom_address",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "custom_address_lat",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "custom_address_lng",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "freshdesk_code",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "q_shift_sent",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "shift_additional_notes",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "freshdesk_code_validated",
-						"type": "tinyint",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "external_created_by",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "shift_mail_sent",
-						"type": "tinyint",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "booking_franchise",
-						"type": "double",
-						"precision": 0,
-						"scale": 2
-					},
-					{
-						"name": "insurance_franchise",
-						"type": "double",
-						"precision": 0,
-						"scale": 2
-					},
-					{
-						"name": "desired_shift_day",
-						"type": "int",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "desired_shift_hour",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "last_user_id",
-						"type": "bigint",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "freshdesk_created_at",
-						"type": "date",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "survey_sent",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "close_date",
-						"type": "datetime",
-						"precision": 0,
-						"scale": 0
-					}
-				],
-				"typeProperties": {
-					"tableName": "work_orders"
 				}
 			},
 			"dependsOn": [

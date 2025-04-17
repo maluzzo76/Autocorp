@@ -2046,6 +2046,9 @@
 					},
 					"IdParameter": {
 						"type": "String"
+					},
+					"Fecha": {
+						"type": "String"
 					}
 				},
 				"annotations": [],
@@ -2070,10 +2073,8 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "Intectar Tickes stg",
-						"type": "Copy",
-						"state": "Inactive",
-						"onInactiveMarkAs": "Succeeded",
+						"name": "Listar fecha",
+						"type": "Script",
 						"dependsOn": [],
 						"policy": {
 							"timeout": "0.12:00:00",
@@ -2083,174 +2084,83 @@
 							"secureInput": false
 						},
 						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "RestSource",
-								"httpRequestTimeout": "00:01:40",
-								"requestInterval": "00.00:00:00.010",
-								"requestMethod": "GET",
-								"paginationRules": {
-									"supportRFC5988": "true"
-								}
-							},
-							"sink": {
-								"type": "AzureSqlSink",
-								"writeBehavior": "upsert",
-								"upsertSettings": {
-									"useTempDB": true,
-									"keys": [
-										"codigo"
-									]
-								},
-								"sqlWriterUseTableLock": false,
-								"disableMetricsCollection": false
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"path": "$['codigo']"
-										},
-										"sink": {
-											"name": "codigo",
-											"type": "Int32"
-										}
-									},
-									{
-										"source": {
-											"path": "$['fechaAlta']"
-										},
-										"sink": {
-											"name": "fechaAlta",
-											"type": "DateTime"
-										}
-									},
-									{
-										"source": {
-											"path": "$['fechaModificacion']"
-										},
-										"sink": {
-											"name": "fechaModificacion",
-											"type": "DateTime"
-										}
-									},
-									{
-										"source": {
-											"path": "$['companiaCodigo']"
-										},
-										"sink": {
-											"name": "companiaCodigo",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['estadoCodigo']"
-										},
-										"sink": {
-											"name": "estadoCodigo",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['tipoCodigo']"
-										},
-										"sink": {
-											"name": "tipoCodigo",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['productoCodigo']"
-										},
-										"sink": {
-											"name": "productoCodigo",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['grupoCodigo']"
-										},
-										"sink": {
-											"name": "grupoCodigo",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['origenCodigo']"
-										},
-										"sink": {
-											"name": "origenCodigo",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['prioridadCodigo']"
-										},
-										"sink": {
-											"name": "prioridadCodigo",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['agenteCodigo']"
-										},
-										"sink": {
-											"name": "agenteCodigo",
-											"type": "Decimal"
-										}
-									}
-								],
-								"collectionReference": "",
-								"mapComplexValuesToString": false
-							}
+						"linkedServiceName": {
+							"referenceName": "SqlAutocorpDw",
+							"type": "LinkedServiceReference"
 						},
-						"inputs": [
-							{
-								"referenceName": "Fresh_Tickets",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "stgTickets",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
+						"typeProperties": {
+							"scripts": [
+								{
+									"type": "Query",
+									"text": "----------------------------------------------------------------------------------------------------------\r\n-- Genera el calendario de importacion de tickets, correspondientes a los dias previos a la fecha actual\r\n-- para seletar la cantidad de días modificar el parametro @dias\r\n----------------------------------------------------------------------------------------------------------\r\nDECLARE @FechaInicio DATE, @Dias int = 450;\r\nSET @FechaInicio = (CONVERT(DATE, DATEADD(DAY, @Dias*-1, getdate())));\r\n\r\n;WITH Fechas AS (\r\n    SELECT @FechaInicio AS Fecha\r\n    UNION ALL\r\n    SELECT DATEADD(DAY, 1, Fecha)\r\n    FROM Fechas\r\n    WHERE Fecha < CAST(GETDATE() AS DATE)\r\n)\r\nSELECT *\r\nFROM Fechas\r\norder by 1\r\nOPTION (MAXRECURSION 0);"
+								}
+							],
+							"scriptBlockExecutionTimeout": "02:00:00"
+						}
 					},
 					{
-						"name": "Importar Tickets",
-						"type": "AzureFunctionActivity",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
+						"name": "ImportTicketsPorFecha",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "Listar fecha",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
 						"userProperties": [],
 						"typeProperties": {
-							"functionName": {
-								"value": "@concat('ImportarTickets')",
+							"items": {
+								"value": "@activity('Listar fecha').output.resultSets[0].rows",
 								"type": "Expression"
 							},
-							"headers": {},
-							"method": "GET"
-						},
-						"linkedServiceName": {
-							"referenceName": "AF_DW",
-							"type": "LinkedServiceReference"
+							"isSequential": false,
+							"activities": [
+								{
+									"name": "Fecha",
+									"type": "SetVariable",
+									"dependsOn": [],
+									"policy": {
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "Fecha",
+										"value": {
+											"value": "@string(item().Fecha)",
+											"type": "Expression"
+										}
+									}
+								},
+								{
+									"name": "Importar Tickets",
+									"type": "AzureFunctionActivity",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"functionName": {
+											"value": "@concat('ImportarTickets?fechaDesde=',item().Fecha)",
+											"type": "Expression"
+										},
+										"body": {},
+										"headers": {},
+										"method": "POST"
+									},
+									"linkedServiceName": {
+										"referenceName": "AF_DW",
+										"type": "LinkedServiceReference"
+									}
+								}
+							]
 						}
 					}
 				],
@@ -2268,6 +2178,9 @@
 					},
 					"Item": {
 						"type": "String"
+					},
+					"Fecha": {
+						"type": "String"
 					}
 				},
 				"folder": {
@@ -2276,8 +2189,7 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/Fresh_Tickets')]",
-				"[concat(variables('factoryId'), '/datasets/stgTickets')]",
+				"[concat(variables('factoryId'), '/linkedServices/SqlAutocorpDw')]",
 				"[concat(variables('factoryId'), '/linkedServices/AF_DW')]"
 			]
 		},
@@ -2316,6 +2228,11 @@
 				],
 				"policy": {
 					"elapsedTimeMetric": {}
+				},
+				"variables": {
+					"Fecha": {
+						"type": "String"
+					}
 				},
 				"folder": {
 					"name": "EFleet"
@@ -2985,6 +2902,9 @@
 				"variables": {
 					"IdForEach": {
 						"type": "Integer"
+					},
+					"Fecha": {
+						"type": "String"
 					}
 				},
 				"folder": {
@@ -3379,6 +3299,9 @@
 				},
 				"variables": {
 					"IdParameter": {
+						"type": "String"
+					},
+					"Fecha": {
 						"type": "String"
 					}
 				},

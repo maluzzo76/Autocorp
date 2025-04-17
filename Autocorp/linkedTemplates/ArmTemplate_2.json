@@ -13,6 +13,47 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/dimContratos')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SqlAutocorpDw",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DW/Dimensiones"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "codigo",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "nombre",
+						"type": "varchar"
+					},
+					{
+						"name": "tipoContrato",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "whs",
+					"table": "dimContratos"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/dimEstados')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -2467,222 +2508,6 @@
 				"[concat(variables('factoryId'), '/datasets/dimOrdenTrabajoTipo')]",
 				"[concat(variables('factoryId'), '/datasets/dimTareas')]",
 				"[concat(variables('factoryId'), '/datasets/stgOrdenesTrabajoTareas')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/002-Importar_Tickets_Fresh_to_Stg')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Intectar Tickes stg",
-						"type": "Copy",
-						"state": "Inactive",
-						"onInactiveMarkAs": "Succeeded",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "RestSource",
-								"httpRequestTimeout": "00:01:40",
-								"requestInterval": "00.00:00:00.010",
-								"requestMethod": "GET",
-								"paginationRules": {
-									"supportRFC5988": "true"
-								}
-							},
-							"sink": {
-								"type": "AzureSqlSink",
-								"writeBehavior": "upsert",
-								"upsertSettings": {
-									"useTempDB": true,
-									"keys": [
-										"codigo"
-									]
-								},
-								"sqlWriterUseTableLock": false,
-								"disableMetricsCollection": false
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"path": "$['codigo']"
-										},
-										"sink": {
-											"name": "codigo",
-											"type": "Int32"
-										}
-									},
-									{
-										"source": {
-											"path": "$['fechaAlta']"
-										},
-										"sink": {
-											"name": "fechaAlta",
-											"type": "DateTime"
-										}
-									},
-									{
-										"source": {
-											"path": "$['fechaModificacion']"
-										},
-										"sink": {
-											"name": "fechaModificacion",
-											"type": "DateTime"
-										}
-									},
-									{
-										"source": {
-											"path": "$['companiaCodigo']"
-										},
-										"sink": {
-											"name": "companiaCodigo",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['estadoCodigo']"
-										},
-										"sink": {
-											"name": "estadoCodigo",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['tipoCodigo']"
-										},
-										"sink": {
-											"name": "tipoCodigo",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['productoCodigo']"
-										},
-										"sink": {
-											"name": "productoCodigo",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['grupoCodigo']"
-										},
-										"sink": {
-											"name": "grupoCodigo",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['origenCodigo']"
-										},
-										"sink": {
-											"name": "origenCodigo",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['prioridadCodigo']"
-										},
-										"sink": {
-											"name": "prioridadCodigo",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['agenteCodigo']"
-										},
-										"sink": {
-											"name": "agenteCodigo",
-											"type": "Decimal"
-										}
-									}
-								],
-								"collectionReference": "",
-								"mapComplexValuesToString": false
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "Fresh_Tickets",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "stgTickets",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					},
-					{
-						"name": "Importar Tickets",
-						"type": "AzureFunctionActivity",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"functionName": {
-								"value": "@concat('ImportarTickets')",
-								"type": "Expression"
-							},
-							"headers": {},
-							"method": "GET"
-						},
-						"linkedServiceName": {
-							"referenceName": "AF_DW",
-							"type": "LinkedServiceReference"
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"variables": {
-					"pages": {
-						"type": "Integer",
-						"defaultValue": 1
-					},
-					"index": {
-						"type": "String",
-						"defaultValue": "0"
-					},
-					"Item": {
-						"type": "String"
-					}
-				},
-				"folder": {
-					"name": "FreshDesk"
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/stgTickets')]"
 			]
 		}
 	]

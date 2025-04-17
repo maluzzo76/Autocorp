@@ -671,6 +671,9 @@
 				"variables": {
 					"IdForEach": {
 						"type": "Integer"
+					},
+					"Fecha": {
+						"type": "String"
 					}
 				},
 				"folder": {
@@ -1045,6 +1048,9 @@
 				},
 				"variables": {
 					"IdParameter": {
+						"type": "String"
+					},
+					"Fecha": {
 						"type": "String"
 					}
 				},
@@ -2030,6 +2036,9 @@
 						"type": "String"
 					},
 					"IdParameter": {
+						"type": "String"
+					},
+					"Fecha": {
 						"type": "String"
 					}
 				},
