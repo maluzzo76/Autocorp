@@ -968,7 +968,7 @@
 									"userProperties": [],
 									"typeProperties": {
 										"functionName": {
-											"value": "@concat('ImportarConversaciones?id=',item().codigo)",
+											"value": "@concat('ImportarConversaciones?codigo=',item().codigo)",
 											"type": "Expression"
 										},
 										"headers": {},
@@ -1951,8 +1951,6 @@
 					{
 						"name": "Iyectar Tickets Api Fresh To Stg",
 						"type": "ExecutePipeline",
-						"state": "Inactive",
-						"onInactiveMarkAs": "Succeeded",
 						"dependsOn": [],
 						"policy": {
 							"secureInput": false
