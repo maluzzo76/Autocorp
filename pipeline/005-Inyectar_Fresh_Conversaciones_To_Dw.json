@@ -59,7 +59,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"functionName": {
-									"value": "@concat('ImportarConversaciones?id=',item().codigo)",
+									"value": "@concat('ImportarConversaciones?codigo=',item().codigo)",
 									"type": "Expression"
 								},
 								"method": "GET"
@@ -134,6 +134,9 @@
 		],
 		"variables": {
 			"IdParameter": {
+				"type": "String"
+			},
+			"Fecha": {
 				"type": "String"
 			}
 		},
