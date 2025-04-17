@@ -4,7 +4,7 @@
 		"annotations": [],
 		"type": "AzureFunction",
 		"typeProperties": {
-			"functionAppUrl": "https://dwservices.azurewebsites.net",
+			"functionAppUrl": "https://dwservices.azurewebsites.net/api/",
 			"authentication": "Anonymous"
 		}
 	}
