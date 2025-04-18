@@ -312,7 +312,7 @@
 							"scripts": [
 								{
 									"type": "Query",
-									"text": "----------------------------------------------------------------------------------------------------------\r\n-- Genera el calendario de importacion de tickets, correspondientes a los dias previos a la fecha actual\r\n-- para seletar la cantidad de días modificar el parametro @dias\r\n----------------------------------------------------------------------------------------------------------\r\nDECLARE @FechaInicio DATE, @Dias int = 450;\r\nSET @FechaInicio = (CONVERT(DATE, DATEADD(DAY, @Dias*-1, getdate())));\r\n\r\n;WITH Fechas AS (\r\n    SELECT @FechaInicio AS Fecha\r\n    UNION ALL\r\n    SELECT DATEADD(DAY, 1, Fecha)\r\n    FROM Fechas\r\n    WHERE Fecha < CAST(GETDATE() AS DATE)\r\n)\r\nSELECT *\r\nFROM Fechas\r\norder by 1\r\nOPTION (MAXRECURSION 0);"
+									"text": "----------------------------------------------------------------------------------------------------------\r\n-- Genera el calendario de importacion de tickets, correspondientes a los dias previos a la fecha actual\r\n-- para seletar la cantidad de días modificar el parametro @dias\r\n----------------------------------------------------------------------------------------------------------\r\nDECLARE @FechaInicio DATE, @Dias int = 30;\r\nSET @FechaInicio = (CONVERT(DATE, DATEADD(DAY, @Dias*-1, getdate())));\r\n\r\n;WITH Fechas AS (\r\n    SELECT @FechaInicio AS Fecha\r\n    UNION ALL\r\n    SELECT DATEADD(DAY, 1, Fecha)\r\n    FROM Fechas\r\n    WHERE Fecha < CAST(GETDATE() AS DATE)\r\n)\r\nSELECT *\r\nFROM Fechas\r\norder by 1\r\nOPTION (MAXRECURSION 0);"
 								}
 							],
 							"scriptBlockExecutionTimeout": "02:00:00"
