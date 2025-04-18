@@ -1962,7 +1962,7 @@
 						"type": "ExecutePipeline",
 						"dependsOn": [],
 						"policy": {
-							"secureInput": false
+							"secureInput": true
 						},
 						"userProperties": [],
 						"typeProperties": {
@@ -2073,6 +2073,8 @@
 					{
 						"name": "Listar fecha",
 						"type": "Script",
+						"state": "Inactive",
+						"onInactiveMarkAs": "Succeeded",
 						"dependsOn": [],
 						"policy": {
 							"timeout": "0.12:00:00",
@@ -2099,6 +2101,8 @@
 					{
 						"name": "ImportTicketsPorFecha",
 						"type": "ForEach",
+						"state": "Inactive",
+						"onInactiveMarkAs": "Succeeded",
 						"dependsOn": [
 							{
 								"activity": "Listar fecha",
@@ -2169,8 +2173,8 @@
 							"timeout": "0.12:00:00",
 							"retry": 0,
 							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
+							"secureOutput": true,
+							"secureInput": true
 						},
 						"userProperties": [],
 						"typeProperties": {
@@ -2180,7 +2184,7 @@
 							},
 							"body": {},
 							"headers": {},
-							"method": "GET"
+							"method": "POST"
 						},
 						"linkedServiceName": {
 							"referenceName": "AF_DW",
