@@ -1,0 +1,143 @@
+{
+	"name": "stgReservas",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SqlAutocorpDw",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Staiging"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "hansa_code",
+				"type": "varchar"
+			},
+			{
+				"name": "hansa_client_code",
+				"type": "varchar"
+			},
+			{
+				"name": "hansa_contact_code",
+				"type": "varchar"
+			},
+			{
+				"name": "hansa_plate",
+				"type": "varchar"
+			},
+			{
+				"name": "hansa_booking_status",
+				"type": "varchar"
+			},
+			{
+				"name": "hansa_booking_type",
+				"type": "varchar"
+			},
+			{
+				"name": "start_date",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "end_date",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "franchise",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 2
+			},
+			{
+				"name": "vehicle_id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "client_id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "subcontact_id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "deleted_at",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "created_at",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "updated_at",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "hansa_related_plate",
+				"type": "varchar"
+			},
+			{
+				"name": "related_vehicle_id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "initial_km",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "last_km",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "expected_pickup_date",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "expected_dropoff_date",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "actual_pickup_date",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "actual_dropoff_date",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			}
+		],
+		"typeProperties": {
+			"schema": "stg",
+			"table": "Reservas"
+		}
+	}
+}

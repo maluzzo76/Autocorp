@@ -1,0 +1,89 @@
+{
+	"name": "whsReservas",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SqlAutocorpDw",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "subcontactoid",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "vehiculoid",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "vehiculorelacionadoid",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "hansaid",
+				"type": "varchar"
+			},
+			{
+				"name": "inicioreserva",
+				"type": "date"
+			},
+			{
+				"name": "finreserva",
+				"type": "date"
+			},
+			{
+				"name": "franquisia",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 4
+			},
+			{
+				"name": "iniciokm",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "ultimokm",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "fechaesperadarecogida",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "fechaentregaesperada",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "fechaactualrecogida",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "fechaentregaactual",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			}
+		],
+		"typeProperties": {
+			"schema": "whs",
+			"table": "Reservas"
+		}
+	}
+}
