@@ -1,0 +1,6 @@
+{
+	"name": "entornoIntegracionSAP",
+	"properties": {
+		"type": "SelfHosted"
+	}
+}
