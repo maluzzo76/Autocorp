@@ -648,6 +648,29 @@
 					},
 					"waitOnCompletion": true
 				}
+			},
+			{
+				"name": "Inyectar All tables Efleet",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "Iyectar Tickets Api Fresh To Stg",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "001-Inyectar All Tables Efleet",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
 			}
 		],
 		"variables": {
