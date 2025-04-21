@@ -48,23 +48,6 @@
 					"isSequential": false,
 					"activities": [
 						{
-							"name": "Fecha",
-							"type": "SetVariable",
-							"dependsOn": [],
-							"policy": {
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"variableName": "Fecha",
-								"value": {
-									"value": "@string(item().Fecha)",
-									"type": "Expression"
-								}
-							}
-						},
-						{
 							"name": "Importar Tickets",
 							"type": "AzureFunctionActivity",
 							"dependsOn": [],
