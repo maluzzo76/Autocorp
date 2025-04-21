@@ -2083,6 +2083,30 @@
 							"waitOnCompletion": true,
 							"parameters": {}
 						}
+					},
+					{
+						"name": "Inyectar All tables Efleet",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "Iyectar Tickets Api Fresh To Stg",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "001-Inyectar All Tables Efleet",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
 					}
 				],
 				"policy": {
@@ -2117,7 +2141,8 @@
 				"[concat(variables('factoryId'), '/datasets/FreshTickets')]",
 				"[concat(variables('factoryId'), '/pipelines/002-Importar_Tickets_Fresh_to_Stg')]",
 				"[concat(variables('factoryId'), '/pipelines/001-Inyectar Dimensiones Efleet')]",
-				"[concat(variables('factoryId'), '/pipelines/002-Inyectar Echos Efleet')]"
+				"[concat(variables('factoryId'), '/pipelines/002-Inyectar Echos Efleet')]",
+				"[concat(variables('factoryId'), '/pipelines/001-Inyectar All Tables Efleet')]"
 			]
 		},
 		{
@@ -3671,7 +3696,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/Inyectar Tabla Estados Vehiculo')]",
+			"name": "[concat(parameters('factoryName'), '/001-Inyectar All Tables Efleet')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
