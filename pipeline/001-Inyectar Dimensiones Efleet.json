@@ -17,7 +17,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureMySqlSource",
-						"query": "select \r\nvehicles.id codigo,\r\ncontract_id contratoId,\r\npolicy_id policyId,\r\n`description` descripcion,\r\n`code` codigoDeVehiculo,\r\ncolor,\r\nchassis,\r\nplate patente,\r\n`year` anio,\r\nvtv_due_date fechaVencimientoVTV,\r\ncardoc_due_date fechaVencimientoDocument,\r\nwarranty_up_to_km garantiaHastaKm,\r\nwarranty_up_to_date fechaActualizadaGarantia,\r\nwarranty_state garantiaEstado,\r\nis_fleet_owner isPropietarioFlota,\r\nlast_km ultimoKilometraje,\r\nlast_km_origin ultimoKilometrajeOrigen,\r\nlast_km_date fechaUltimoKm,\r\nservice_last_km servicioUltimoKm,\r\nservice_origin origenServicio,\r\ncase when year(service_last_date)<1990 then null else service_last_date end ultimaFechaServicio,\r\ncondition_type tipoCondicion,\r\ncategory_client categoriaCliente,\r\ngroup_category_client grupoCategoriaCliente ,\r\nfuel_card_number numeroTarjetaCombustible,\r\ntoll_card_number numeroTarjetaPeaje,\r\nhas_circulation_documents tieneDocumentoCirculacion,\r\ninsurance_ammount montoSeguro,\r\nversion_id versionID,\r\nvehicle_state_id vehiculoEstadoID,\r\nclient_structure_id clienteEstructuraID,\r\ninsurance_id seguroID,\r\ngps_provider_id proveedorGpsId,\r\nhas_duplicated_key tieneClaveDuplicado,\r\ngps_vehicle_number numeroGPS,\r\ngps_detail detalleGPS,\r\ngps_ammount gpsMonto,\r\nvtv_last_date ultimaFechaVTV,\r\nduplicated_key_date fechaClaveDuplicada,\r\nvtv_last_city_id ultimaCiudadVTVID,\r\nplate_city_id patenteCuidadID,\r\ngps_is_visible gpsIsVisible,\r\nowner_name propietario,\r\nowner_contact_id propietarioContactoID,\r\nmaintenance_plan_id planMantenimientoID,\r\nleasing_duedate arrendamientoFechaVencimiento,\r\nrto_due_date fechaDeRetiro,\r\nvtv_km_expiration kmVencimientoVTV,\r\nfuel_provider proveedorCombustible,\r\nservice_last_task_id UltimaTareaID,\r\ninsurance_start_date fechaInicioSeguro,\r\nsend_expiration_mailing ,\r\nvehicles.hansa_code codigoHansa,\r\nlast_expiration_check fechaUltimaComparacion,\r\nvtv_caba_text vtvCabaTexto,\r\ninfoauto_price precioInfoauto,\r\ninfoauto_price_date fechaPrecioInfoAuto,\r\nvs.name estado,\r\nmotor_number\r\n\r\nfrom vehicles\r\nleft outer join vehicle_states vs on vs.id = vehicles.vehicle_state_id",
+						"query": "select \r\nvehicles.id codigo,\r\ncontract_id contratoId,\r\npolicy_id policyId,\r\n`description` descripcion,\r\n`code` codigoDeVehiculo,\r\ncolor,\r\nchassis,\r\nplate patente,\r\n`year` anio,\r\nvtv_due_date fechaVencimientoVTV,\r\ncardoc_due_date fechaVencimientoDocument,\r\nwarranty_up_to_km garantiaHastaKm,\r\nwarranty_up_to_date fechaActualizadaGarantia,\r\nwarranty_state garantiaEstado,\r\nis_owner isPropietarioFlota,\r\nlast_km ultimoKilometraje,\r\nlast_km_origin ultimoKilometrajeOrigen,\r\nlast_km_date fechaUltimoKm,\r\nservice_last_km servicioUltimoKm,\r\nservice_origin origenServicio,\r\ncase when year(service_last_date)<1990 then null else service_last_date end ultimaFechaServicio,\r\ncondition_type tipoCondicion,\r\ncategory_client categoriaCliente,\r\ngroup_category_client grupoCategoriaCliente ,\r\nfuel_card_number numeroTarjetaCombustible,\r\ntoll_card_number numeroTarjetaPeaje,\r\nhas_circulation_documents tieneDocumentoCirculacion,\r\ninsurance_ammount montoSeguro,\r\nversion_id versionID,\r\nvehicle_state_id vehiculoEstadoID,\r\nclient_structure_id clienteEstructuraID,\r\ninsurance_id seguroID,\r\ngps_provider_id proveedorGpsId,\r\nhas_duplicated_key tieneClaveDuplicado,\r\ngps_vehicle_number numeroGPS,\r\ngps_detail detalleGPS,\r\ngps_ammount gpsMonto,\r\nvtv_last_date ultimaFechaVTV,\r\nduplicated_key_date fechaClaveDuplicada,\r\nvtv_last_city_id ultimaCiudadVTVID,\r\nplate_city_id patenteCuidadID,\r\ngps_is_visible gpsIsVisible,\r\nowner_name propietario,\r\nowner_contact_id propietarioContactoID,\r\nmaintenance_plan_id planMantenimientoID,\r\nleasing_duedate arrendamientoFechaVencimiento,\r\nrto_due_date fechaDeRetiro,\r\nvtv_km_expiration kmVencimientoVTV,\r\nfuel_provider proveedorCombustible,\r\nservice_last_task_id UltimaTareaID,\r\ninsurance_start_date fechaInicioSeguro,\r\nsend_expiration_mailing ,\r\nvehicles.hansa_code codigoHansa,\r\nlast_expiration_check fechaUltimaComparacion,\r\nvtv_caba_text vtvCabaTexto,\r\ninfoauto_price precioInfoauto,\r\ninfoauto_price_date fechaPrecioInfoAuto,\r\nvs.name estado,\r\nmotor_number\r\n\r\nfrom vehicles\r\nleft outer join vehicle_states vs on vs.id = vehicles.vehicle_state_id",
 						"queryTimeout": "02:00:00"
 					},
 					"sink": {
@@ -817,7 +817,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureMySqlSource",
-						"query": "select \n    t.id codigo,\n    t.name nombre,\n    t.description descripcion,\n    t.hansa_code,\n    c.name nombreCategoria,\n    c.description descripcionCategoria\nfrom tasks t\nleft join categories c on c.id = t.category_id\n",
+						"query": "select \n    t.id codigo,\n    t.name nombre,\n    t.description descripcion,\n    t.hansa_code,\n    t.deleted_at fechaEliminacion,\n    c.name nombreCategoria,\n    c.description descripcionCategoria\nfrom tasks t\nleft join categories c on c.id = t.category_id\n",
 						"queryTimeout": "02:00:00"
 					},
 					"sink": {
@@ -927,7 +927,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureMySqlSource",
-						"query": "select \r\n   wo.id work_order_id,\r\n   task_id,\r\n   work_order_task_action_id, \r\n   v.id vehiculo_id,\r\n   woty.id work_order_type_id,\r\n   wo.`name` nombreOrdenTrabajo,\r\n   wo.state estadoOrdenTarbajo,\r\n   case \r\n    when woty.id !=2 then wot.total_s_iva_price\r\n    else 0\r\n   end total_s_iva_no_Sinistro,\r\n\r\n   case \r\n    when woty.id !=2 then 1\r\n    else 0\r\n   end EsSeguro,\r\n\r\n   case \r\n    when woty.id = 2 then 1\r\n    else 0\r\n   end EsSinietro,\r\n\r\n   case \r\n    when woty.id =2 then wot.total_s_iva_price\r\n    else 0\r\n   end total_s_iva_Siniestro,\r\n\r\n   wot.workforce_s_iva_price costoManoObraSinIva,\r\n   wot.materials_s_iva_price costoMaterialSinIVa,\r\n   wot.total_s_iva_Price costoTotalSinIva, \r\n   wot.workforce_price costoManoObra,\r\n   wot.materials_price costoMaterial,\r\n   wot.total_Price costoTotal,\r\n   wot.workforce_discount descuentoManoObra,\r\n   wot.materials_price descuentoMaterial,\r\n   wot.total_Price descuentoTotal,\r\n   wo.created_at fechaCreacion,\r\n   wo.updated_at fechaActualizacion\r\nfrom work_orders wo\r\nleft join work_order_tasks wot on wot.work_order_id = wo.id\r\ninner join work_order_types woty on woty.id = wo.work_order_type_id\r\nINNER join vehicles v on v.plate = wo.plate\r\nwhere wo.id is not null",
+						"query": "select \r\n   wo.id work_order_id,\r\n   task_id,\r\n   work_order_task_action_id, \r\n   v.id vehiculo_id,\r\n   v.plate patente,\r\n   woty.id work_order_type_id,\r\n   wo.`name` nombreOrdenTrabajo,\r\n   wo.state estadoOrdenTarbajo,\r\n   case \r\n    when woty.id !=2 then wot.total_s_iva_price\r\n    else 0\r\n   end total_s_iva_no_Sinistro,\r\n\r\n   case \r\n    when woty.id !=2 then 1\r\n    else 0\r\n   end EsSeguro,\r\n\r\n   case \r\n    when woty.id = 2 then 1\r\n    else 0\r\n   end EsSinietro,\r\n\r\n   case \r\n    when woty.id =2 then wot.total_s_iva_price\r\n    else 0\r\n   end total_s_iva_Siniestro,\r\n\r\n   wot.workforce_s_iva_price costoManoObraSinIva,\r\n   wot.materials_s_iva_price costoMaterialSinIVa,\r\n   wot.total_s_iva_Price costoTotalSinIva, \r\n   wot.workforce_price costoManoObra,\r\n   wot.materials_price costoMaterial,\r\n   wot.total_Price costoTotal,\r\n   wot.workforce_discount descuentoManoObra,\r\n   wot.materials_price descuentoMaterial,\r\n   wot.total_Price descuentoTotal,\r\n   wo.created_at fechaCreacion,\r\n   wo.updated_at fechaActualizacion,\r\n   wo.deleted_at fechaEliminacionOT,\r\n   wot.deleted_at fechaEliminacionOTTask\r\nfrom work_orders wo\r\nleft join work_order_tasks wot on wot.work_order_id = wo.id\r\ninner join work_order_types woty on woty.id = wo.work_order_type_id\r\nINNER join vehicles v on v.plate = wo.plate\r\nwhere wo.id is not null",
 						"queryTimeout": "02:00:00"
 					},
 					"sink": {
@@ -1209,6 +1209,28 @@
 								},
 								"sink": {
 									"name": "fechaActualizacion",
+									"type": "DateTime",
+									"physicalType": "datetime2"
+								}
+							},
+							{
+								"source": {
+									"name": "patente",
+									"type": "String"
+								},
+								"sink": {
+									"name": "patente",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "fechaEliminacion",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "fechaEliminacion",
 									"type": "DateTime",
 									"physicalType": "datetime2"
 								}
