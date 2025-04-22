@@ -1,0 +1,139 @@
+{
+	"name": "stgPresupuestos",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SqlAutocorpDw",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Staiging"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "version",
+				"type": "varchar"
+			},
+			{
+				"name": "ordenTrabajoId",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "proveedorId",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "tipoPresupuestoId",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "estadoPresupuestoId",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "fechaVencimiento",
+				"type": "date"
+			},
+			{
+				"name": "pagoPorAdelantado",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "comentarios",
+				"type": "text"
+			},
+			{
+				"name": "creadoEn",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "actualizadoEn",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "eliminadoEn",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "precioManoObra",
+				"type": "decimal",
+				"precision": 10,
+				"scale": 2
+			},
+			{
+				"name": "precioMateriales",
+				"type": "decimal",
+				"precision": 10,
+				"scale": 2
+			},
+			{
+				"name": "precioTotal",
+				"type": "decimal",
+				"precision": 10,
+				"scale": 2
+			},
+			{
+				"name": "precioManoObraSinIva",
+				"type": "decimal",
+				"precision": 10,
+				"scale": 2
+			},
+			{
+				"name": "precioMaterialesSinIva",
+				"type": "decimal",
+				"precision": 10,
+				"scale": 2
+			},
+			{
+				"name": "precioTotalSinIva",
+				"type": "decimal",
+				"precision": 10,
+				"scale": 2
+			},
+			{
+				"name": "descuentoManoObra",
+				"type": "decimal",
+				"precision": 10,
+				"scale": 2
+			},
+			{
+				"name": "descuentoMateriales",
+				"type": "decimal",
+				"precision": 10,
+				"scale": 2
+			},
+			{
+				"name": "descuentoTotal",
+				"type": "decimal",
+				"precision": 10,
+				"scale": 2
+			},
+			{
+				"name": "usuarioAprobacionId",
+				"type": "int",
+				"precision": 10
+			}
+		],
+		"typeProperties": {
+			"schema": "stg",
+			"table": "presupuestos"
+		}
+	}
+}
