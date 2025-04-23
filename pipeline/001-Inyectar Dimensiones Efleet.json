@@ -197,12 +197,12 @@
 							{
 								"source": {
 									"name": "isPropietarioFlota",
-									"type": "Boolean"
+									"type": "String"
 								},
 								"sink": {
 									"name": "isPropietarioFlota",
-									"type": "Boolean",
-									"physicalType": "bit"
+									"type": "String",
+									"physicalType": "varchar"
 								}
 							},
 							{
@@ -1226,11 +1226,22 @@
 							},
 							{
 								"source": {
-									"name": "fechaEliminacion",
+									"name": "fechaEliminacionOT",
 									"type": "DateTime"
 								},
 								"sink": {
-									"name": "fechaEliminacion",
+									"name": "fechaEliminacionOT",
+									"type": "DateTime",
+									"physicalType": "datetime2"
+								}
+							},
+							{
+								"source": {
+									"name": "fechaEliminacionOTTask",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "fechaEliminacionOTTask",
 									"type": "DateTime",
 									"physicalType": "datetime2"
 								}
@@ -1252,59 +1263,6 @@
 				"outputs": [
 					{
 						"referenceName": "stgOrdenesTrabajoTareas",
-						"type": "DatasetReference"
-					}
-				]
-			},
-			{
-				"name": "Intectar tabla x",
-				"type": "Copy",
-				"dependsOn": [],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"source": {
-						"type": "AzureMySqlSource",
-						"query": "select * from tickets",
-						"queryTimeout": "02:00:00"
-					},
-					"sink": {
-						"type": "AzureSqlSink",
-						"writeBehavior": "upsert",
-						"upsertSettings": {
-							"useTempDB": true,
-							"keys": [
-								"codigo"
-							]
-						},
-						"sqlWriterUseTableLock": false,
-						"disableMetricsCollection": false
-					},
-					"enableStaging": false,
-					"translator": {
-						"type": "TabularTranslator",
-						"typeConversion": true,
-						"typeConversionSettings": {
-							"allowDataTruncation": true,
-							"treatBooleanAsNumber": false
-						}
-					}
-				},
-				"inputs": [
-					{
-						"referenceName": "EfleetVehiculo",
-						"type": "DatasetReference"
-					}
-				],
-				"outputs": [
-					{
-						"referenceName": "stgTickets",
 						"type": "DatasetReference"
 					}
 				]
