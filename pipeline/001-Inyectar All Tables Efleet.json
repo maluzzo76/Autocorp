@@ -612,6 +612,8 @@
 			{
 				"name": "Inyectar Presupuestos",
 				"type": "Copy",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -12055,11 +12057,287 @@
 						"query": "SELECT * from versions;\n",
 						"queryTimeout": "02:00:00"
 					},
-					"enableStaging": false
+					"sink": {
+						"type": "AzureSqlSink",
+						"writeBehavior": "upsert",
+						"upsertSettings": {
+							"useTempDB": true,
+							"keys": [
+								"id"
+							]
+						},
+						"sqlWriterUseTableLock": false,
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "id",
+									"type": "UInt64",
+									"physicalType": "bigint"
+								},
+								"sink": {
+									"name": "id",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "name",
+									"type": "String"
+								},
+								"sink": {
+									"name": "nombre",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "variation_id",
+									"type": "UInt64"
+								},
+								"sink": {
+									"name": "variacionId",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "vehicle_type_id",
+									"type": "UInt64"
+								},
+								"sink": {
+									"name": "tipoVehiculoId",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "combustion_type_id",
+									"type": "UInt64"
+								},
+								"sink": {
+									"name": "tipoCombustionId",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "gama_id",
+									"type": "UInt64"
+								},
+								"sink": {
+									"name": "gamaId",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "transmition_type_id",
+									"type": "UInt64"
+								},
+								"sink": {
+									"name": "tipoTransmisionId",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "renting_description",
+									"type": "String"
+								},
+								"sink": {
+									"name": "descripcionRenting",
+									"type": "String",
+									"physicalType": "text"
+								}
+							},
+							{
+								"source": {
+									"name": "carbon_footprint",
+									"type": "String"
+								},
+								"sink": {
+									"name": "huellaCarbono",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "tank_capacity",
+									"type": "Double"
+								},
+								"sink": {
+									"name": "capacidadTanque",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 2,
+									"precision": 8
+								}
+							},
+							{
+								"source": {
+									"name": "deleted_at",
+									"type": "DateTime",
+									"physicalType": "timestamp"
+								},
+								"sink": {
+									"name": "eliminadoEn",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								}
+							},
+							{
+								"source": {
+									"name": "created_at",
+									"type": "DateTime",
+									"physicalType": "timestamp"
+								},
+								"sink": {
+									"name": "creadoEn",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								}
+							},
+							{
+								"source": {
+									"name": "updated_at",
+									"type": "DateTime",
+									"physicalType": "timestamp"
+								},
+								"sink": {
+									"name": "actualizadoEn",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								}
+							},
+							{
+								"source": {
+									"name": "hansa_code",
+									"type": "String"
+								},
+								"sink": {
+									"name": "codigoHansa",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "dnrpa_code",
+									"type": "String"
+								},
+								"sink": {
+									"name": "codigoDnrpa",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "dnrpa_fullcode",
+									"type": "String"
+								},
+								"sink": {
+									"name": "codigoCompletoDnrpa",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "dnrpa_type_description",
+									"type": "String"
+								},
+								"sink": {
+									"name": "descripcionTipoDnrpa",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "default_months_warranty",
+									"type": "UInt32"
+								},
+								"sink": {
+									"name": "mesesGarantiaPorDefecto",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "default_km_warranty",
+									"type": "UInt32"
+								},
+								"sink": {
+									"name": "kmGarantiaPorDefecto",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "infoauto_codia",
+									"type": "String"
+								},
+								"sink": {
+									"name": "codiaInfoauto",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "last_infoauto_sync",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "ultimaSincronizacionInfoauto",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								}
+							},
+							{
+								"source": {
+									"name": "infoauto_description",
+									"type": "String"
+								},
+								"sink": {
+									"name": "descripcionInfoauto",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
 				},
 				"inputs": [
 					{
 						"referenceName": "EfleetClientes",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "stgVersiones",
 						"type": "DatasetReference"
 					}
 				]
