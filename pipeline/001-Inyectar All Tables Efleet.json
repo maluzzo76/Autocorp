@@ -7914,6 +7914,8 @@
 			{
 				"name": "Inyectar tabla CostosValet",
 				"type": "Copy",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -8683,6 +8685,8 @@
 			{
 				"name": "Inyectar tabla HistorialOrdenTrabajo",
 				"type": "Copy",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -9728,7 +9732,7 @@
 				]
 			},
 			{
-				"name": "Inyectar tabla clientesEffleet",
+				"name": "Inyectar tabla clientesEfleet",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -9743,6 +9747,449 @@
 					"source": {
 						"type": "AzureMySqlSource",
 						"query": "SELECT * from clients;\n",
+						"queryTimeout": "02:00:00"
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"writeBehavior": "upsert",
+						"upsertSettings": {
+							"useTempDB": true,
+							"keys": [
+								"id"
+							]
+						},
+						"sqlWriterUseTableLock": false,
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "id",
+									"type": "UInt64",
+									"physicalType": "bigint"
+								},
+								"sink": {
+									"name": "id",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "contact_id",
+									"type": "UInt64",
+									"physicalType": "bigint"
+								},
+								"sink": {
+									"name": "contact_id",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "description",
+									"type": "String",
+									"physicalType": "text"
+								},
+								"sink": {
+									"name": "description",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "deleted_at",
+									"type": "DateTime",
+									"physicalType": "timestamp"
+								},
+								"sink": {
+									"name": "deleted_at",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								}
+							},
+							{
+								"source": {
+									"name": "created_at",
+									"type": "DateTime",
+									"physicalType": "timestamp"
+								},
+								"sink": {
+									"name": "created_at",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								}
+							},
+							{
+								"source": {
+									"name": "updated_at",
+									"type": "DateTime",
+									"physicalType": "timestamp"
+								},
+								"sink": {
+									"name": "updated_at",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								}
+							},
+							{
+								"source": {
+									"name": "web",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "web",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "business_name",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "business_name",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "fantasy_name",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "fantasy_name",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "group",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "group",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "classification",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "classification",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "first_credit_limit",
+									"type": "Double",
+									"physicalType": "double"
+								},
+								"sink": {
+									"name": "first_credit_limit",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 2,
+									"precision": 10
+								}
+							},
+							{
+								"source": {
+									"name": "second_credit_limit",
+									"type": "Double",
+									"physicalType": "double"
+								},
+								"sink": {
+									"name": "second_credit_limit",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 2,
+									"precision": 10
+								}
+							},
+							{
+								"source": {
+									"name": "operation_type_id",
+									"type": "UInt64",
+									"physicalType": "bigint"
+								},
+								"sink": {
+									"name": "operation_type_id",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "invoice_type_id",
+									"type": "UInt64",
+									"physicalType": "bigint"
+								},
+								"sink": {
+									"name": "invoice_type_id",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "client_state_type_id",
+									"type": "UInt64",
+									"physicalType": "bigint"
+								},
+								"sink": {
+									"name": "client_state_type_id",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "client_trade_type_id",
+									"type": "UInt64",
+									"physicalType": "bigint"
+								},
+								"sink": {
+									"name": "client_trade_type_id",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "client_origin_type_id",
+									"type": "UInt64",
+									"physicalType": "bigint"
+								},
+								"sink": {
+									"name": "client_origin_type_id",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "payment_deadline",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "payment_deadline",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "client_iibb_type_id",
+									"type": "UInt64",
+									"physicalType": "bigint"
+								},
+								"sink": {
+									"name": "client_iibb_type_id",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "aldnet_account_number",
+									"type": "String",
+									"physicalType": "text"
+								},
+								"sink": {
+									"name": "aldnet_account_number",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "aldnet_account_code",
+									"type": "String",
+									"physicalType": "text"
+								},
+								"sink": {
+									"name": "aldnet_account_code",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "aldnet_account_test_code",
+									"type": "String",
+									"physicalType": "text"
+								},
+								"sink": {
+									"name": "aldnet_account_test_code",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "client_type_id",
+									"type": "UInt64",
+									"physicalType": "bigint"
+								},
+								"sink": {
+									"name": "client_type_id",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "synched",
+									"type": "Boolean",
+									"physicalType": "tinyint"
+								},
+								"sink": {
+									"name": "synched",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "vendor_user_id",
+									"type": "UInt64",
+									"physicalType": "bigint"
+								},
+								"sink": {
+									"name": "vendor_user_id",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "operator_user_id",
+									"type": "UInt64",
+									"physicalType": "bigint"
+								},
+								"sink": {
+									"name": "operator_user_id",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "client_group_id",
+									"type": "UInt64",
+									"physicalType": "bigint"
+								},
+								"sink": {
+									"name": "client_group_id",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "send_campaign",
+									"type": "Boolean",
+									"physicalType": "tinyint"
+								},
+								"sink": {
+									"name": "send_campaign",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "campaign_subcontact_type_id",
+									"type": "UInt64",
+									"physicalType": "bigint"
+								},
+								"sink": {
+									"name": "campaign_subcontact_type_id",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "is_risk_client",
+									"type": "Boolean",
+									"physicalType": "tinyint"
+								},
+								"sink": {
+									"name": "is_risk_client",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "send_survey",
+									"type": "Boolean",
+									"physicalType": "tinyint"
+								},
+								"sink": {
+									"name": "send_survey",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": true
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "EfleetClientes",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "stgclientesEffleet",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Inyectar tabla TiposAccionTareaOrdenTrabajo",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureMySqlSource",
+						"query": "SELECT * from work_order_task_action_types;\n",
 						"queryTimeout": "02:00:00"
 					},
 					"enableStaging": false
