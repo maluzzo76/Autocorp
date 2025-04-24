@@ -1,0 +1,98 @@
+{
+	"name": "stgAlertasUsuarioOrdenTrabajo",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SqlAutocorpDw",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Staiging"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "usuarioId",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "ordenTrabajoId",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "asunto",
+				"type": "text"
+			},
+			{
+				"name": "fechaAlerta",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "creadoEn",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "actualizadoEn",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "tipoReclamo",
+				"type": "varchar"
+			},
+			{
+				"name": "reclamoA",
+				"type": "varchar"
+			},
+			{
+				"name": "siguienteAsuntoReclamo",
+				"type": "varchar"
+			},
+			{
+				"name": "enviarCorreo",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "completado",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "usuarioCompletadoId",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "tipoReclamoA",
+				"type": "varchar"
+			},
+			{
+				"name": "codigoHansa",
+				"type": "varchar"
+			},
+			{
+				"name": "eliminadoEn",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			}
+		],
+		"typeProperties": {
+			"schema": "stg",
+			"table": "AlertasUsuarioOrdenTrabajo"
+		}
+	}
+}
