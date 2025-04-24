@@ -5865,6 +5865,219 @@
 						"query": "SELECT * from brands;\n",
 						"queryTimeout": "02:00:00"
 					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"writeBehavior": "upsert",
+						"upsertSettings": {
+							"useTempDB": true,
+							"keys": [
+								"id"
+							]
+						},
+						"sqlWriterUseTableLock": false,
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "id",
+									"type": "UInt64",
+									"physicalType": "bigint"
+								},
+								"sink": {
+									"name": "id",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "name",
+									"type": "String"
+								},
+								"sink": {
+									"name": "nombre",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "deleted_at",
+									"type": "DateTime",
+									"physicalType": "timestamp"
+								},
+								"sink": {
+									"name": "eliminadoEn",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								}
+							},
+							{
+								"source": {
+									"name": "created_at",
+									"type": "DateTime",
+									"physicalType": "timestamp"
+								},
+								"sink": {
+									"name": "creadoEn",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								}
+							},
+							{
+								"source": {
+									"name": "updated_at",
+									"type": "DateTime",
+									"physicalType": "timestamp"
+								},
+								"sink": {
+									"name": "actualizadoEn",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								}
+							},
+							{
+								"source": {
+									"name": "dnrpa_code",
+									"type": "String"
+								},
+								"sink": {
+									"name": "codigoDnrpa",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "dnrpa_description",
+									"type": "String"
+								},
+								"sink": {
+									"name": "descripcionDnrpa",
+									"type": "String",
+									"physicalType": "text"
+								}
+							},
+							{
+								"source": {
+									"name": "dnrpa_maker",
+									"type": "String"
+								},
+								"sink": {
+									"name": "fabricanteDnrpa",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "aldnet_code",
+									"type": "String"
+								},
+								"sink": {
+									"name": "codigoAldnet",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "aldnet_description",
+									"type": "String"
+								},
+								"sink": {
+									"name": "descripcionAldnet",
+									"type": "String",
+									"physicalType": "text"
+								}
+							},
+							{
+								"source": {
+									"name": "aldnet_maker",
+									"type": "String"
+								},
+								"sink": {
+									"name": "fabricanteAldnet",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "hansa_code",
+									"type": "String"
+								},
+								"sink": {
+									"name": "codigoHansa",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "aldnet_maker_group",
+									"type": "String"
+								},
+								"sink": {
+									"name": "grupoFabricanteAldnet",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "brand_type",
+									"type": "String"
+								},
+								"sink": {
+									"name": "tipoMarca",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "EfleetClientes",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "stgmarcas",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Inyectar tabla OrigenesOrdenTrabajo",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureMySqlSource",
+						"query": "SELECT * from work_order_origins;\n",
+						"queryTimeout": "02:00:00"
+					},
 					"enableStaging": false
 				},
 				"inputs": [
