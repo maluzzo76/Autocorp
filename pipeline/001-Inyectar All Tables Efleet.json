@@ -3100,6 +3100,241 @@
 						"query": "SELECT * from work_order_user_alerts;",
 						"queryTimeout": "02:00:00"
 					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"writeBehavior": "upsert",
+						"upsertSettings": {
+							"useTempDB": true,
+							"keys": [
+								"id"
+							]
+						},
+						"sqlWriterUseTableLock": false,
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "id",
+									"type": "UInt64",
+									"physicalType": "bigint"
+								},
+								"sink": {
+									"name": "id",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "user_id",
+									"type": "UInt64"
+								},
+								"sink": {
+									"name": "usuarioId",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "work_order_id",
+									"type": "UInt64"
+								},
+								"sink": {
+									"name": "ordenTrabajoId",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "subject",
+									"type": "String"
+								},
+								"sink": {
+									"name": "asunto",
+									"type": "String",
+									"physicalType": "text"
+								}
+							},
+							{
+								"source": {
+									"name": "alert_date",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "fechaAlerta",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								}
+							},
+							{
+								"source": {
+									"name": "created_at",
+									"type": "DateTime",
+									"physicalType": "timestamp"
+								},
+								"sink": {
+									"name": "creadoEn",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								}
+							},
+							{
+								"source": {
+									"name": "updated_at",
+									"type": "DateTime",
+									"physicalType": "timestamp"
+								},
+								"sink": {
+									"name": "actualizadoEn",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								}
+							},
+							{
+								"source": {
+									"name": "reclaim_type",
+									"type": "String"
+								},
+								"sink": {
+									"name": "tipoReclamo",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "reclaim_to",
+									"type": "String"
+								},
+								"sink": {
+									"name": "reclamoA",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "next_reclaim_subject",
+									"type": "String"
+								},
+								"sink": {
+									"name": "siguienteAsuntoReclamo",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "send_mail",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "enviarCorreo",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "completed",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "completado",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "complete_user_id",
+									"type": "UInt64"
+								},
+								"sink": {
+									"name": "usuarioCompletadoId",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "reclaim_to_type",
+									"type": "String"
+								},
+								"sink": {
+									"name": "tipoReclamoA",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "hansa_code",
+									"type": "String"
+								},
+								"sink": {
+									"name": "codigoHansa",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "deleted_at",
+									"type": "DateTime",
+									"physicalType": "timestamp"
+								},
+								"sink": {
+									"name": "eliminadoEn",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "EfleetClientes",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "stgAlertasUsuarioOrdenTrabajo",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Inyectar tabla AprobacionesOrdenTrabajo",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureMySqlSource",
+						"query": "SELECT * from work_order_approvals;",
+						"queryTimeout": "02:00:00"
+					},
 					"enableStaging": false
 				},
 				"inputs": [

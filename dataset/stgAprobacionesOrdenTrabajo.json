@@ -1,0 +1,83 @@
+{
+	"name": "stgAprobacionesOrdenTrabajo",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SqlAutocorpDw",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Staiging"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "ordenTrabajoId",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "email",
+				"type": "varchar"
+			},
+			{
+				"name": "aprobacionRequerida",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "aprobado",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "fechaAprobacion",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "eliminadoEn",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "creadoEn",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "actualizadoEn",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "motivoRechazo",
+				"type": "varchar"
+			},
+			{
+				"name": "rechazado",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "fechaRechazo",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			}
+		],
+		"typeProperties": {
+			"schema": "stg",
+			"table": "AprobacionesOrdenTrabajo"
+		}
+	}
+}
