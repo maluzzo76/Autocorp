@@ -1,0 +1,135 @@
+{
+	"name": "stgTiposOrdenTrabajo",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SqlAutocorpDw",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Staiging"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "nombre",
+				"type": "varchar"
+			},
+			{
+				"name": "codigoHansa",
+				"type": "varchar"
+			},
+			{
+				"name": "eliminadoEn",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "creadoEn",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "actualizadoEn",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "codigoFlujoTrabajo",
+				"type": "varchar"
+			},
+			{
+				"name": "colorTarjeta",
+				"type": "varchar"
+			},
+			{
+				"name": "colorFuente",
+				"type": "varchar"
+			},
+			{
+				"name": "aceptarMultiples",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "codigoTipoOsHansa",
+				"type": "text"
+			},
+			{
+				"name": "permitirTareasAgregadas",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "idOrigenOrdenTrabajoPorDefecto",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "idAccionTareaOrdenTrabajoPorDefecto",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "detalleInicial",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "habilitarPrecioMateriales",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "habilitarPrecioManoObra",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "idTipoProveedorPorDefecto",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "motivoPorDefecto",
+				"type": "varchar"
+			},
+			{
+				"name": "adjuntoPresupuestoRequerido",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "idTipoValePorDefecto",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "cambioPlazoPago",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "habilitarPrecioTotal",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "tipoFreshdesk",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "stg",
+			"table": "TiposOrdenTrabajo"
+		}
+	}
+}
