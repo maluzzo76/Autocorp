@@ -7137,6 +7137,329 @@
 						"query": "SELECT * from work_order_types;\n",
 						"queryTimeout": "02:00:00"
 					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"writeBehavior": "upsert",
+						"upsertSettings": {
+							"useTempDB": true,
+							"keys": [
+								"id"
+							]
+						},
+						"sqlWriterUseTableLock": false,
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "id",
+									"type": "UInt64",
+									"physicalType": "bigint"
+								},
+								"sink": {
+									"name": "id",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "name",
+									"type": "String"
+								},
+								"sink": {
+									"name": "nombre",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "hansa_code",
+									"type": "String"
+								},
+								"sink": {
+									"name": "codigoHansa",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "deleted_at",
+									"type": "DateTime",
+									"physicalType": "timestamp"
+								},
+								"sink": {
+									"name": "eliminadoEn",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								}
+							},
+							{
+								"source": {
+									"name": "created_at",
+									"type": "DateTime",
+									"physicalType": "timestamp"
+								},
+								"sink": {
+									"name": "creadoEn",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								}
+							},
+							{
+								"source": {
+									"name": "updated_at",
+									"type": "DateTime",
+									"physicalType": "timestamp"
+								},
+								"sink": {
+									"name": "actualizadoEn",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								}
+							},
+							{
+								"source": {
+									"name": "workflow_code",
+									"type": "String"
+								},
+								"sink": {
+									"name": "codigoFlujoTrabajo",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "card_color",
+									"type": "String"
+								},
+								"sink": {
+									"name": "colorTarjeta",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "font_color",
+									"type": "String"
+								},
+								"sink": {
+									"name": "colorFuente",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "accept_multiple",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "aceptarMultiples",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "os_type_hansa_code",
+									"type": "String"
+								},
+								"sink": {
+									"name": "codigoTipoOsHansa",
+									"type": "String",
+									"physicalType": "text"
+								}
+							},
+							{
+								"source": {
+									"name": "allow_tasks_added",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "permitirTareasAgregadas",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "default_work_order_origin_id",
+									"type": "UInt64"
+								},
+								"sink": {
+									"name": "idOrigenOrdenTrabajoPorDefecto",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "default_work_order_task_action_id",
+									"type": "UInt64"
+								},
+								"sink": {
+									"name": "idAccionTareaOrdenTrabajoPorDefecto",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "initial_detail",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "detalleInicial",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "materials_price_enable",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "habilitarPrecioMateriales",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "work_force_price_enable",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "habilitarPrecioManoObra",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "default_provider_type_id",
+									"type": "UInt64"
+								},
+								"sink": {
+									"name": "idTipoProveedorPorDefecto",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "default_reason",
+									"type": "String"
+								},
+								"sink": {
+									"name": "motivoPorDefecto",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "budget_attachment_required",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "adjuntoPresupuestoRequerido",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "default_voucher_type_id",
+									"type": "UInt64"
+								},
+								"sink": {
+									"name": "idTipoValePorDefecto",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "payment_deadline_change",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "cambioPlazoPago",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "total_price_enable",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "habilitarPrecioTotal",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "freshdesk_type",
+									"type": "String"
+								},
+								"sink": {
+									"name": "tipoFreshdesk",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "EfleetClientes",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "stgTiposOrdenTrabajo",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Inyectar tabla tiposOrigenCliente",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureMySqlSource",
+						"query": "SELECT * from client_origin_types;\n",
+						"queryTimeout": "02:00:00"
+					},
 					"enableStaging": false
 				},
 				"inputs": [
