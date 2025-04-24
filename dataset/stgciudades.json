@@ -1,0 +1,75 @@
+{
+	"name": "stgciudades",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SqlAutocorpDw",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Staiging"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "nombre",
+				"type": "varchar"
+			},
+			{
+				"name": "codigoPostal",
+				"type": "varchar"
+			},
+			{
+				"name": "provinciaId",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "creadoEn",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "actualizadoEn",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "kmInicialVtv",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "mesInicialVtv",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "mesesEntreVtv",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "mesesAnualesVtv",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "kmAnualesVtv",
+				"type": "int",
+				"precision": 10
+			}
+		],
+		"typeProperties": {
+			"schema": "stg",
+			"table": "ciudades"
+		}
+	}
+}
