@@ -1,0 +1,83 @@
+{
+	"name": "stgmarcas",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SqlAutocorpDw",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Staiging"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "nombre",
+				"type": "varchar"
+			},
+			{
+				"name": "eliminadoEn",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "creadoEn",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "actualizadoEn",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "codigoDnrpa",
+				"type": "varchar"
+			},
+			{
+				"name": "descripcionDnrpa",
+				"type": "text"
+			},
+			{
+				"name": "fabricanteDnrpa",
+				"type": "varchar"
+			},
+			{
+				"name": "codigoAldnet",
+				"type": "varchar"
+			},
+			{
+				"name": "descripcionAldnet",
+				"type": "text"
+			},
+			{
+				"name": "fabricanteAldnet",
+				"type": "varchar"
+			},
+			{
+				"name": "codigoHansa",
+				"type": "varchar"
+			},
+			{
+				"name": "grupoFabricanteAldnet",
+				"type": "varchar"
+			},
+			{
+				"name": "tipoMarca",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "stg",
+			"table": "marcas"
+		}
+	}
+}
