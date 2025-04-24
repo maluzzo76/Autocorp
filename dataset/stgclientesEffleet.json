@@ -1,0 +1,175 @@
+{
+	"name": "stgclientesEffleet",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SqlAutocorpDw",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Staiging"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "contact_id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "description",
+				"type": "nvarchar"
+			},
+			{
+				"name": "deleted_at",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "created_at",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "updated_at",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "web",
+				"type": "nvarchar"
+			},
+			{
+				"name": "business_name",
+				"type": "nvarchar"
+			},
+			{
+				"name": "fantasy_name",
+				"type": "nvarchar"
+			},
+			{
+				"name": "group",
+				"type": "nvarchar"
+			},
+			{
+				"name": "classification",
+				"type": "nvarchar"
+			},
+			{
+				"name": "first_credit_limit",
+				"type": "decimal",
+				"precision": 10,
+				"scale": 2
+			},
+			{
+				"name": "second_credit_limit",
+				"type": "decimal",
+				"precision": 10,
+				"scale": 2
+			},
+			{
+				"name": "operation_type_id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "invoice_type_id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "client_state_type_id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "client_trade_type_id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "client_origin_type_id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "payment_deadline",
+				"type": "nvarchar"
+			},
+			{
+				"name": "client_iibb_type_id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "aldnet_account_number",
+				"type": "nvarchar"
+			},
+			{
+				"name": "aldnet_account_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "aldnet_account_test_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "client_type_id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "synched",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "vendor_user_id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "operator_user_id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "client_group_id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "send_campaign",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "campaign_subcontact_type_id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "is_risk_client",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "send_survey",
+				"type": "int",
+				"precision": 10
+			}
+		],
+		"typeProperties": {
+			"schema": "stg",
+			"table": "clientesEfleet"
+		}
+	}
+}
