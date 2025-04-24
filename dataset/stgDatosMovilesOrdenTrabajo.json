@@ -1,0 +1,97 @@
+{
+	"name": "stgDatosMovilesOrdenTrabajo",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SqlAutocorpDw",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Staiging"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "ordenTrabajoId",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "enProgreso",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "listoParaEntregar",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "entregadoEn",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "listoParaRecoger",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "recogidoEn",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "comentarios",
+				"type": "text"
+			},
+			{
+				"name": "calificacion",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "creadoEn",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "actualizadoEn",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "eliminadoEn",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "fechasTurnoDeseadas",
+				"type": "text"
+			},
+			{
+				"name": "zonaDeseada",
+				"type": "text"
+			},
+			{
+				"name": "usarMismoProveedor",
+				"type": "int",
+				"precision": 10
+			}
+		],
+		"typeProperties": {
+			"schema": "stg",
+			"table": "DatosMovilesOrdenTrabajo"
+		}
+	}
+}
