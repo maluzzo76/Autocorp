@@ -1,0 +1,140 @@
+{
+	"name": "stgVencimientosVehiculo",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SqlAutocorpDw",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Staiging"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "vehiculoId",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "diasVencimientoCardoc",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "fechaVencimientoVtv",
+				"type": "varchar"
+			},
+			{
+				"name": "diasVencimientoVtv",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "etiquetaVencimientoVtv",
+				"type": "varchar"
+			},
+			{
+				"name": "fechaVencimientoExtintor",
+				"type": "varchar"
+			},
+			{
+				"name": "diasVencimientoExtintor",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "etiquetaVencimientoExtintor",
+				"type": "varchar"
+			},
+			{
+				"name": "diasGarantiaActual",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "etiquetaGarantiaActual",
+				"type": "varchar"
+			},
+			{
+				"name": "mesesRestantesServicio",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "ultimaFechaServicio",
+				"type": "varchar"
+			},
+			{
+				"name": "ultimoKmServicio",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "etiquetaMesesUltimoServicio",
+				"type": "varchar"
+			},
+			{
+				"name": "etiquetaUltimaFechaServicio",
+				"type": "varchar"
+			},
+			{
+				"name": "ultimaOrdenTrabajoServicio",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "ultimoKmOrdenTrabajoServicio",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "ultimaFechaOrdenTrabajoServicio",
+				"type": "varchar"
+			},
+			{
+				"name": "ultimaFechaCambioNeumatico",
+				"type": "varchar"
+			},
+			{
+				"name": "ultimoKmCambioNeumatico",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "ultimoCambioOrdenTrabajo",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "etiquetaUltimaFechaCambioNeumatico",
+				"type": "varchar"
+			},
+			{
+				"name": "fechaVencimientoLicenciaConducir",
+				"type": "varchar"
+			},
+			{
+				"name": "etiquetaVencimientoLicenciaConducir",
+				"type": "varchar"
+			},
+			{
+				"name": "fechaVencimientoCardoc",
+				"type": "varchar"
+			},
+			{
+				"name": "etiquetaVencimientoCardoc",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "stg",
+			"table": "VencimientosVehiculo"
+		}
+	}
+}
