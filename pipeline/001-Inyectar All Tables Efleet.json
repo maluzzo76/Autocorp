@@ -11046,6 +11046,230 @@
 						"query": "SELECT * from users;\n",
 						"queryTimeout": "02:00:00"
 					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"writeBehavior": "upsert",
+						"upsertSettings": {
+							"useTempDB": true,
+							"keys": [
+								"id"
+							]
+						},
+						"sqlWriterUseTableLock": false,
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "id",
+									"type": "UInt64",
+									"physicalType": "bigint"
+								},
+								"sink": {
+									"name": "id",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "name",
+									"type": "String"
+								},
+								"sink": {
+									"name": "nombre",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "email",
+									"type": "String"
+								},
+								"sink": {
+									"name": "email",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "email_verified_at",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "emailVerificadoEn",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								}
+							},
+							{
+								"source": {
+									"name": "password",
+									"type": "String"
+								},
+								"sink": {
+									"name": "contraseña",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "remember_token",
+									"type": "String"
+								},
+								"sink": {
+									"name": "tokenRecordatorio",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "deleted_at",
+									"type": "DateTime",
+									"physicalType": "timestamp"
+								},
+								"sink": {
+									"name": "eliminadoEn",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								}
+							},
+							{
+								"source": {
+									"name": "created_at",
+									"type": "DateTime",
+									"physicalType": "timestamp"
+								},
+								"sink": {
+									"name": "creadoEn",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								}
+							},
+							{
+								"source": {
+									"name": "updated_at",
+									"type": "DateTime",
+									"physicalType": "timestamp"
+								},
+								"sink": {
+									"name": "actualizadoEn",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								}
+							},
+							{
+								"source": {
+									"name": "hansa_id",
+									"type": "String"
+								},
+								"sink": {
+									"name": "idHansa",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "freshdesk_user_id",
+									"type": "String"
+								},
+								"sink": {
+									"name": "idFreshdesk",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "change_password",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "cambiarContraseña",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "user_type",
+									"type": "Int32"
+								},
+								"sink": {
+									"name": "tipoUsuario",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "password_expiration",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "expiracionContraseña",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								}
+							},
+							{
+								"source": {
+									"name": "state_id",
+									"type": "Int32"
+								},
+								"sink": {
+									"name": "estadoId",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "EfleetClientes",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "stgUsuarios",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Inyectar tabla Vales",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureMySqlSource",
+						"query": "SELECT * from vouchers;\n",
+						"queryTimeout": "02:00:00"
+					},
 					"enableStaging": false
 				},
 				"inputs": [
