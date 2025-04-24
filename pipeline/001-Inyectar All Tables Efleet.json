@@ -2235,6 +2235,359 @@
 						"query": "SELECT * from vehicle_expirations;",
 						"queryTimeout": "02:00:00"
 					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"writeBehavior": "upsert",
+						"upsertSettings": {
+							"useTempDB": true,
+							"keys": [
+								"id"
+							]
+						},
+						"sqlWriterUseTableLock": false,
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "id",
+									"type": "UInt64",
+									"physicalType": "bigint"
+								},
+								"sink": {
+									"name": "id",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "vehicle_id",
+									"type": "UInt64"
+								},
+								"sink": {
+									"name": "vehiculoId",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "cardoc_due_date_days",
+									"type": "Int32"
+								},
+								"sink": {
+									"name": "diasVencimientoCardoc",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "vtv_due_date",
+									"type": "String"
+								},
+								"sink": {
+									"name": "fechaVencimientoVtv",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "vtv_due_date_days",
+									"type": "Int32"
+								},
+								"sink": {
+									"name": "diasVencimientoVtv",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "vtv_due_date_label",
+									"type": "String"
+								},
+								"sink": {
+									"name": "etiquetaVencimientoVtv",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "fire_extinguisher_due_date",
+									"type": "String"
+								},
+								"sink": {
+									"name": "fechaVencimientoExtintor",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "fire_extinguisher_due_date_days",
+									"type": "Int32"
+								},
+								"sink": {
+									"name": "diasVencimientoExtintor",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "fire_extinguisher_due_date_label",
+									"type": "String"
+								},
+								"sink": {
+									"name": "etiquetaVencimientoExtintor",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "warranty_up_to_date_days",
+									"type": "Int32"
+								},
+								"sink": {
+									"name": "diasGarantiaActual",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "warranty_up_to_date_label",
+									"type": "String"
+								},
+								"sink": {
+									"name": "etiquetaGarantiaActual",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "service_remaining_months",
+									"type": "Int32"
+								},
+								"sink": {
+									"name": "mesesRestantesServicio",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "service_last_date",
+									"type": "String"
+								},
+								"sink": {
+									"name": "ultimaFechaServicio",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "service_last_km",
+									"type": "Int32"
+								},
+								"sink": {
+									"name": "ultimoKmServicio",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "service_last_date_months_label",
+									"type": "String"
+								},
+								"sink": {
+									"name": "etiquetaMesesUltimoServicio",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "service_last_date_label",
+									"type": "String"
+								},
+								"sink": {
+									"name": "etiquetaUltimaFechaServicio",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "service_last_work_order",
+									"type": "Int32"
+								},
+								"sink": {
+									"name": "ultimaOrdenTrabajoServicio",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "service_last_work_order_km",
+									"type": "Int32"
+								},
+								"sink": {
+									"name": "ultimoKmOrdenTrabajoServicio",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "service_last_work_order_date",
+									"type": "String"
+								},
+								"sink": {
+									"name": "ultimaFechaOrdenTrabajoServicio",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "tier_last_date_change",
+									"type": "String"
+								},
+								"sink": {
+									"name": "ultimaFechaCambioNeumatico",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "tier_last_km_change",
+									"type": "Int32"
+								},
+								"sink": {
+									"name": "ultimoKmCambioNeumatico",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "last_work_order_change",
+									"type": "Int32"
+								},
+								"sink": {
+									"name": "ultimoCambioOrdenTrabajo",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "tier_last_date_change_label",
+									"type": "String"
+								},
+								"sink": {
+									"name": "etiquetaUltimaFechaCambioNeumatico",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "driver_license_due_date",
+									"type": "String"
+								},
+								"sink": {
+									"name": "fechaVencimientoLicenciaConducir",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "driver_license_due_date_label",
+									"type": "String"
+								},
+								"sink": {
+									"name": "etiquetaVencimientoLicenciaConducir",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "cardoc_due_date",
+									"type": "String"
+								},
+								"sink": {
+									"name": "fechaVencimientoCardoc",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "cardoc_due_date_label",
+									"type": "String"
+								},
+								"sink": {
+									"name": "etiquetaVencimientoCardoc",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "EfleetClientes",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "stgVencimientosVehiculo",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Inyectar tabla EquipamientoVehiculo",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureMySqlSource",
+						"query": "SELECT * from vehicle_equipment;",
+						"queryTimeout": "02:00:00"
+					},
 					"enableStaging": false
 				},
 				"inputs": [
