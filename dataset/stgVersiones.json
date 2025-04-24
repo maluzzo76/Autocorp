@@ -1,0 +1,126 @@
+{
+	"name": "stgVersiones",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SqlAutocorpDw",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Staiging"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "nombre",
+				"type": "varchar"
+			},
+			{
+				"name": "variacionId",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "tipoVehiculoId",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "tipoCombustionId",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "gamaId",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "tipoTransmisionId",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "descripcionRenting",
+				"type": "text"
+			},
+			{
+				"name": "huellaCarbono",
+				"type": "varchar"
+			},
+			{
+				"name": "capacidadTanque",
+				"type": "decimal",
+				"precision": 8,
+				"scale": 2
+			},
+			{
+				"name": "eliminadoEn",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "creadoEn",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "actualizadoEn",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "codigoHansa",
+				"type": "varchar"
+			},
+			{
+				"name": "codigoDnrpa",
+				"type": "varchar"
+			},
+			{
+				"name": "codigoCompletoDnrpa",
+				"type": "varchar"
+			},
+			{
+				"name": "descripcionTipoDnrpa",
+				"type": "varchar"
+			},
+			{
+				"name": "mesesGarantiaPorDefecto",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "kmGarantiaPorDefecto",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "codiaInfoauto",
+				"type": "varchar"
+			},
+			{
+				"name": "ultimaSincronizacionInfoauto",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "descripcionInfoauto",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "stg",
+			"table": "Versiones"
+		}
+	}
+}
