@@ -1,0 +1,161 @@
+{
+	"name": "stgCostosValet",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SqlAutocorpDw",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Staiging"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "valetId",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "esCosto",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "esCostoReal",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "valorHora",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 0
+			},
+			{
+				"name": "cantidadHorasNormales",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "cantidadHorasExtra",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "taxi",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 0
+			},
+			{
+				"name": "hotel",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 0
+			},
+			{
+				"name": "combustible",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 0
+			},
+			{
+				"name": "herramientas",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 0
+			},
+			{
+				"name": "viaticos",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 0
+			},
+			{
+				"name": "pasajes",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 0
+			},
+			{
+				"name": "otros",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 0
+			},
+			{
+				"name": "adicionales",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 0
+			},
+			{
+				"name": "eliminadoEn",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "creadoEn",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "actualizadoEn",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "esPresupuestado",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "esMargen",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "subtotal",
+				"type": "decimal",
+				"precision": 10,
+				"scale": 2
+			},
+			{
+				"name": "hastaKm",
+				"type": "decimal",
+				"precision": 10,
+				"scale": 2
+			},
+			{
+				"name": "costoKm",
+				"type": "decimal",
+				"precision": 10,
+				"scale": 2
+			},
+			{
+				"name": "deshabilitado",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "valorHoraExtra",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 0
+			}
+		],
+		"typeProperties": {
+			"schema": "stg",
+			"table": "CostosValet"
+		}
+	}
+}
