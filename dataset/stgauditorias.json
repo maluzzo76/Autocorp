@@ -1,0 +1,83 @@
+{
+	"name": "stgauditorias",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SqlAutocorpDw",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Staiging"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "tipoUsuario",
+				"type": "varchar"
+			},
+			{
+				"name": "usuarioId",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "evento",
+				"type": "varchar"
+			},
+			{
+				"name": "tipoAuditable",
+				"type": "varchar"
+			},
+			{
+				"name": "auditableId",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "valoresAntiguos",
+				"type": "text"
+			},
+			{
+				"name": "valoresNuevos",
+				"type": "text"
+			},
+			{
+				"name": "url",
+				"type": "text"
+			},
+			{
+				"name": "direccionIp",
+				"type": "varchar"
+			},
+			{
+				"name": "agenteUsuario",
+				"type": "varchar"
+			},
+			{
+				"name": "etiquetas",
+				"type": "varchar"
+			},
+			{
+				"name": "creadoEn",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "actualizadoEn",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			}
+		],
+		"typeProperties": {
+			"schema": "stg",
+			"table": "auditorias"
+		}
+	}
+}
