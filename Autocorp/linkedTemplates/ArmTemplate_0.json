@@ -349,6 +349,7 @@
 							"activities": [
 								{
 									"name": "Importar Tickets",
+									"description": "",
 									"type": "AzureFunctionActivity",
 									"dependsOn": [],
 									"policy": {
@@ -364,7 +365,10 @@
 											"value": "@concat('ImportarTickets?fechaDesde=',item().Fecha)",
 											"type": "Expression"
 										},
-										"body": {},
+										"body": {
+											"value": "{}",
+											"type": "Expression"
+										},
 										"headers": {},
 										"method": "POST"
 									},
@@ -393,7 +397,10 @@
 								"value": "@concat('ImportarActivities')",
 								"type": "Expression"
 							},
-							"body": {},
+							"body": {
+								"value": "{}",
+								"type": "Expression"
+							},
 							"headers": {},
 							"method": "POST"
 						},

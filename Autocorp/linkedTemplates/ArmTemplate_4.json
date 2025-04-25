@@ -13,7 +13,7 @@
 	},
 	"resources": [
 		{
-			"name": "[concat(parameters('factoryName'), '/stgCambiosNeumaticoOrdenTrabajo')]",
+			"name": "[concat(parameters('factoryName'), '/stgOrdenesTrabajoVehiculo')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -38,221 +38,62 @@
 						"precision": 10
 					},
 					{
-						"name": "variacionNeumaticoId",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "fechaCambio",
-						"type": "date"
-					},
-					{
-						"name": "creadoEn",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "actualizadoEn",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "eliminadoEn",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "tipoNeumaticoId",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "motivo",
-						"type": "varchar"
-					}
-				],
-				"typeProperties": {
-					"schema": "stg",
-					"table": "CambiosNeumaticoOrdenTrabajo"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/stgCaracteristicasInfoautoVersion')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SqlAutocorpDw",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "Staiging"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "id",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "versionId",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "caracteristicaInfoautoId",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "valor",
-						"type": "varchar"
-					},
-					{
-						"name": "etiqueta",
-						"type": "varchar"
-					},
-					{
-						"name": "unidad",
-						"type": "varchar"
-					},
-					{
-						"name": "creadoEn",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "actualizadoEn",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "eliminadoEn",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					}
-				],
-				"typeProperties": {
-					"schema": "stg",
-					"table": "CaracteristicasInfoautoVersion"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/stgCargos')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SqlAutocorpDw",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "Staiging"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "id",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "servicioId",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "tipoCargoId",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "valor",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 0
-					},
-					{
-						"name": "descripcion",
-						"type": "varchar"
-					},
-					{
-						"name": "eliminadoEn",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "creadoEn",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "actualizadoEn",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "vehiculoId",
-						"type": "int",
-						"precision": 10
-					}
-				],
-				"typeProperties": {
-					"schema": "stg",
-					"table": "cargos"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/stgComponentesTipoOrdenTrabajo')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SqlAutocorpDw",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "Staiging"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "id",
-						"type": "int",
-						"precision": 10
-					},
-					{
 						"name": "tipoOrdenTrabajoId",
 						"type": "int",
 						"precision": 10
 					},
 					{
-						"name": "componente",
+						"name": "vehiculoId",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "creadoEn",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "actualizadoEn",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					}
+				],
+				"typeProperties": {
+					"schema": "stg",
+					"table": "OrdenesTrabajoVehiculo"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/stgOrigenesOrdenTrabajo')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SqlAutocorpDw",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Staiging"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "nombre",
 						"type": "varchar"
 					},
 					{
-						"name": "orden",
-						"type": "int",
-						"precision": 10
+						"name": "codigoHansa",
+						"type": "varchar"
 					},
 					{
 						"name": "eliminadoEn",
@@ -275,13 +116,13 @@
 				],
 				"typeProperties": {
 					"schema": "stg",
-					"table": "ComponentesTipoOrdenTrabajo"
+					"table": "OrigenesOrdenTrabajo"
 				}
 			},
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/stgComprasVehiculo')]",
+			"name": "[concat(parameters('factoryName'), '/stgPresupuestos')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -301,71 +142,26 @@
 						"precision": 10
 					},
 					{
-						"name": "vehiculoId",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "fechaSolicitud",
-						"type": "date"
-					},
-					{
-						"name": "fechaFacturaEstimada",
-						"type": "date"
-					},
-					{
-						"name": "fechaFactura",
-						"type": "date"
-					},
-					{
-						"name": "fechaMatriculaEstimada",
-						"type": "date"
-					},
-					{
-						"name": "fechaPago",
-						"type": "date"
-					},
-					{
-						"name": "fechaRecepcionDocumentos",
-						"type": "date"
-					},
-					{
-						"name": "fechaEntregaMatricula",
-						"type": "date"
-					},
-					{
-						"name": "sinUso",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "fechaEntregaVehiculo",
-						"type": "date"
-					},
-					{
-						"name": "creadoEn",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "actualizadoEn",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "eliminadoEn",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "numeroFactura",
+						"name": "version",
 						"type": "varchar"
 					},
 					{
-						"name": "idProvinciaFactura",
+						"name": "ordenTrabajoId",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "proveedorId",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "tipoPresupuestoId",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "estadoPresupuestoId",
 						"type": "int",
 						"precision": 10
 					},
@@ -374,49 +170,101 @@
 						"type": "date"
 					},
 					{
-						"name": "nombreConcesionario",
-						"type": "varchar"
-					},
-					{
-						"name": "precioLista",
-						"type": "decimal",
-						"precision": 10,
-						"scale": 2
-					},
-					{
-						"name": "precioCompra",
-						"type": "decimal",
-						"precision": 10,
-						"scale": 2
-					},
-					{
-						"name": "contactoId",
+						"name": "pagoPorAdelantado",
 						"type": "int",
 						"precision": 10
 					},
 					{
-						"name": "fechaRecepcionFactura",
-						"type": "date"
+						"name": "comentarios",
+						"type": "text"
 					},
 					{
-						"name": "fechaEntregaVehiculoEstimada",
-						"type": "date"
+						"name": "creadoEn",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
 					},
 					{
-						"name": "idClienteDestino",
+						"name": "actualizadoEn",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "eliminadoEn",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "precioManoObra",
+						"type": "decimal",
+						"precision": 10,
+						"scale": 2
+					},
+					{
+						"name": "precioMateriales",
+						"type": "decimal",
+						"precision": 10,
+						"scale": 2
+					},
+					{
+						"name": "precioTotal",
+						"type": "decimal",
+						"precision": 10,
+						"scale": 2
+					},
+					{
+						"name": "precioManoObraSinIva",
+						"type": "decimal",
+						"precision": 10,
+						"scale": 2
+					},
+					{
+						"name": "precioMaterialesSinIva",
+						"type": "decimal",
+						"precision": 10,
+						"scale": 2
+					},
+					{
+						"name": "precioTotalSinIva",
+						"type": "decimal",
+						"precision": 10,
+						"scale": 2
+					},
+					{
+						"name": "descuentoManoObra",
+						"type": "decimal",
+						"precision": 10,
+						"scale": 2
+					},
+					{
+						"name": "descuentoMateriales",
+						"type": "decimal",
+						"precision": 10,
+						"scale": 2
+					},
+					{
+						"name": "descuentoTotal",
+						"type": "decimal",
+						"precision": 10,
+						"scale": 2
+					},
+					{
+						"name": "usuarioAprobacionId",
 						"type": "int",
 						"precision": 10
 					}
 				],
 				"typeProperties": {
 					"schema": "stg",
-					"table": "ComprasVehiculo"
+					"table": "presupuestos"
 				}
 			},
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/stgCostosValet')]",
+			"name": "[concat(parameters('factoryName'), '/stgPresupuestosValet')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -441,75 +289,17 @@
 						"precision": 10
 					},
 					{
-						"name": "esCosto",
+						"name": "presupuestoId",
 						"type": "int",
 						"precision": 10
 					},
 					{
-						"name": "esCostoReal",
+						"name": "hastaKm",
 						"type": "int",
 						"precision": 10
 					},
 					{
-						"name": "valorHora",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 0
-					},
-					{
-						"name": "cantidadHorasNormales",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "cantidadHorasExtra",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "taxi",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 0
-					},
-					{
-						"name": "hotel",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 0
-					},
-					{
-						"name": "combustible",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 0
-					},
-					{
-						"name": "herramientas",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 0
-					},
-					{
-						"name": "viaticos",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 0
-					},
-					{
-						"name": "pasajes",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 0
-					},
-					{
-						"name": "otros",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 0
-					},
-					{
-						"name": "adicionales",
+						"name": "costoKm",
 						"type": "decimal",
 						"precision": 18,
 						"scale": 0
@@ -533,37 +323,76 @@
 						"scale": 3
 					},
 					{
-						"name": "esPresupuestado",
-						"type": "int",
-						"precision": 10
+						"name": "valorHora",
+						"type": "decimal",
+						"precision": 10,
+						"scale": 2
 					},
 					{
-						"name": "esMargen",
-						"type": "int",
-						"precision": 10
+						"name": "cantidadHorasNormales",
+						"type": "decimal",
+						"precision": 10,
+						"scale": 2
+					},
+					{
+						"name": "cantidadHorasExtra",
+						"type": "decimal",
+						"precision": 10,
+						"scale": 2
+					},
+					{
+						"name": "taxi",
+						"type": "decimal",
+						"precision": 10,
+						"scale": 2
+					},
+					{
+						"name": "hotel",
+						"type": "decimal",
+						"precision": 10,
+						"scale": 2
+					},
+					{
+						"name": "combustible",
+						"type": "decimal",
+						"precision": 10,
+						"scale": 2
+					},
+					{
+						"name": "herramientas",
+						"type": "decimal",
+						"precision": 10,
+						"scale": 2
+					},
+					{
+						"name": "viaticos",
+						"type": "decimal",
+						"precision": 10,
+						"scale": 2
+					},
+					{
+						"name": "pasajes",
+						"type": "decimal",
+						"precision": 10,
+						"scale": 2
+					},
+					{
+						"name": "otros",
+						"type": "decimal",
+						"precision": 10,
+						"scale": 2
+					},
+					{
+						"name": "adicionales",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 0
 					},
 					{
 						"name": "subtotal",
 						"type": "decimal",
 						"precision": 10,
 						"scale": 2
-					},
-					{
-						"name": "hastaKm",
-						"type": "decimal",
-						"precision": 10,
-						"scale": 2
-					},
-					{
-						"name": "costoKm",
-						"type": "decimal",
-						"precision": 10,
-						"scale": 2
-					},
-					{
-						"name": "deshabilitado",
-						"type": "int",
-						"precision": 10
 					},
 					{
 						"name": "valorHoraExtra",
@@ -574,113 +403,13 @@
 				],
 				"typeProperties": {
 					"schema": "stg",
-					"table": "CostosValet"
+					"table": "PresupuestosValet"
 				}
 			},
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/stgDatosMovilesOrdenTrabajo')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SqlAutocorpDw",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "Staiging"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "id",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "ordenTrabajoId",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "enProgreso",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "listoParaEntregar",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "entregadoEn",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "listoParaRecoger",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "recogidoEn",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "comentarios",
-						"type": "text"
-					},
-					{
-						"name": "calificacion",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "creadoEn",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "actualizadoEn",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "eliminadoEn",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "fechasTurnoDeseadas",
-						"type": "text"
-					},
-					{
-						"name": "zonaDeseada",
-						"type": "text"
-					},
-					{
-						"name": "usarMismoProveedor",
-						"type": "int",
-						"precision": 10
-					}
-				],
-				"typeProperties": {
-					"schema": "stg",
-					"table": "DatosMovilesOrdenTrabajo"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/stgDireccionesVehiculo')]",
+			"name": "[concat(parameters('factoryName'), '/stgProveedoresVehiculo')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -705,7 +434,73 @@
 						"precision": 10
 					},
 					{
-						"name": "direccionId",
+						"name": "proveedorId",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "eliminadoEn",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "creadoEn",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "actualizadoEn",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "esPreferido",
+						"type": "int",
+						"precision": 10
+					}
+				],
+				"typeProperties": {
+					"schema": "stg",
+					"table": "ProveedoresVehiculo"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/stgRelacionesOrdenTrabajo')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SqlAutocorpDw",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Staiging"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "ordenTrabajoDesdeId",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "ordenTrabajoHastaId",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "tipoRelacionOrdenTrabajoId",
 						"type": "int",
 						"precision": 10
 					},
@@ -730,13 +525,13 @@
 				],
 				"typeProperties": {
 					"schema": "stg",
-					"table": "DireccionesVehiculo"
+					"table": "RelacionesOrdenTrabajo"
 				}
 			},
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/stgEquipamientoVehiculo')]",
+			"name": "[concat(parameters('factoryName'), '/stgReservas')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -756,130 +551,160 @@
 						"precision": 10
 					},
 					{
-						"name": "nombre",
+						"name": "hansa_code",
 						"type": "varchar"
 					},
 					{
-						"name": "tipoEquipamientoVehiculoId",
+						"name": "hansa_client_code",
+						"type": "varchar"
+					},
+					{
+						"name": "hansa_contact_code",
+						"type": "varchar"
+					},
+					{
+						"name": "hansa_plate",
+						"type": "varchar"
+					},
+					{
+						"name": "hansa_booking_status",
+						"type": "varchar"
+					},
+					{
+						"name": "hansa_booking_type",
+						"type": "varchar"
+					},
+					{
+						"name": "start_date",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "end_date",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "franchise",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 2
+					},
+					{
+						"name": "vehicle_id",
 						"type": "int",
 						"precision": 10
 					},
 					{
-						"name": "eliminadoEn",
+						"name": "client_id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "subcontact_id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "deleted_at",
 						"type": "datetime",
 						"precision": 23,
 						"scale": 3
 					},
 					{
-						"name": "creadoEn",
+						"name": "created_at",
 						"type": "datetime",
 						"precision": 23,
 						"scale": 3
 					},
 					{
-						"name": "actualizadoEn",
+						"name": "updated_at",
 						"type": "datetime",
 						"precision": 23,
 						"scale": 3
+					},
+					{
+						"name": "hansa_related_plate",
+						"type": "varchar"
+					},
+					{
+						"name": "related_vehicle_id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "initial_km",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "last_km",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "expected_pickup_date",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "expected_dropoff_date",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "actual_pickup_date",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "actual_dropoff_date",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					}
+				],
+				"typeProperties": {
+					"schema": "stg",
+					"table": "Reservas"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/stgSegurosVehiculo')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SqlAutocorpDw",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Staiging"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "id",
+						"type": "int",
+						"precision": 10
 					},
 					{
 						"name": "vehiculoId",
 						"type": "int",
 						"precision": 10
-					}
-				],
-				"typeProperties": {
-					"schema": "stg",
-					"table": "EquipamientoVehiculo"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/stgEquivalentesVersion')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SqlAutocorpDw",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "Staiging"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
+					},
 					{
-						"name": "id",
+						"name": "seguroId",
 						"type": "int",
 						"precision": 10
-					},
-					{
-						"name": "versionId",
-						"type": "bigint",
-						"precision": 19
-					},
-					{
-						"name": "codigoHansa",
-						"type": "varchar"
-					},
-					{
-						"name": "descripcionHansa",
-						"type": "varchar"
-					},
-					{
-						"name": "creadoEn",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "actualizadoEn",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					}
-				],
-				"typeProperties": {
-					"schema": "stg",
-					"table": "EquivalentesVersion"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/stgEstacionamientosOrdenTrabajo')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SqlAutocorpDw",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "Staiging"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "id",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "ordenTrabajoId",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "descripcion",
-						"type": "text"
-					},
-					{
-						"name": "comentarios",
-						"type": "text"
 					},
 					{
 						"name": "fechaInicio",
@@ -890,108 +715,22 @@
 						"type": "date"
 					},
 					{
-						"name": "eliminadoEn",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
+						"name": "montoVehiculo",
+						"type": "decimal",
+						"precision": 10,
+						"scale": 2
 					},
 					{
-						"name": "creadoEn",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
+						"name": "montoSeguro",
+						"type": "decimal",
+						"precision": 8,
+						"scale": 2
 					},
 					{
-						"name": "actualizadoEn",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					}
-				],
-				"typeProperties": {
-					"schema": "stg",
-					"table": "EstacionamientosOrdenTrabajo"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/stgEstadosOrdenTrabajo')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SqlAutocorpDw",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "Staiging"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "id",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "nombre",
-						"type": "varchar"
-					},
-					{
-						"name": "descripcion",
-						"type": "varchar"
-					},
-					{
-						"name": "eliminadoEn",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "creadoEn",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "actualizadoEn",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					}
-				],
-				"typeProperties": {
-					"schema": "stg",
-					"table": "EstadosOrdenTrabajo"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/stgEstadosPresupuesto')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SqlAutocorpDw",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "Staiging"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "id",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "nombre",
-						"type": "varchar"
+						"name": "porcentajeFranquicia",
+						"type": "decimal",
+						"precision": 8,
+						"scale": 2
 					},
 					{
 						"name": "creadoEn",
@@ -1014,13 +753,13 @@
 				],
 				"typeProperties": {
 					"schema": "stg",
-					"table": "estadosPresupuesto"
+					"table": "SegurosVehiculo"
 				}
 			},
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/stgEstadosVale')]",
+			"name": "[concat(parameters('factoryName'), '/stgSubcontactosVehiculo')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -1040,62 +779,19 @@
 						"precision": 10
 					},
 					{
-						"name": "nombre",
-						"type": "text"
-					},
-					{
-						"name": "codigoHansa",
-						"type": "text"
-					},
-					{
-						"name": "eliminadoEn",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "creadoEn",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "actualizadoEn",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					}
-				],
-				"typeProperties": {
-					"schema": "stg",
-					"table": "EstadosVale"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/stgEstadosVehiculos')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SqlAutocorpDw",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "Staiging"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "id",
+						"name": "vehiculoId",
 						"type": "int",
 						"precision": 10
 					},
 					{
-						"name": "nombre",
-						"type": "varchar"
+						"name": "subcontactoId",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "tipoRelacionId",
+						"type": "int",
+						"precision": 10
 					},
 					{
 						"name": "eliminadoEn",
@@ -1114,35 +810,182 @@
 						"type": "datetime",
 						"precision": 23,
 						"scale": 3
+					},
+					{
+						"name": "tieneDocumentosCardoc",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "fechaInicio",
+						"type": "date"
+					},
+					{
+						"name": "fechaFin",
+						"type": "date"
 					},
 					{
 						"name": "codigoHansa",
 						"type": "varchar"
 					},
 					{
-						"name": "estadosVehiculoA",
+						"name": "fechaVencimientoDocumentosCardoc",
+						"type": "date"
+					},
+					{
+						"name": "numeroDocumentoCardoc",
 						"type": "varchar"
 					},
 					{
-						"name": "dueñoFlota",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "integracionHansa",
+						"name": "sincronizado",
 						"type": "int",
 						"precision": 10
 					}
 				],
 				"typeProperties": {
 					"schema": "stg",
-					"table": "EstadosVehiculo"
+					"table": "SubcontactosVehiculo"
 				}
 			},
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/stgGastosTipoOrdenTrabajo')]",
+			"name": "[concat(parameters('factoryName'), '/stgTareasOrdenTrabajo')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SqlAutocorpDw",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Staiging"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "ordenTrabajoId",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "tareaId",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "tipoAccionTareaOrdenTrabajoId",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "precioManoObra",
+						"type": "decimal",
+						"precision": 10,
+						"scale": 2
+					},
+					{
+						"name": "precioMateriales",
+						"type": "decimal",
+						"precision": 10,
+						"scale": 2
+					},
+					{
+						"name": "precioTotal",
+						"type": "decimal",
+						"precision": 10,
+						"scale": 2
+					},
+					{
+						"name": "precioManoObraSinIva",
+						"type": "decimal",
+						"precision": 10,
+						"scale": 2
+					},
+					{
+						"name": "precioMaterialesSinIva",
+						"type": "decimal",
+						"precision": 10,
+						"scale": 2
+					},
+					{
+						"name": "precioTotalSinIva",
+						"type": "decimal",
+						"precision": 10,
+						"scale": 2
+					},
+					{
+						"name": "descuentoManoObra",
+						"type": "decimal",
+						"precision": 10,
+						"scale": 2
+					},
+					{
+						"name": "descuentoMateriales",
+						"type": "decimal",
+						"precision": 10,
+						"scale": 2
+					},
+					{
+						"name": "descuentoTotal",
+						"type": "decimal",
+						"precision": 10,
+						"scale": 2
+					},
+					{
+						"name": "comentarios",
+						"type": "text"
+					},
+					{
+						"name": "eliminadoEn",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "creadoEn",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "actualizadoEn",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "refacturacion",
+						"type": "decimal",
+						"precision": 10,
+						"scale": 2
+					},
+					{
+						"name": "ivaVentaId",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "ivaCompraId",
+						"type": "int",
+						"precision": 10
+					}
+				],
+				"typeProperties": {
+					"schema": "stg",
+					"table": "TareasOrdenTrabajo"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/stgTareasTipoOrdenTrabajo')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -1167,145 +1010,16 @@
 						"precision": 10
 					},
 					{
-						"name": "tipoGastoOrdenTrabajoId",
+						"name": "tareaId",
 						"type": "int",
 						"precision": 10
 					},
 					{
-						"name": "dueñoFlota",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "creadoEn",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "actualizadoEn",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "eliminadoEn",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "porDefecto",
-						"type": "int",
-						"precision": 10
-					}
-				],
-				"typeProperties": {
-					"schema": "stg",
-					"table": "GastosTipoOrdenTrabajo"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/stgHistorialClienteVehiculo')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SqlAutocorpDw",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "Staiging"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "id",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "vehiculoId",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "clienteId",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "km",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "creadoEn",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "actualizadoEn",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					}
-				],
-				"typeProperties": {
-					"schema": "stg",
-					"table": "HistorialClienteVehiculo"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/stgHistorialOrdenTrabajo')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SqlAutocorpDw",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "Staiging"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "id",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "ordenTrabajoId",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "estadoDesde",
+						"name": "nombre",
 						"type": "varchar"
 					},
 					{
-						"name": "estadoHasta",
-						"type": "varchar"
-					},
-					{
-						"name": "cambioEstado",
-						"type": "date"
-					},
-					{
-						"name": "usuarioDesdeId",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "usuarioHastaId",
+						"name": "crearAutomaticamente",
 						"type": "int",
 						"precision": 10
 					},
@@ -1330,98 +1044,13 @@
 				],
 				"typeProperties": {
 					"schema": "stg",
-					"table": "HistorialOrdenTrabajo"
+					"table": "TareasTipoOrdenTrabajo"
 				}
 			},
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/stgMovimientosVehiculo')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SqlAutocorpDw",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "Staiging"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "id",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "ordenTrabajoId",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "fechaInicio",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "fechaFin",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "descripcion",
-						"type": "varchar"
-					},
-					{
-						"name": "requisitos",
-						"type": "varchar"
-					},
-					{
-						"name": "medioTransporte",
-						"type": "varchar"
-					},
-					{
-						"name": "costoTotal",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 0
-					},
-					{
-						"name": "eliminadoEn",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "creadoEn",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "actualizadoEn",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "comentarios",
-						"type": "varchar"
-					}
-				],
-				"typeProperties": {
-					"schema": "stg",
-					"table": "MovimientosVehiculo"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/stgOrdenesTrabajoTareas')]",
+			"name": "[concat(parameters('factoryName'), '/stgTickets')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -1437,84 +1066,120 @@
 				"schema": [
 					{
 						"name": "codigo",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "codigoWorkOrder",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Tarea",
 						"type": "varchar"
 					},
 					{
-						"name": "categoria",
-						"type": "varchar"
-					},
-					{
-						"name": "costoPersonal",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 4
-					},
-					{
-						"name": "costoMaterial",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 4
-					},
-					{
-						"name": "costoTotal",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 4
-					},
-					{
-						"name": "costoPersonalSinIva",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 4
-					},
-					{
-						"name": "costoMaterialSinIva",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 4
-					},
-					{
-						"name": "costoTotalSinIva",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 4
-					},
-					{
-						"name": "descuentoPersonal",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 4
-					},
-					{
-						"name": "decuentoMaterial",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 4
-					},
-					{
-						"name": "decuentoTotal",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 4
-					},
-					{
-						"name": "fechaCreacion",
+						"name": "fechaAlta",
 						"type": "datetime",
 						"precision": 23,
 						"scale": 3
 					},
 					{
-						"name": "fechaUltimaActualizacion",
+						"name": "fechaModificacion",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "horasDiferecia",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "minutosDiferencia",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "companiaCodigo",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "estadoCodigo",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "tipoCodigo",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "productoCodigo",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "grupoCodigo",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "origenCodigo",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "prioridadCodigo",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "agenteCodigo",
+						"type": "int",
+						"precision": 10
+					}
+				],
+				"typeProperties": {
+					"schema": "stg",
+					"table": "Tickets"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/stgTiposAccionTareaOrdenTrabajo')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SqlAutocorpDw",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Staiging"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "nombre",
+						"type": "varchar"
+					},
+					{
+						"name": "codigoHansa",
+						"type": "varchar"
+					},
+					{
+						"name": "eliminadoEn",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "creadoEn",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "actualizadoEn",
 						"type": "datetime",
 						"precision": 23,
 						"scale": 3
@@ -1522,7 +1187,461 @@
 				],
 				"typeProperties": {
 					"schema": "stg",
-					"table": "OrdenesTrabajoTareas"
+					"table": "TiposAccionTareaOrdenTrabajo"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/stgTiposEquipamientoVehiculo')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SqlAutocorpDw",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Staiging"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "nombre",
+						"type": "varchar"
+					},
+					{
+						"name": "eliminadoEn",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "creadoEn",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "actualizadoEn",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					}
+				],
+				"typeProperties": {
+					"schema": "stg",
+					"table": "TiposEquipamientoVehiculo"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/stgTiposGastoOrdenTrabajo')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SqlAutocorpDw",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Staiging"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "nombre",
+						"type": "varchar"
+					},
+					{
+						"name": "codigoHansa",
+						"type": "varchar"
+					},
+					{
+						"name": "eliminadoEn",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "creadoEn",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "actualizadoEn",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					}
+				],
+				"typeProperties": {
+					"schema": "stg",
+					"table": "TiposGastoOrdenTrabajo"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/stgTiposOrdenTrabajo')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SqlAutocorpDw",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Staiging"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "nombre",
+						"type": "varchar"
+					},
+					{
+						"name": "codigoHansa",
+						"type": "varchar"
+					},
+					{
+						"name": "eliminadoEn",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "creadoEn",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "actualizadoEn",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "codigoFlujoTrabajo",
+						"type": "varchar"
+					},
+					{
+						"name": "colorTarjeta",
+						"type": "varchar"
+					},
+					{
+						"name": "colorFuente",
+						"type": "varchar"
+					},
+					{
+						"name": "aceptarMultiples",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "codigoTipoOsHansa",
+						"type": "text"
+					},
+					{
+						"name": "permitirTareasAgregadas",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "idOrigenOrdenTrabajoPorDefecto",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "idAccionTareaOrdenTrabajoPorDefecto",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "detalleInicial",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "habilitarPrecioMateriales",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "habilitarPrecioManoObra",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "idTipoProveedorPorDefecto",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "motivoPorDefecto",
+						"type": "varchar"
+					},
+					{
+						"name": "adjuntoPresupuestoRequerido",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "idTipoValePorDefecto",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "cambioPlazoPago",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "habilitarPrecioTotal",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "tipoFreshdesk",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "stg",
+					"table": "TiposOrdenTrabajo"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/stgTiposRelacionOrdenTrabajo')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SqlAutocorpDw",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Staiging"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "nombre",
+						"type": "text"
+					},
+					{
+						"name": "eliminadoEn",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "creadoEn",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "actualizadoEn",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					}
+				],
+				"typeProperties": {
+					"schema": "stg",
+					"table": "TiposRelacionOrdenTrabajo"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/stgTiposTransmision')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SqlAutocorpDw",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Staiging"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "nombre",
+						"type": "varchar"
+					},
+					{
+						"name": "eliminadoEn",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "creadoEn",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "actualizadoEn",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "codigoHansa",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "stg",
+					"table": "TiposTransmision"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/stgTiposVale')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SqlAutocorpDw",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Staiging"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "nombre",
+						"type": "varchar"
+					},
+					{
+						"name": "eliminadoEn",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "creadoEn",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "actualizadoEn",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					}
+				],
+				"typeProperties": {
+					"schema": "stg",
+					"table": "TiposVale"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/stgTiposVehiculo')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SqlAutocorpDw",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Staiging"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "nombre",
+						"type": "varchar"
+					},
+					{
+						"name": "eliminadoEn",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "creadoEn",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "actualizadoEn",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "codigoHansa",
+						"type": "varchar"
+					},
+					{
+						"name": "descripcionHansa",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "stg",
+					"table": "TiposVehiculo"
 				}
 			},
 			"dependsOn": []
