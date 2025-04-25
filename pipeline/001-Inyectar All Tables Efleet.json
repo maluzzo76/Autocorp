@@ -17,7 +17,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureMySqlSource",
-						"query": "select * from vehicle_client_history;",
+						"query": "SELECT * from vehicle_client_history;\n",
 						"queryTimeout": "02:00:00"
 					},
 					"sink": {
@@ -3309,7 +3309,7 @@
 						"typeConversion": true,
 						"typeConversionSettings": {
 							"allowDataTruncation": true,
-							"treatBooleanAsNumber": false
+							"treatBooleanAsNumber": true
 						}
 					}
 				},
@@ -5857,7 +5857,7 @@
 				]
 			},
 			{
-				"name": "Inyectartabla marcas",
+				"name": "Inyectar tabla marcas",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
