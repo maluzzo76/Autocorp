@@ -49,6 +49,7 @@
 					"activities": [
 						{
 							"name": "Importar Tickets",
+							"description": "",
 							"type": "AzureFunctionActivity",
 							"dependsOn": [],
 							"policy": {
@@ -62,6 +63,10 @@
 							"typeProperties": {
 								"functionName": {
 									"value": "@concat('ImportarTickets?fechaDesde=',item().Fecha)",
+									"type": "Expression"
+								},
+								"body": {
+									"value": "{}",
 									"type": "Expression"
 								},
 								"method": "POST"
