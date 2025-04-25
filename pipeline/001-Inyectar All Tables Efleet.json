@@ -615,8 +615,6 @@
 			{
 				"name": "Inyectar tabla Presupuestos",
 				"type": "Copy",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -7648,6 +7646,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
+						"preCopyScript": "delete table stg.Unidades;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -7736,7 +7735,7 @@
 						"typeConversion": true,
 						"typeConversionSettings": {
 							"allowDataTruncation": true,
-							"treatBooleanAsNumber": false
+							"treatBooleanAsNumber": true
 						}
 					}
 				},
@@ -7773,6 +7772,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
+						"preCopyScript": "delete table stg.auditorias;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -7948,7 +7948,7 @@
 						"typeConversion": true,
 						"typeConversionSettings": {
 							"allowDataTruncation": true,
-							"treatBooleanAsNumber": false
+							"treatBooleanAsNumber": true
 						}
 					}
 				},
@@ -7968,8 +7968,6 @@
 			{
 				"name": "Inyectar tabla CostosValet",
 				"type": "Copy",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -7987,6 +7985,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
+						"preCopyScript": "delete table stg.CostosValet;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -8223,9 +8222,8 @@
 							},
 							{
 								"source": {
-									"name": "updated_at",
-									"type": "DateTime",
-									"physicalType": "timestamp"
+									"name": "is_budgeted",
+									"type": "Boolean"
 								},
 								"sink": {
 									"name": "esPresupuestado",
@@ -8311,7 +8309,7 @@
 						"typeConversion": true,
 						"typeConversionSettings": {
 							"allowDataTruncation": true,
-							"treatBooleanAsNumber": false
+							"treatBooleanAsNumber": true
 						}
 					}
 				},
@@ -8348,6 +8346,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
+						"preCopyScript": "delete table stg.EquivalentesVersion;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -8435,7 +8434,7 @@
 						"typeConversion": true,
 						"typeConversionSettings": {
 							"allowDataTruncation": true,
-							"treatBooleanAsNumber": false
+							"treatBooleanAsNumber": true
 						}
 					}
 				},
@@ -8472,6 +8471,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
+						"preCopyScript": "delete table stg.EstacionamientosOrdenTrabajo;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -8594,7 +8594,7 @@
 						"typeConversion": true,
 						"typeConversionSettings": {
 							"allowDataTruncation": true,
-							"treatBooleanAsNumber": false
+							"treatBooleanAsNumber": true
 						}
 					}
 				},
@@ -8631,6 +8631,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
+						"preCopyScript": "delete table stg.fabricantesAldnet;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -8719,7 +8720,7 @@
 						"typeConversion": true,
 						"typeConversionSettings": {
 							"allowDataTruncation": true,
-							"treatBooleanAsNumber": false
+							"treatBooleanAsNumber": true
 						}
 					}
 				},
@@ -8739,8 +8740,6 @@
 			{
 				"name": "Inyectar tabla HistorialOrdenTrabajo",
 				"type": "Copy",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -8758,6 +8757,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
+						"preCopyScript": "delete table stg.HistorialOrdenTrabajo;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -8864,7 +8864,7 @@
 							},
 							{
 								"source": {
-									"name": "deleted_at",
+									"name": "created_at",
 									"type": "DateTime",
 									"physicalType": "timestamp"
 								},
@@ -8890,7 +8890,7 @@
 						"typeConversion": true,
 						"typeConversionSettings": {
 							"allowDataTruncation": true,
-							"treatBooleanAsNumber": false
+							"treatBooleanAsNumber": true
 						}
 					}
 				},
@@ -8927,6 +8927,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
+						"preCopyScript": "delete table stg.matricesAutorizacion;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -9027,7 +9028,7 @@
 						"typeConversion": true,
 						"typeConversionSettings": {
 							"allowDataTruncation": true,
-							"treatBooleanAsNumber": false
+							"treatBooleanAsNumber": true
 						}
 					}
 				},
@@ -9064,6 +9065,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
+						"preCopyScript": "delete table stg.PresupuestosValet;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -9345,7 +9347,7 @@
 						"typeConversion": true,
 						"typeConversionSettings": {
 							"allowDataTruncation": true,
-							"treatBooleanAsNumber": false
+							"treatBooleanAsNumber": true
 						}
 					}
 				},
@@ -9382,6 +9384,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
+						"preCopyScript": "delete table stg.tareasMatrizAutorizacion;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -9515,7 +9518,7 @@
 						"typeConversion": true,
 						"typeConversionSettings": {
 							"allowDataTruncation": true,
-							"treatBooleanAsNumber": false
+							"treatBooleanAsNumber": true
 						}
 					}
 				},
@@ -9552,6 +9555,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
+						"preCopyScript": "delete table stg.tareasPresupuesto;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -9768,7 +9772,7 @@
 						"typeConversion": true,
 						"typeConversionSettings": {
 							"allowDataTruncation": true,
-							"treatBooleanAsNumber": false
+							"treatBooleanAsNumber": true
 						}
 					}
 				},
@@ -9805,6 +9809,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
+						"preCopyScript": "delete table stg.clientesEfleet;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -10248,6 +10253,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
+						"preCopyScript": "delete table stg.TiposAccionTareaOrdenTrabajo;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -10336,7 +10342,7 @@
 						"typeConversion": true,
 						"typeConversionSettings": {
 							"allowDataTruncation": true,
-							"treatBooleanAsNumber": false
+							"treatBooleanAsNumber": true
 						}
 					}
 				},
@@ -10373,6 +10379,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
+						"preCopyScript": "delete table stg.tiposCargo;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -10473,7 +10480,7 @@
 						"typeConversion": true,
 						"typeConversionSettings": {
 							"allowDataTruncation": true,
-							"treatBooleanAsNumber": false
+							"treatBooleanAsNumber": true
 						}
 					}
 				},
@@ -10510,6 +10517,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
+						"preCopyScript": "delete table stg.TiposGastoOrdenTrabajo;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -10598,7 +10606,7 @@
 						"typeConversion": true,
 						"typeConversionSettings": {
 							"allowDataTruncation": true,
-							"treatBooleanAsNumber": false
+							"treatBooleanAsNumber": true
 						}
 					}
 				},
@@ -10635,6 +10643,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
+						"preCopyScript": "delete table stg.tiposPresupuesto;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -10712,7 +10721,7 @@
 						"typeConversion": true,
 						"typeConversionSettings": {
 							"allowDataTruncation": true,
-							"treatBooleanAsNumber": false
+							"treatBooleanAsNumber": true
 						}
 					}
 				},
@@ -10749,6 +10758,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
+						"preCopyScript": "delete table stg.TiposRelacionOrdenTrabajo;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -10826,7 +10836,7 @@
 						"typeConversion": true,
 						"typeConversionSettings": {
 							"allowDataTruncation": true,
-							"treatBooleanAsNumber": false
+							"treatBooleanAsNumber": true
 						}
 					}
 				},
@@ -10863,6 +10873,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
+						"preCopyScript": "delete table stg.TiposTransmision;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -10951,7 +10962,7 @@
 						"typeConversion": true,
 						"typeConversionSettings": {
 							"allowDataTruncation": true,
-							"treatBooleanAsNumber": false
+							"treatBooleanAsNumber": true
 						}
 					}
 				},
@@ -10988,6 +10999,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
+						"preCopyScript": "delete table stg.TiposVale;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -11065,7 +11077,7 @@
 						"typeConversion": true,
 						"typeConversionSettings": {
 							"allowDataTruncation": true,
-							"treatBooleanAsNumber": false
+							"treatBooleanAsNumber": true
 						}
 					}
 				},
@@ -11102,6 +11114,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
+						"preCopyScript": "delete table stg.Usuarios;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -11289,7 +11302,7 @@
 						"typeConversion": true,
 						"typeConversionSettings": {
 							"allowDataTruncation": true,
-							"treatBooleanAsNumber": false
+							"treatBooleanAsNumber": true
 						}
 					}
 				},
@@ -11326,6 +11339,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
+						"preCopyScript": "delete table stg.Vales;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -11692,7 +11706,7 @@
 						"typeConversion": true,
 						"typeConversionSettings": {
 							"allowDataTruncation": true,
-							"treatBooleanAsNumber": false
+							"treatBooleanAsNumber": true
 						}
 					}
 				},
@@ -11729,6 +11743,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
+						"preCopyScript": "delete table stg.Valets;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -11872,7 +11887,7 @@
 						"typeConversion": true,
 						"typeConversionSettings": {
 							"allowDataTruncation": true,
-							"treatBooleanAsNumber": false
+							"treatBooleanAsNumber": true
 						}
 					}
 				},
@@ -11909,6 +11924,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
+						"preCopyScript": "delete table stg.Variaciones;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -12074,7 +12090,7 @@
 						"typeConversion": true,
 						"typeConversionSettings": {
 							"allowDataTruncation": true,
-							"treatBooleanAsNumber": false
+							"treatBooleanAsNumber": true
 						}
 					}
 				},
@@ -12111,6 +12127,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
+						"preCopyScript": "delete table stg.Versiones;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -12377,7 +12394,7 @@
 						"typeConversion": true,
 						"typeConversionSettings": {
 							"allowDataTruncation": true,
-							"treatBooleanAsNumber": false
+							"treatBooleanAsNumber": true
 						}
 					}
 				},
