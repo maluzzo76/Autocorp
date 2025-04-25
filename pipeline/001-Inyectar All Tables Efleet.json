@@ -22,7 +22,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "delete table stg.HistorialClienteVehiculo;",
+						"preCopyScript": "delete from stg.HistorialClienteVehiculo;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -147,7 +147,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "delete table stg.EstadosVehiculo;",
+						"preCopyScript": "delete from stg.EstadosVehiculo;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -306,7 +306,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "delete table stg.Reservas",
+						"preCopyScript": "delete from stg.Reservas",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -632,7 +632,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "delete table stg.Presupuestos;",
+						"preCopyScript": "delete from stg.Presupuestos;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -952,7 +952,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "delete table stg.EstadosVale;",
+						"preCopyScript": "delete from stg.EstadosVale;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -1078,7 +1078,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "delete table stg.OrdenesTrabajoVehiculo;",
+						"preCopyScript": "delete from stg.OrdenesTrabajoVehiculo;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -1203,7 +1203,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "delete table stg.SegurosVehiculo;",
+						"preCopyScript": "delete from stg.SegurosVehiculo;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -1390,7 +1390,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "delete table stg.SubcontactosVehiculo;",
+						"preCopyScript": "delete from stg.SubcontactosVehiculo;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -1605,7 +1605,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "delete table stg.ComprasVehiculo;",
+						"preCopyScript": "delete from stg.ComprasVehiculo;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -1934,7 +1934,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "delete table stg.ProveedoresVehiculo;",
+						"preCopyScript": "delete from stg.ProveedoresVehiculo;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -2071,7 +2071,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "delete table stg.MovimientosVehiculo;",
+						"preCopyScript": "delete from stg.MovimientosVehiculo;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -2266,7 +2266,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "delete table stg.VencimientosVehiculo;",
+						"preCopyScript": "delete from stg.VencimientosVehiculo;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -2620,7 +2620,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "delete table stg.EquipamientoVehiculo;",
+						"preCopyScript": "delete from stg.EquipamientoVehiculo;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -2758,7 +2758,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "delete table stg.TiposEquipamientoVehiculo;",
+						"preCopyScript": "delete from stg.TiposEquipamientoVehiculo;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -2873,7 +2873,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "delete table stg.DireccionesVehiculo;",
+						"preCopyScript": "delete from stg.DireccionesVehiculo;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -2999,7 +2999,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "delete table stg.TiposVehiculo;",
+						"preCopyScript": "delete from stg.TiposVehiculo;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -3136,7 +3136,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "delete table stg.AlertasUsuarioOrdenTrabajo;",
+						"preCopyScript": "delete from stg.AlertasUsuarioOrdenTrabajo;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -3372,7 +3372,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "delete table stg.AprobacionesOrdenTrabajo;",
+						"preCopyScript": "delete from stg.AprobacionesOrdenTrabajo;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -3564,7 +3564,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "delete table stg.CambiosNeumaticoOrdenTrabajo;",
+						"preCopyScript": "delete from stg.CambiosNeumaticoOrdenTrabajo;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -3723,7 +3723,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "delete table stg.CaracteristicasInfoautoVersion;",
+						"preCopyScript": "delete from stg.CaracteristicasInfoautoVersion;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -3882,7 +3882,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "delete table stg.cargos;",
+						"preCopyScript": "delete from stg.cargos;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -4044,7 +4044,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "delete table stg.categorias;",
+						"preCopyScript": "delete from stg.categorias;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -4182,7 +4182,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "delete table stg.ciudades;",
+						"preCopyScript": "delete from stg.ciudades;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -4362,7 +4362,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "delete table stg.ComponentesTipoOrdenTrabajo;",
+						"preCopyScript": "delete from stg.ComponentesTipoOrdenTrabajo;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -4499,7 +4499,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "delete table stg.costosRutaCliente;",
+						"preCopyScript": "delete from stg.costosRutaCliente;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -4839,7 +4839,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "delete table stg.DatosMovilesOrdenTrabajo;",
+						"preCopyScript": "delete from stg.DatosMovilesOrdenTrabajo;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -5064,7 +5064,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "delete table stg.direcciones;",
+						"preCopyScript": "delete from stg.direcciones;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -5345,7 +5345,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "delete table stg.EstadosOrdenTrabajo;",
+						"preCopyScript": "delete from stg.EstadosOrdenTrabajo;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -5472,7 +5472,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "delete table stg.estructurasCliente;",
+						"preCopyScript": "delete from stg.estructurasCliente;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -5642,7 +5642,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "delete table stg.GastosTipoOrdenTrabajo;",
+						"preCopyScript": "delete from stg.GastosTipoOrdenTrabajo;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -5790,7 +5790,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "delete table stg.gruposCliente;",
+						"preCopyScript": "delete from stg.gruposCliente;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -5916,7 +5916,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "delete table stg.marcas;",
+						"preCopyScript": "delete from stg.marcas;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -6130,7 +6130,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "delete table stg.OrigenesOrdenTrabajo;",
+						"preCopyScript": "delete from stg.OrigenesOrdenTrabajo;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -6256,7 +6256,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "delete table stg.RelacionesOrdenTrabajo;",
+						"preCopyScript": "delete from stg.RelacionesOrdenTrabajo;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -6393,7 +6393,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "delete tabla stg.TareasOrdenTrabajo;",
+						"preCopyScript": "delete from stg.TareasOrdenTrabajo;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -6693,7 +6693,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "delete table stg.TareasTipoOrdenTrabajo;",
+						"preCopyScript": "delete from stg.TareasTipoOrdenTrabajo;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -6841,7 +6841,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "delete table stg.tiposDireccion;",
+						"preCopyScript": "delete from stg.tiposDireccion;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -6956,7 +6956,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "delete table stg.tiposEstadoCliente;",
+						"preCopyScript": "delete from stg.tiposEstadoCliente;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -7082,7 +7082,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "delete table select * from stg.tiposIibbCliente;",
+						"preCopyScript": "delete from stg.tiposIibbCliente;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -7196,7 +7196,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "delete table stg.TiposOrdenTrabajo;",
+						"preCopyScript": "delete from stg.TiposOrdenTrabajo;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -7520,7 +7520,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "delete table stg.tiposOrigenCliente;",
+						"preCopyScript": "delete from stg.tiposOrigenCliente;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -7646,7 +7646,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "delete table stg.Unidades;",
+						"preCopyScript": "delete from stg.Unidades;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -7772,7 +7772,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "delete table stg.auditorias;",
+						"preCopyScript": "delete from stg.auditorias;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -7985,7 +7985,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "delete table stg.CostosValet;",
+						"preCopyScript": "delete from stg.CostosValet;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -8346,7 +8346,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "delete table stg.EquivalentesVersion;",
+						"preCopyScript": "delete from stg.EquivalentesVersion;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -8471,7 +8471,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "delete table stg.EstacionamientosOrdenTrabajo;",
+						"preCopyScript": "delete from stg.EstacionamientosOrdenTrabajo;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -8631,7 +8631,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "delete table stg.fabricantesAldnet;",
+						"preCopyScript": "delete from stg.fabricantesAldnet;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -8757,7 +8757,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "delete table stg.HistorialOrdenTrabajo;",
+						"preCopyScript": "delete from stg.HistorialOrdenTrabajo;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -8927,7 +8927,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "delete table stg.matricesAutorizacion;",
+						"preCopyScript": "delete from stg.matricesAutorizacion;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -9065,7 +9065,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "delete table stg.PresupuestosValet;",
+						"preCopyScript": "delete from stg.PresupuestosValet;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -9384,7 +9384,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "delete table stg.tareasMatrizAutorizacion;",
+						"preCopyScript": "delete from stg.tareasMatrizAutorizacion;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -9555,7 +9555,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "delete table stg.tareasPresupuesto;",
+						"preCopyScript": "delete from stg.tareasPresupuesto;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -9809,7 +9809,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "delete table stg.clientesEfleet;",
+						"preCopyScript": "delete from stg.clientesEfleet;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -10253,7 +10253,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "delete table stg.TiposAccionTareaOrdenTrabajo;",
+						"preCopyScript": "delete from stg.TiposAccionTareaOrdenTrabajo;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -10379,7 +10379,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "delete table stg.tiposCargo;",
+						"preCopyScript": "delete from stg.tiposCargo;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -10517,7 +10517,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "delete table stg.TiposGastoOrdenTrabajo;",
+						"preCopyScript": "delete from stg.TiposGastoOrdenTrabajo;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -10643,7 +10643,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "delete table stg.tiposPresupuesto;",
+						"preCopyScript": "delete from stg.tiposPresupuesto;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -10758,7 +10758,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "delete table stg.TiposRelacionOrdenTrabajo;",
+						"preCopyScript": "delete from stg.TiposRelacionOrdenTrabajo;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -10873,7 +10873,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "delete table stg.TiposTransmision;",
+						"preCopyScript": "delete from stg.TiposTransmision;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -10999,7 +10999,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "delete table stg.TiposVale;",
+						"preCopyScript": "delete from stg.TiposVale;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -11114,7 +11114,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "delete table stg.Usuarios;",
+						"preCopyScript": "delete from stg.Usuarios;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -11339,7 +11339,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "delete table stg.Vales;",
+						"preCopyScript": "delete from stg.Vales;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -11743,7 +11743,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "delete table stg.Valets;",
+						"preCopyScript": "delete from stg.Valets;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -11924,7 +11924,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "delete table stg.Variaciones;",
+						"preCopyScript": "delete from stg.Variaciones;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -12127,7 +12127,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "delete table stg.Versiones;",
+						"preCopyScript": "delete from stg.Versiones;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
