@@ -3119,6 +3119,8 @@
 			{
 				"name": "Inyectar tabla AlertasUsuarioOrdenTrabajo",
 				"type": "Copy",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -3355,6 +3357,8 @@
 			{
 				"name": "Inyectar tabla AprobacionesOrdenTrabajo",
 				"type": "Copy",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
