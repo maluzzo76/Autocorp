@@ -22,6 +22,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
+						"preCopyScript": "delete table stg.HistorialClienteVehiculo;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -109,7 +110,7 @@
 						"typeConversion": true,
 						"typeConversionSettings": {
 							"allowDataTruncation": true,
-							"treatBooleanAsNumber": false
+							"treatBooleanAsNumber": true
 						}
 					}
 				},
@@ -146,6 +147,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
+						"preCopyScript": "delete table stg.EstadosVehiculo;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -304,6 +306,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
+						"preCopyScript": "delete table stg.Reservas",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -592,7 +595,7 @@
 						"typeConversion": true,
 						"typeConversionSettings": {
 							"allowDataTruncation": true,
-							"treatBooleanAsNumber": false
+							"treatBooleanAsNumber": true
 						}
 					}
 				},
@@ -610,7 +613,7 @@
 				]
 			},
 			{
-				"name": "Inyectar Presupuestos",
+				"name": "Inyectar tabla Presupuestos",
 				"type": "Copy",
 				"state": "Inactive",
 				"onInactiveMarkAs": "Succeeded",
@@ -631,6 +634,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
+						"preCopyScript": "delete table stg.Presupuestos;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
@@ -945,7 +949,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureMySqlSource",
-						"query": "select * from budget_states;\n",
+						"query": "SELECT * from voucher_states;\n",
 						"queryTimeout": "02:00:00"
 					},
 					"sink": {
