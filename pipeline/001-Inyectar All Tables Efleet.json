@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Inyectar Tabla Vehiculo Cliente Historial",
+				"name": "Inyectar Tabla HistorialClienteVehiculo",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -2066,7 +2066,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureMySqlSource",
-						"query": "SELECT * from vehicle_movements where year(start_date)>2000 and year(end_date)>2000;",
+						"query": "SELECT * \nFROM vehicle_movements\nWHERE \n    (start_date IS NULL OR YEAR(start_date) > 1900)\n    AND (end_date IS NULL OR YEAR(end_date) > 1900)\n    AND (deleted_at IS NULL OR YEAR(deleted_at) > 1900)\n    AND (created_at IS NULL OR YEAR(created_at) > 1900)\n    AND (updated_at IS NULL OR YEAR(updated_at) > 1900);\n",
 						"queryTimeout": "02:00:00"
 					},
 					"sink": {
@@ -3119,8 +3119,6 @@
 			{
 				"name": "Inyectar tabla AlertasUsuarioOrdenTrabajo",
 				"type": "Copy",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -3133,7 +3131,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureMySqlSource",
-						"query": "SELECT * from work_order_user_alerts;",
+						"query": "SELECT * \nFROM work_order_user_alerts\nWHERE \n    (alert_date IS NULL OR YEAR(alert_date) > 1900)\n    AND (created_at IS NULL OR YEAR(created_at) > 1900)\n    AND (updated_at IS NULL OR YEAR(updated_at) > 1900)\n    AND (deleted_at IS NULL OR YEAR(deleted_at) > 1900);\n",
 						"queryTimeout": "02:00:00"
 					},
 					"sink": {
@@ -3357,8 +3355,6 @@
 			{
 				"name": "Inyectar tabla AprobacionesOrdenTrabajo",
 				"type": "Copy",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -3371,7 +3367,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureMySqlSource",
-						"query": "SELECT * from work_order_approvals;",
+						"query": "SELECT * \nFROM work_order_approvals\nWHERE \n    (approve_date IS NULL OR YEAR(approve_date) > 1900)\n    AND (deleted_at IS NULL OR YEAR(deleted_at) > 1900)\n    AND (created_at IS NULL OR YEAR(created_at) > 1900)\n    AND (updated_at IS NULL OR YEAR(updated_at) > 1900)\n    AND (reject_date IS NULL OR YEAR(reject_date) > 1900);\n",
 						"queryTimeout": "02:00:00"
 					},
 					"sink": {
