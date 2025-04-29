@@ -1,0 +1,6 @@
+{
+	"name": "IR-SAP-Local",
+	"properties": {
+		"type": "SelfHosted"
+	}
+}
