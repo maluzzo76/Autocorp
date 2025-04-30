@@ -107,7 +107,7 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "Inyectar Tabla Vehiculo Cliente Historial",
+						"name": "Inyectar Tabla HistorialClienteVehiculo",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
@@ -2190,7 +2190,7 @@
 						"typeProperties": {
 							"source": {
 								"type": "AzureMySqlSource",
-								"query": "SELECT * from vehicle_movements where year(start_date)>2000 and year(end_date)>2000;",
+								"query": "SELECT *\nFROM (\n    SELECT\n        id,\n        work_order_id,\n\n        CASE \n            WHEN CAST(`start_date` AS CHAR) = '0000-00-00 00:00:00' THEN NULL\n            WHEN YEAR(`start_date`) < 1900 THEN NULL\n            ELSE `start_date`\n        END AS `start_date`,\n\n        CASE \n            WHEN CAST(end_date AS CHAR) = '0000-00-00 00:00:00' THEN NULL\n            WHEN YEAR(end_date) < 1900 THEN NULL\n            ELSE end_date\n        END AS end_date,\n\n        `description`,\n        requirements,\n        transport_mean,\n        total_cost,\n\n        CASE \n            WHEN CAST(deleted_at AS CHAR) = '0000-00-00 00:00:00' THEN NULL\n            WHEN YEAR(deleted_at) < 1900 THEN NULL\n            ELSE deleted_at\n        END AS deleted_at,\n\n        CASE \n            WHEN CAST(created_at AS CHAR) = '0000-00-00 00:00:00' THEN NULL\n            WHEN YEAR(created_at) < 1900 THEN NULL\n            ELSE created_at\n        END AS created_at,\n\n        CASE \n            WHEN CAST(updated_at AS CHAR) = '0000-00-00 00:00:00' THEN NULL\n            WHEN YEAR(updated_at) < 1900 THEN NULL\n            ELSE updated_at\n        END AS updated_at,\n\n        comments\n\n    FROM vehicle_movements\n) AS r2\nWHERE \n    (`start_date` IS NULL OR YEAR(`start_date`) > 1800)\n    AND (end_date IS NULL OR YEAR(end_date) > 1800)\n    AND (deleted_at IS NULL OR YEAR(deleted_at) > 1900)\n    AND (created_at IS NULL OR YEAR(created_at) > 1900)\n    AND (updated_at IS NULL OR YEAR(updated_at) > 1900);\n",
 								"queryTimeout": "02:00:00"
 							},
 							"sink": {
@@ -3255,8 +3255,6 @@
 					{
 						"name": "Inyectar tabla AlertasUsuarioOrdenTrabajo",
 						"type": "Copy",
-						"state": "Inactive",
-						"onInactiveMarkAs": "Succeeded",
 						"dependsOn": [],
 						"policy": {
 							"timeout": "0.12:00:00",
@@ -3269,7 +3267,7 @@
 						"typeProperties": {
 							"source": {
 								"type": "AzureMySqlSource",
-								"query": "SELECT * from work_order_user_alerts;",
+								"query": "select *\nfrom \n(\nSELECT\n id,\n  user_id,\n  work_order_id,\n  `subject` ,\n\n  case \n        when CAST(alert_date AS CHAR) = '0000-00-00 00:00:00' then NULL\n        when year(alert_date)<1900 then NULL\n    else alert_date\n    end alert_date,\n\n    case \n        when CAST(created_at AS CHAR) = '0000-00-00 00:00:00' then NULL\n        when year(created_at)<1900 then NULL\n    else created_at\n    end created_at,\n\n    case \n        when CAST(updated_at AS CHAR) = '0000-00-00 00:00:00' then NULL\n        when year(updated_at)<1900 then NULL\n    else   updated_at\n    end   updated_at,\n  reclaim_type,\n  reclaim_to,\n  next_reclaim_subject,\n  send_mail,\n  completed,\n  complete_user_id,\n  reclaim_to_type,\n  hansa_code,\n\n    case \n        when CAST(deleted_at AS CHAR) = '0000-00-00 00:00:00' then NULL\n        when year(deleted_at)<1900 then NULL\n    else   deleted_at\n    end   deleted_at\nFROM work_order_user_alerts\n) as r1\n\nWHERE     (alert_date IS NULL OR YEAR(alert_date) > 1800)\n    AND (created_at IS NULL OR YEAR(created_at) > 1800)\n    AND (updated_at IS NULL OR YEAR(updated_at) > 1900)\n    AND (deleted_at IS NULL OR YEAR(deleted_at) > 1900)\n    ",
 								"queryTimeout": "02:00:00"
 							},
 							"sink": {
@@ -3495,8 +3493,6 @@
 					{
 						"name": "Inyectar tabla AprobacionesOrdenTrabajo",
 						"type": "Copy",
-						"state": "Inactive",
-						"onInactiveMarkAs": "Succeeded",
 						"dependsOn": [],
 						"policy": {
 							"timeout": "0.12:00:00",
@@ -3509,7 +3505,7 @@
 						"typeProperties": {
 							"source": {
 								"type": "AzureMySqlSource",
-								"query": "SELECT * from work_order_approvals;",
+								"query": "SELECT *\nFROM (\n    SELECT\n        id,\n        work_order_id,\n        email,\n        approve_required,\n        approve,\n\n        CASE \n            WHEN CAST(approve_date AS CHAR) = '0000-00-00 00:00:00' THEN NULL\n            WHEN YEAR(approve_date) < 1900 THEN NULL\n            ELSE approve_date\n        END AS approve_date,\n\n        CASE \n            WHEN CAST(deleted_at AS CHAR) = '0000-00-00 00:00:00' THEN NULL\n            WHEN YEAR(deleted_at) < 1900 THEN NULL\n            ELSE deleted_at\n        END AS deleted_at,\n\n        CASE \n            WHEN CAST(created_at AS CHAR) = '0000-00-00 00:00:00' THEN NULL\n            WHEN YEAR(created_at) < 1900 THEN NULL\n            ELSE created_at\n        END AS created_at,\n\n        CASE \n            WHEN CAST(updated_at AS CHAR) = '0000-00-00 00:00:00' THEN NULL\n            WHEN YEAR(updated_at) < 1900 THEN NULL\n            ELSE updated_at\n        END AS updated_at,\n\n        reject_reason,\n        rejected,\n\n        CASE \n            WHEN CAST(reject_date AS CHAR) = '0000-00-00 00:00:00' THEN NULL\n            WHEN YEAR(reject_date) < 1900 THEN NULL\n            ELSE reject_date\n        END AS reject_date\n\n    FROM work_order_approvals\n) AS r3\nWHERE \n    (approve_date IS NULL OR YEAR(approve_date) > 1900)\n    AND (deleted_at IS NULL OR YEAR(deleted_at) > 1900)\n    AND (created_at IS NULL OR YEAR(created_at) > 1900)\n    AND (updated_at IS NULL OR YEAR(updated_at) > 1900)\n    AND (reject_date IS NULL OR YEAR(reject_date) > 1900);\n\n",
 								"queryTimeout": "02:00:00"
 							},
 							"sink": {
@@ -12648,6 +12644,146 @@
 								"parameters": {}
 							}
 						]
+					},
+					{
+						"name": "Inyectar tabla factPrecioHistoricoVehiculo",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureMySqlSource",
+								"query": "SELECT \n  id,\n  vehicle_id,\n    CASE \n    WHEN TRIM(codia) = '' OR codia IS NULL THEN NULL\n    ELSE CAST(codia AS UNSIGNED)\n  END AS codia_limpio,\n  price,\n  date,\n  created_at,\n  updated_at\n  \nFROM vehicle_pricing_history;",
+								"queryTimeout": "02:00:00"
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"preCopyScript": "delete from stg.factPrecioHistoricoVehiculo;",
+								"writeBehavior": "upsert",
+								"upsertSettings": {
+									"useTempDB": true,
+									"keys": [
+										"codigo"
+									]
+								},
+								"sqlWriterUseTableLock": false,
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "id",
+											"type": "UInt64",
+											"physicalType": "bigint"
+										},
+										"sink": {
+											"name": "codigo",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "vehicle_id",
+											"type": "UInt64"
+										},
+										"sink": {
+											"name": "vehiculoId",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "codia_limpio",
+											"type": "UInt64"
+										},
+										"sink": {
+											"name": "codigoInfoAuto",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "price",
+											"type": "Decimal"
+										},
+										"sink": {
+											"name": "precioInfoAuto",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 4,
+											"precision": 18
+										}
+									},
+									{
+										"source": {
+											"name": "date",
+											"type": "DateTime"
+										},
+										"sink": {
+											"name": "fechaInfoAuto",
+											"type": "DateTime",
+											"physicalType": "datetime"
+										}
+									},
+									{
+										"source": {
+											"name": "created_at",
+											"type": "DateTime",
+											"physicalType": "timestamp"
+										},
+										"sink": {
+											"name": "fechaCreacion",
+											"type": "DateTime",
+											"physicalType": "datetime"
+										}
+									},
+									{
+										"source": {
+											"name": "updated_at",
+											"type": "DateTime",
+											"physicalType": "timestamp"
+										},
+										"sink": {
+											"name": "fechaActualizacion",
+											"type": "DateTime",
+											"physicalType": "datetime"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "EfleetClientes",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "stgfactPrecioHistoricoVehiculo",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
 					}
 				],
 				"policy": {
@@ -12724,7 +12860,8 @@
 				"[concat(variables('factoryId'), '/datasets/stgVales')]",
 				"[concat(variables('factoryId'), '/datasets/stgValets')]",
 				"[concat(variables('factoryId'), '/datasets/stgVariaciones')]",
-				"[concat(variables('factoryId'), '/datasets/stgVersiones')]"
+				"[concat(variables('factoryId'), '/datasets/stgVersiones')]",
+				"[concat(variables('factoryId'), '/datasets/stgfactPrecioHistoricoVehiculo')]"
 			]
 		},
 		{
@@ -25358,6 +25495,58 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/stgfactPrecioHistoricoVehiculo')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SqlAutocorpDw",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Staiging"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "codigo",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "vehiculoId",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "codigoInfoAuto",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "precioInfoAuto",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 4
+					},
+					{
+						"name": "fechaInfoAuto",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					}
+				],
+				"typeProperties": {
+					"schema": "stg",
+					"table": "factPrecioHistoricoVehiculo"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SqlAutocorpDw')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/stggruposCliente')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -26391,7 +26580,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/entornoIntegracionSAP')]",
+			"name": "[concat(parameters('factoryName'), '/integrationRuntime1')]",
 			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
 			"apiVersion": "2018-06-01",
 			"properties": {
