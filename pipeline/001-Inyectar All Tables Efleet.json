@@ -12426,7 +12426,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureMySqlSource",
-						"query": "select * from vehicle_pricing_history;",
+						"query": "SELECT \n  id,\n  vehicle_id,\n    CASE \n    WHEN TRIM(codia) = '' OR codia IS NULL THEN NULL\n    ELSE CAST(codia AS UNSIGNED)\n  END AS codia_limpio,\n  price,\n  date,\n  created_at,\n  updated_at\n  \nFROM vehicle_pricing_history;",
 						"queryTimeout": "02:00:00"
 					},
 					"sink": {
@@ -12471,8 +12471,8 @@
 							},
 							{
 								"source": {
-									"name": "codia",
-									"type": "String"
+									"name": "codia_limpio",
+									"type": "UInt64"
 								},
 								"sink": {
 									"name": "codigoInfoAuto",
@@ -12500,6 +12500,30 @@
 								},
 								"sink": {
 									"name": "fechaInfoAuto",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								}
+							},
+							{
+								"source": {
+									"name": "created_at",
+									"type": "DateTime",
+									"physicalType": "timestamp"
+								},
+								"sink": {
+									"name": "fechaCreacion",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								}
+							},
+							{
+								"source": {
+									"name": "updated_at",
+									"type": "DateTime",
+									"physicalType": "timestamp"
+								},
+								"sink": {
+									"name": "fechaActualizacion",
 									"type": "DateTime",
 									"physicalType": "datetime"
 								}
