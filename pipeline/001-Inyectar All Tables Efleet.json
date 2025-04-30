@@ -12412,7 +12412,7 @@
 				]
 			},
 			{
-				"name": "Inyectar tabla stgfactPrecioHistoricoVehiculo",
+				"name": "Inyectar tabla factPrecioHistoricoVehiculo",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -12431,6 +12431,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
+						"preCopyScript": "delete from stg.factPrecioHistoricoVehiculo;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
