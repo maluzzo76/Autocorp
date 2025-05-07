@@ -14178,6 +14178,7 @@
 							},
 							"sink": {
 								"type": "AzureSqlSink",
+								"preCopyScript": "delete stg.OrdenesTrabajoTareas",
 								"writeBehavior": "upsert",
 								"upsertSettings": {
 									"useTempDB": true,
