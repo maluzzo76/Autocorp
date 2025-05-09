@@ -306,7 +306,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "delete from stg.Reservas",
+						"preCopyScript": "delete from stg.Reservas;",
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
