@@ -15,8 +15,8 @@
 		"typeProperties": {
 			"recurrence": {
 				"frequency": "Hour",
-				"interval": 4,
-				"startTime": "2025-01-04T05:08:00",
+				"interval": 2,
+				"startTime": "2025-06-05T07:00:00",
 				"timeZone": "Argentina Standard Time"
 			}
 		}
